@@ -29,7 +29,100 @@
 
 %Including images in your LaTeX document requires adding
 %additional package(s)
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{caption}
+\usepackage{cleveref}
+\usepackage{titlesec}
+\usepackage{lipsum}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{tcolorbox}
+
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\featA}[1]{\textcolor{RoyalBlue}{#1}}
+\newcommand{\featB}[1]{\textcolor{BrickRed}{#1}}
+\newcommand{\featC}[1]{\textcolor{ForestGreen}{#1}}
+\newcommand{\hlA}[1]{\colorbox{RoyalBlue!15}{#1}}
+\newcommand{\hlB}[1]{\colorbox{BrickRed!15}{#1}}
+\newcommand{\hlC}[1]{\colorbox{ForestGreen!15}{#1}}
+\definecolor{mygray}{gray}{.9}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible}
+
+
+\newcommand{\DiagTrainTest}{%
+\multirow{2}{*}{%
+\begin{tikzpicture}[baseline=(B.base)]
+  \node[inner sep=0pt,outer sep=0pt,
+        minimum width=2.5cm,
+        minimum height=2.2em,
+        fill=mygray] (B) {};
+  \draw (B.north west) -- (B.south east); % the diagonal
+  \node[anchor=north east, xshift=-0.35em, yshift=-0.15em, font=\bfseries] at (B.north east) {Test};
+  \node[anchor=south west, xshift=-0.05em, yshift=-0.20em, font=\bfseries] at (B.south west) {Training};
+\end{tikzpicture}}%
+}
+
+\newcommand{\TwoRowGrayHeader}[2]{%
+\multirow{2}{*}{%
+\begin{tikzpicture}[baseline=(B.base)]
+  \node[inner sep=0pt,outer sep=0pt,
+        minimum width=#1,
+        minimum height=2.2em,
+        fill=mygray] (B) {};
+  \node[font=\bfseries] at (B.center) {#2};
+\end{tikzpicture}}%
+}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Define colors for better readability
+\definecolor{rulecolor}{rgb}{0.1,0.1,0.5}
+\definecolor{commentcolor}{rgb}{0.5,0.5,0.5}
+\definecolor{featurecolor}{rgb}{0.0,0.5,0.0}
+
+\lstdefinestyle{pddlstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=lisp
+}
+
+\lstset{style=pddlstyle}
+
+\crefname{section}{\S}{\S\S}
+\Crefname{section}{\S}{\S\S}
+
 
 % If the title and author information does not fit in the area allocated, uncomment the following
 %
@@ -37,7 +130,7 @@
 %
 % and set <dim> to something 5cm or larger.
 
-\title{Instructions for *ACL Proceedings}
+\title{The U-Shaped Challenge of Language Grounding: How Instruction Granularity Induces VLA Shortcuts}
 
 % Author information can be set in various styles:
 % For several authors from the same institution:
@@ -107,271 +200,356 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This document is a supplement to the general instructions for *ACL authors. It contains instructions for using the \LaTeX{} style files for ACL conferences.
-The document itself conforms to its own specifications, and is therefore an example of what your manuscript should look like.
-These instructions should be used both for papers submitted for review and for final versions of accepted papers.
+Instruction granularity remains an uncontrolled variable in language-guided embodied AI, leaving its impact unknown. We propose an agent-centric formalization of granularity as rule width ($w$), a cross-task metric adapted from width-based planning. By measuring the peak concurrent state-feature dependencies an agent must resolve, $w$ provides a rigorous measure of the extent to which an instruction reduces the decision-making burden required to map language into actions. We also introduce \textsc{Mini-BEHAVIOR-Gran}, a controlled benchmark systematically varying $w$ across 20 tasks while holding perception and control constant. Operationalizing granularity as rule width ($w$) reveals a non-monotonic, U-shaped performance curve: while fine-grained instructions ($w \le 1$) ease grounding, coarse ones ($w \ge 2$) induce ``language-ignoring'' shortcuts driven by high instruction predictability ($P(l|v)$). We further uncover a generalization asymmetry, where coarse-trained models transfer to fine instructions but not vice-versa, and show that mixed-granularity training is essential for robust language grounding. 
 \end{abstract}
 
 \section{Introduction}
+\label{sec:introduction}
 
-These instructions are for authors submitting papers to *ACL conferences using \LaTeX. They are not self-contained. All authors must follow the general instructions for *ACL proceedings,\footnote{\url{http://acl-org.github.io/ACLPUB/formatting.html}} and this document contains additional instructions for the \LaTeX{} style files.
+Despite the rapid progress in language-guided embodied AI, the community has yet to establish a consensus on a unified metric to quantify the granularity of instructions during language grounding. In this domain, language serves a specific functional role: it provides structural information to decompose complex tasks and reduce the search space of the underlying sequential decision-making process. Consequently, \emph{instruction granularity} should not be conflated with superficial syntactic properties, such as sentence length or the number of entities mentioned; rather, it must rigorously reflect the \emph{decision-making burden} that remains for the agent to resolve internally after grounding the language into the action space.
 
-The templates include the \LaTeX{} source of this document (\texttt{acl\_latex.tex}),
-the \LaTeX{} style file used to format it (\texttt{acl.sty}),
-an ACL bibliography style (\texttt{acl\_natbib.bst}),
-an example bibliography (\texttt{custom.bib}),
-and the bibliography for the ACL Anthology (\texttt{anthology.bib}).
+Existing research conceptualizes instruction granularity through two dominant lenses, both of which struggle to provide a consistent measure of the decision-making burden required for grounding.
+Studies in Natural Language Processing (NLP) typically operationalize granularity via surface-form properties, such as textual specificity or discourse structure (e.g., number of entities mentioned) \citep{dong-lapata-2018-coarse,huang-etal-2025-musc}. While these effectively measure syntactic complexity, they adopt a \emph{text-centric} rather than \emph{agent-centric} view. Consequently, they cannot quantify how much an instruction reduces an embodied agent's \emph{decision-making burden}.
 
-\section{Engines}
+From an \emph{agent-centric} perspective, the essential function of instruction is to decompose complex tasks into tractable sub-problems, thereby reducing the planning burden \citep{DBLP:conf/aips/DrexlerSG22}. 
+Recent work in LLM-based agents thus treats granularity as \emph{decomposition depth}---the extent to which an instruction enumerates subgoals versus stating only the final objective \citep{DBLP:conf/wuwnet/Yang0H24,DBLP:conf/corl/MyersZMFL24,DBLP:conf/icml/ShiIEKPVTWWFLDG25,zhong2025survey}. 
+While this aligns with our view that \emph{instruction granularity} modulates planning demand, decomposition depth remains an unstable, task-dependent proxy. It conflates instructional guidance with the task's inherent structure: complex tasks with interleaved subgoals may resist breakdown (e.g., the Sussman Anomaly \citep{sussman1975computer}), while trivial ones can be artificially elongated.
 
-To produce a PDF file, pdf\LaTeX{} is strongly recommended (over original \LaTeX{} plus dvips+ps2pdf or dvipdf).
-The style file \texttt{acl.sty} can also be used with
-lua\LaTeX{} and
-Xe\LaTeX{}, which are especially suitable for text in non-Latin scripts.
-The file \texttt{acl\_lualatex.tex} in this repository provides
-an example of how to use \texttt{acl.sty} with either
-lua\LaTeX{} or
-Xe\LaTeX{}.
+To operationalize this, we draw inspiration from the concept of policy sketches \citep{DBLP:journals/jair/DrexlerSG24} and formalize instruction granularity as rule width ($w$) \citep{DBLP:conf/aaai/BonetFG19}. We argue that $w$ provides a consistent, cross-task proxy for the decision-making burden that an instruction imposes on an embodied agent. To this end, the contributions of our paper are:
 
-\section{Preamble}
+\textbf{(1) Width as a Formalism for Instruction Granularity:} We formalize instruction granularity as \emph{rule width} ($w$), adapting a concept from width-based planning \citep{DBLP:conf/aaai/BonetFG19,DBLP:journals/jair/DrexlerSG24} that measures the peak number of concurrent state variables (features $\Phi$) that must be tracked to fulfill the instructions. We argue $w$ measures the \emph{intrinsic decision complexity} of a task-instruction pair, regardless of whether the agent is symbolic or neural (\Cref{sec:granularity_as_width}).
 
-The first line of the file must be
-\begin{quote}
-\begin{verbatim}
-\documentclass[11pt]{article}
-\end{verbatim}
-\end{quote}
+\textbf{(2) A Controlled Benchmark:} We present \textsc{Mini-BEHAVIOR-Gran}, the first testbed to isolate instruction granularity from confounding factors like task horizon and perception. It enables the first rigorous study of how instruction granularity affects VLA performance (\Cref{sec:benchmark}).
 
-To load the style file in the review version:
-\begin{quote}
-\begin{verbatim}
-\usepackage[review]{acl}
-\end{verbatim}
-\end{quote}
-For the final version, omit the \verb|review| option:
-\begin{quote}
-\begin{verbatim}
-\usepackage{acl}
-\end{verbatim}
-\end{quote}
+\textbf{(3) The U-Shaped Trend and Width Cap:} We identify a non-monotonic U-shaped relationship where performance peaks at the Fine ($w=0$) and Coarse ($w \ge 2$) extremes. We also identify a performance collapse at high width ($w \ge 4$): agents fail to fulfill instructions requiring maintaining concurrent features $\ge 4$, revealing a sharp language grounding boundary of existing VLA models (\Cref{sec:experiments}).
 
-To use Times Roman, put the following in the preamble:
-\begin{quote}
-\begin{verbatim}
-\usepackage{times}
-\end{verbatim}
-\end{quote}
-(Alternatives like txfonts or newtx are also acceptable.)
+\textbf{(4) Language-Ignoring Shortcuts:} We diagnose the performance rebound at $w \ge 2$ as ``Language Ignoring,'' where agents bypass linguistic grounding to exploit visual shortcuts due to high instruction predictability ($P(l|v)$). 
+We show that \emph{Axial Training} (mixed-granularity) mitigates this failure mode. Additionally, we identify an \emph{asymmetric generalization} pattern: agents trained on coarse instructions successfully transfer to fine-grained ones, but not vice versa.
 
-Please see the \LaTeX{} source of this document for comments on other packages that may be useful.
 
-Set the title and author using \verb|\title| and \verb|\author|. Within the author list, format multiple authors using \verb|\and| and \verb|\And| and \verb|\AND|; please see the \LaTeX{} source for examples.
 
-By default, the box containing the title and author names is set to the minimum of 5 cm. If you need more space, include the following in the preamble:
-\begin{quote}
-\begin{verbatim}
-\setlength\titlebox{<dim>}
-\end{verbatim}
-\end{quote}
-where \verb|<dim>| is replaced with a length. Do not set this length smaller than 5 cm.
+\section{Related Work}
+\label{sec:related_work}
 
-\section{Document Body}
+\textbf{Instruction Abstraction and Granularity.}
+In this work, \emph{Instruction granularity} refers to the extent to which state and action constraints are explicitly specified versus left for the agent to infer when grounding language into actions.
+This is distinct from, yet often conflated with the concept of \emph{linguistic abstraction}.
+The term \emph{abstraction} is viewed as \emph{representational compression}---using a compact description to stand for multiple instances or executions. This definition is common in prior work of computational thinking \citep{Wing2010ComputationalTW,DBLP:journals/tacl/LachmyPMT22,DBLP:conf/iclr/ZhengMCCCLZ24}.
+Importantly, granularity can vary independently of abstraction: ``tidy the room'' is coarse but non-abstract (it leaves the exact required actions underspecified, yet it lacks representational compression.), whereas ``repeat wiping until clean'' is relatively specific yet abstract (it prescribes an action but uses a loop condition to compress multiple executions).
 
-\subsection{Footnotes}
+While not framed as the term ``granularity'', we acknowledge that a rich body of work has focused on augmenting language specificity and its impact, for example through coarse-to-fine semantic parsing \citep{dong-lapata-2018-coarse,DBLP:conf/ijcai/LiLF020}.
+Other work generates compositional instructions via constraint dropout and sub-task recombination \citep{huang-etal-2025-musc}, or construct counterfactual instructions to augment data diversity \citep{glossop2025castcounterfactuallabelsimprove}.
 
-Footnotes are inserted with the \verb|\footnote| command.\footnote{This is a footnote.}
+In embodied instruction following, varying instruction detail is often handled via a simple two-part decomposition: high-level plans are converted into sequences of low-level steps before being grounded into actions \citep{DBLP:conf/wuwnet/Yang0H24,DBLP:conf/icml/ShiIEKPVTWWFLDG25}. Most recent VLA works, however, operate with static language instructions \citep{ma2025surveyvisionlanguageactionmodelsembodied,li2025cogvla}. Some models like InstructVLA and ThinkAct explores having chain-of-thought reasoning steps before action decoding \citep{yang2025instructvlavisionlanguageactioninstructiontuning,huang2025thinkactvisionlanguageactionreasoningreinforced}. These hierarchical definitions remain task-specific and qualitative, lacking a unified, cross-task metric to establish shared granularity levels across tasks. Consequently, quantitatively controlled studies on the formal dynamics of instruction granularity remain scarce in the embodied AI domain.
 
-\subsection{Tables and figures}
+\noindent\textbf{Language Sensitivity vs. Ignoring in VLA.} 
+Recent VLA research highlights a dichotomy between fragile language sensitivity \citep{akula-etal-2022-alfred} and systematic language-ignoring \citep{xing2025shortcut}. We reconcile these via rule width ($w$): low $w$ (Fine) involves explicit feature constraints and low predictability ($P(l \mid v)$), which enforces the agent to rely on language cues. Conversely, $w \ge 2$ (Coarse) triggers ignoring via visual shortcuts as $P(l \mid v)$ increases. Crucially, we identify a hard capacity cap at $w \ge 4$, where agents fail to track concurrent state-features regardless of granularity, revealing a fundamental grounding boundary in current architectures.
 
-See Table~\ref{tab:accents} for an example of a table and its caption.
-\textbf{Do not override the default caption sizes.}
 
-\begin{table}
-  \centering
-  \begin{tabular}{lc}
-    \hline
-    \textbf{Command} & \textbf{Output} \\
-    \hline
-    \verb|{\"a}|     & {\"a}           \\
-    \verb|{\^e}|     & {\^e}           \\
-    \verb|{\`i}|     & {\`i}           \\
-    \verb|{\.I}|     & {\.I}           \\
-    \verb|{\o}|      & {\o}            \\
-    \verb|{\'u}|     & {\'u}           \\
-    \verb|{\aa}|     & {\aa}           \\\hline
-  \end{tabular}
-  \begin{tabular}{lc}
-    \hline
-    \textbf{Command} & \textbf{Output} \\
-    \hline
-    \verb|{\c c}|    & {\c c}          \\
-    \verb|{\u g}|    & {\u g}          \\
-    \verb|{\l}|      & {\l}            \\
-    \verb|{\~n}|     & {\~n}           \\
-    \verb|{\H o}|    & {\H o}          \\
-    \verb|{\v r}|    & {\v r}          \\
-    \verb|{\ss}|     & {\ss}           \\
-    \hline
-  \end{tabular}
-  \caption{Example commands for accented characters, to be used in, \emph{e.g.}, Bib\TeX{} entries.}
-  \label{tab:accents}
-\end{table}
+\section{Rule Width as Instruction Granularity}
+\label{sec:granularity_as_width}
 
-As much as possible, fonts in figures should conform
-to the document fonts. See Figure~\ref{fig:experiments} for an example of a figure and its caption.
+\subsection{Running Example}
+\label{subsec:running_example_init}
+We first illustrate \emph{planning width} computation using a running example. \Cref{tab:task_width_scaling} shows the desired state progressions of a task where two shoes are cleaned using a rag, and the rag is placed on the floor afterwards. The key \textbf{environment dynamics} are: (1) the rag must be soaked before it can clean shoes, and (2) the tap (sink) must be turned on to soak the rag. We represent states using a set of task-relevant feature variables ($\Phi$): (i) boolean features $H_r$ (holding rag), $T_s$ (tap (sink) is turned on), $S_r$ (rag is soaked), $C_i$ (shoe $i$ is cleaned), $onfloor_r$ (rag is on the floor); and (ii) spatial features $p_r, p_s, p_f$ (distance to the rag, sink, and nearest uncleaned shoe, respectively).
 
-Using the \verb|graphicx| package graphics files can be included within figure
-environment at an appropriate point within the text.
-The \verb|graphicx| package supports various optional arguments to control the
-appearance of the figure.
-You must include it explicitly in the \LaTeX{} preamble (after the
-\verb|\documentclass| declaration and before \verb|\begin{document}|) using
-\verb|\usepackage{graphicx}|.
+\input{tables/admissible_chain_progression.tex}
+
+First, approaching the rag is a navigation-only segment: the desired state progression is to decrease the distance feature $p_r$ until $p_r=0$. Thus, the width is 1 as only a single feature needs to be tracked. In this environment dynamics, $p_r=0$ enables the state transition to $H_r$. Thus, the rag can be obtained at $p_r=0$ and the width remains $1$. Subsequently, $H_r$ must be maintained while progressing to next states, resulting in a width of $2$. The rag becoming soaked requires simultaneous maintenance of three features, i.e., at the sink ($p_s=0$), holding the rag ($H_r$), and having the tap (sink) turned on ($T_s$), which yields a width of $3$. After soaking, $C_1$ can be obtained by tracking $H_r$, $S_r$, and $p_f$, giving width 3. The subtlety arises when cleaning the second shoe: one has to track the same features as before, plus maintaining the cleanliness of the first shoe ($C_1$), which increases the width to $4$. 
+
+
+\paragraph{Why no action model?}
+Agents' action sets constrain how state transitions are executed, but \emph{width} focuses on state-level feature dependencies induced by the environment dynamics. Different agents (e.g., a rover vs. a drone) may have different action spaces to achieve the same feature change, so emphasizing state progressions promotes generalization of width-based concepts across different embodiments.
+
+
+% NOTE: In this section, we need to transition from the intuitive concept of "planning demand" to a rigorous, quantifiable metric. Since we are adapting Rule Width from classical planning (Bonet et al., 2019), the structure should mirror a formal derivation: starting from a standard planning domain and ending with a metric that can be applied to natural language instructions via their symbolic grounding.
+
+The impact of \emph{instruction granularity} on VLA behavior remains underexplored largely because the field lacks a \textbf{formal, quantifiable, cross-task} measure of granularity. The most common heuristic, \emph{decomposition depth} \citep{DBLP:conf/corl/MyersZMFL24,DBLP:conf/icml/ShiIEKPVTWWFLDG25}, is unstable as discussed in \Cref{sec:introduction}. To bridge this gap, we formalize \emph{instruction granularity} as \emph{planning demand}---the internal search required to ground an instruction into an executable plan. This perspective captures the intuitive difference between fine- and coarse-grained instructions: fine-grained instructions provide a ``breadcrumb trail''  that narrows the search, whereas coarse instructions leave a much larger solution space to be explored to reach a state that fulfills the instruction.
+
+We operationalize planning demand using rule width ($w$), framing natural-language instructions as policy sketches \citep{DBLP:journals/jair/DrexlerSG24}. A policy sketch is a set of "if-then" rules that decompose a complex task into a simpler sub-problems. Under this framing, the granularity of an instruction corresponds to the structural guidance it provides: fine-grained instructions create sub-problems with minimal width, while coarse instructions leave a larger ``grounding gap'' for the agent to resolve internally. 
+
+\subsection{Symbolic Task Representation}
+
+While VLAs operate on raw multimodal observations, we adopt a symbolic, relational state abstraction. Many embodied benchmarks provide such structured representations---object properties and relations---that can be expressed as \emph{fluents} to form symbolic state or goal conditions \citep{shridhar2020alfred,DBLP:conf/corl/LiHGMPWFLSKL0F024}. Formally , we consider a classical planning problem $P = \langle \mathcal{F}, \mathcal{A}, I, G \rangle$, where $\mathcal{F}$ is a set of fluents, $\mathcal{A}$ a set of actions, $I$ the initial state, and $G$ the goal. 
+
+To bridge raw states and high-level instructions, we define a set of \textbf{features} $\Phi = \{\phi_1, \ldots, \phi_n\}$, where $\phi_i$ is a Boolean or integer-valued function over state space $S$. These features serve as domain-level abstractions that capture task-relevant aspects of the environment. Thus, each $s$ is associated with a \textbf{feature valuation vector} $\phi(s) = \left(\phi_1(s), \ldots, \phi_n(s)\right)$.
+
+\subsection{Instructions as Rule Sets $\mathcal{R}$}
 
 \begin{figure}[t]
-  \includegraphics[width=\columnwidth]{example-image-golden}
-  \caption{A figure with a caption that runs for more than one line.
-    Example image is usually available through the \texttt{mwe} package
-    without even mentioning it in the preamble.}
-  \label{fig:experiments}
+    \centering
+    \includegraphics[width=\linewidth]{figures/running_examples.pdf}
+    \caption{(Left) factoring $r_1$ into $r_{1a}$-$r_{1c}$ reduces the planning complexity that the agent must handle internally. More explicit linguistic guidance makes the mapping to action easier to learn. (Right) the long-horizon trajectory for the coarse rule ($\pi_{r_1}$, red) is broken into shorter segments by the finer-grained instructions.}
+    \label{fig:running_example}
 \end{figure}
 
-\begin{figure*}[t]
-  \includegraphics[width=0.48\linewidth]{example-image-a} \hfill
-  \includegraphics[width=0.48\linewidth]{example-image-b}
-  \caption {A minimal working example to demonstrate how to place
-    two images side-by-side.}
-\end{figure*}
 
-\subsection{Hyperlinks}
+To study instruction granularity in a controlled manner, we formalize each instruction a symbolic interpretation as a set of ``if-then'' rules $\mathcal R = \{r_1,\ldots, r_m\}$ defined over the feature space $\Phi$, This rule-based representation does not aim to capture the full expressiveness of natural language; instead, it distills the constraint/goal structure that governs the computational cost incurred by a symbolic search algorithm (i.e., planning demand). Specifically, each $r_i$ is of the form $C_{r_i} \mapsto E_{r_i}$:
+\begin{itemize}[leftmargin=*]
+    \item $C_{r_i}$ (the \emph{condition}) is a conjunction of feature constraints. For a Boolean feature $p$, a constraint is $p$ or $\lnot p$; for a numerical feature $n$, it is $n = 0$ or $n > 0$.
+    \item $E_{r_i}$ (the \emph{effect}) is a conjunction of feature changes. For a Boolean feature $p$, an effect is $p$, $\lnot p$, or $p?$ (allowing any change); for a numerical feature $n$, it is $n\downarrow$ (decrease), $n\uparrow$ (increase), or $n?$ (any change).
+\end{itemize}
+These forms capture the core semantics of the instructions we study. A rule $r_i$ is \textbf{fulfilled} by a state sequence $(s, \dots, s')$ if $\phi(s) \models C_i$ and the pair $(\phi(s), \phi(s'))$ satisfies the changes in $E_i$ (e.g., $\forall (n \downarrow) \in E_{r_i}, \phi_n(s') < \phi_n(s)$) while keeping unmentioned features constant (i.e., $\phi_j(s') = \phi_j(s)$ for $j \notin E_i$).
+To ensure that the agent's performance strictly reflects its grounding ability rather than the unsolvability of the task, we guarantee that all instruction rule sets $\mathcal{R}$ are executable and dead-end-free. Formally, this is achieved by ensuring the rules are well-formed (i.e., they terminate at the goal) and satisfy the soundness and closure properties \citep{DBLP:conf/aaai/BonetG21}.
 
-Users of older versions of \LaTeX{} may encounter the following error during compilation:
-\begin{quote}
-\verb|\pdfendlink| ended up in different nesting level than \verb|\pdfstartlink|.
-\end{quote}
-This happens when pdf\LaTeX{} is used and a citation splits across a page boundary. The best way to fix this is to upgrade \LaTeX{} to 2018-12-01 or later.
+\subsection{Rule Width as a Granularity Measure}
+\label{subsec:rule_width_granularity}
+% (规则宽度作为粒度度量) 核心贡献部分。首先基于宽度理论，定义单条规则的宽度。然后，定义整个指令（即规则集）的宽度为其所有规则宽度的最大值。最后，论证该度量如何对应指令粒度：低宽度=细粒度（提供详细子目标），高宽度=粗粒度（留下更多并发规划需求）。
+The width $w(r_i)$ of a rule $r_i$ represents the number of state variables (features) that must be tracked concurrently to fulfill the transition. Formally, for a rule to have width $k$, the agent must coordinate at most $k$ features from $\Phi$ to reach the effect $E_i$ from a state satisfying $C_i$ \citep{DBLP:conf/ecai/LipovetzkyG12}.
 
-\subsection{Citations}
-
-\begin{table*}
-  \centering
-  \begin{tabular}{lll}
-    \hline
-    \textbf{Output}           & \textbf{natbib command} & \textbf{ACL only command} \\
-    \hline
-    \citep{Gusfield:97}       & \verb|\citep|           &                           \\
-    \citealp{Gusfield:97}     & \verb|\citealp|         &                           \\
-    \citet{Gusfield:97}       & \verb|\citet|           &                           \\
-    \citeyearpar{Gusfield:97} & \verb|\citeyearpar|     &                           \\
-    \citeposs{Gusfield:97}    &                         & \verb|\citeposs|          \\
-    \hline
-  \end{tabular}
-  \caption{\label{citation-guide}
-    Citation commands supported by the style file.
-    The style is based on the natbib package and supports all natbib citation commands.
-    It also supports commands defined in previous ACL style files for compatibility.
-  }
-\end{table*}
-
-Table~\ref{citation-guide} shows the syntax supported by the style files.
-We encourage you to use the natbib styles.
-You can use the command \verb|\citet| (cite in text) to get ``author (year)'' citations, like this citation to a paper by \citet{Gusfield:97}.
-You can use the command \verb|\citep| (cite in parentheses) to get ``(author, year)'' citations \citep{Gusfield:97}.
-You can use the command \verb|\citealp| (alternative cite without parentheses) to get ``author, year'' citations, which is useful for using citations within parentheses (e.g. \citealp{Gusfield:97}).
-
-A possessive citation can be made with the command \verb|\citeposs|.
-This is not a standard natbib command, so it is generally not compatible
-with other style files.
-
-\subsection{References}
-
-\nocite{Ando2005,andrew2007scalable,rasooli-tetrault-2015}
-
-The \LaTeX{} and Bib\TeX{} style files provided roughly follow the American Psychological Association format.
-If your own bib file is named \texttt{custom.bib}, then placing the following before any appendices in your \LaTeX{} file will generate the references section for you:
-\begin{quote}
-\begin{verbatim}
-\bibliography{custom}
-\end{verbatim}
-\end{quote}
-
-You can obtain the complete ACL Anthology as a Bib\TeX{} file from \url{https://aclweb.org/anthology/anthology.bib.gz}.
-To include both the Anthology and your own .bib file, use the following instead of the above.
-\begin{quote}
-\begin{verbatim}
-\bibliography{anthology,custom}
-\end{verbatim}
-\end{quote}
-
-Please see Section~\ref{sec:bibtex} for information on preparing Bib\TeX{} files.
-
-\subsection{Equations}
-
-An example equation is shown below:
+We define the granularity of an instruction $\mathcal{R}$ by its width-based planning bottleneck: the maximum width among its constituent rules:
 \begin{equation}
-  \label{eq:example}
-  A = \pi r^2
+    w(\mathcal R) = \max_{r_i \in \mathcal R} w(r_i).
 \end{equation}
 
-Labels for equation numbers, sections, subsections, figures and tables
-are all defined with the \verb|\label{label}| command and cross references
-to them are made with the \verb|\ref{label}| command.
+% (贯穿实例) 使用一个具体任务（例如您提到的“铺设木地板”），完整演示上述过程：任务的目标、定义的特征、为不同粒度设计的规则集，以及计算出的规则宽度。用此例直观说明“宽度”如何作为调节指令粒度的旋钮。
 
-This an example cross-reference to Equation~\ref{eq:example}.
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/experiment_illu.pdf}
+    \caption{\textsc{Mini-BEHAVIOR-Gran} Experimental Pipeline. We evaluate the impact of instruction granularity across three VLA action-decoding strategies. During inference time, an Oracle Instructor evaluates the current world state to decide available rule set $\mathcal R_a$ and active rule $r_t$. A rule-based natural language instruction $l_t$ is generated accordingly. The process iterates until completion or max steps.}
+    \label{fig:experiment_illu}
+\end{figure*}
 
-\subsection{Appendices}
 
-Use \verb|\appendix| before any appendix section to switch the section numbering over to letters. See Appendix~\ref{sec:appendix} for an example.
 
-\section{Bib\TeX{} Files}
-\label{sec:bibtex}
+We continue the running example to demonstrate two instruction sets, each representing a different width level, with two variants visualized in \Cref{fig:running_example}. We also append a \textbf{counting feature} in $\Phi$ to track the number of uncleaned shoes, denoted as $N_f$.
 
-Unicode cannot be used in Bib\TeX{} entries, and some ways of typing special characters can disrupt Bib\TeX's alphabetization. The recommended way of typing special characters is shown in Table~\ref{tab:accents}.
+\paragraph{Coarse-Grained Instruction ($w(\mathcal R) = 3$ )} This instruction states only the high-level rules and their desired ordering, leaving the internal structure of each sub-task implicit:
+\begin{itemize}[leftmargin=*]
+    \item $r_1 : \{N_f > 0\} \mapsto \{N_f \downarrow\}$ (clean a shoe; $w=3$)
+    \item $r_2 : \{N_f = 0, \neg onfloor_{r}\} \mapsto \{onfloor_{r}\}$ (put the rag on the floor after cleaning shoes; $w=1$)
+\end{itemize}
 
-Please ensure that Bib\TeX{} records contain DOIs or URLs when possible, and for all the ACL materials that you reference.
-Use the \verb|doi| field for DOIs and the \verb|url| field for URLs.
-If a Bib\TeX{} entry has a URL or DOI field, the paper title in the references section will appear as a hyperlink to the paper, using the hyperref \LaTeX{} package.
+% (Two-column figure spanning the top of the page)Panel A: Admissible Chains. A comparison table of "Working Memory" requirements. Shows how $w=3$ requires a 3-feature tuple, while $w=1$ breaks the task into single-feature "stepping stones."Panel B: Feature Tracking Profile. A plot showing the tuple size (active feature tracking) over the task duration. $w=3$ shows a high, sustained peak; $w=1$ shows a low, consistent baseline.Panel C: The Grounding Gap. A conceptual diagram visualizing the "Informational Void" where the agent must rely on learned biases rather than explicit instructions.
 
-\section*{Limitations}
+\paragraph{Middle-Grained Instruction ($w(\mathcal R) = 2$ )} This variant decomposes $r_1$ to explicitly state the \emph{soaking} process:
+\begin{itemize}[leftmargin=*]
+    \item $r_{1a} : \{\neg H_r\} \mapsto \{H_r\}$ (pick up the rag; $w = 1$)
+    \item $r_{1b} : \{H_r, \neg S_r \} \mapsto \{S_r, H_r?\}$ (soak the rag)
+    \item $r_{1c} : \{N_f > 0, S_r \} \mapsto \{N_f \downarrow\}$ (clean; $w = 2$)
+    \item $r_2 : \{N_f = 0, \neg onfloor_{r}\} \mapsto \{onfloor_{r}\}$ (put the rag on the floor; $w = 1$)
+\end{itemize}
+This rule set is well-formed: it is goal-terminating via $r_2$, and the rules are sequentially reachable, meaning the successor state of any fulfilled rule (that is not the goal) also meets the condition of at least one rule in $\mathcal{R}$. The set is also robust to perturbations: if an agent drops the rag after soaking it ($\neg H_r$), the rule set remains applicable by reverting to $r_{1a}$ to reacquire the rag before proceeding to the cleaning task ($r_{1c}$). 
 
-This document does not cover the content requirements for ACL or any
-other specific venue.  Check the author instructions for
-information on
-maximum page lengths, the required ``Limitations'' section,
-and so on.
+\noindent \textbf{Width as a Planning Proxy.}: From an algorithmic perspective, rule width $w(r)$ is the minimum conjunction size $k$ required to resolve an instruction via novelty-driven Breadth-First Search (BFS). By pruning states that fail to achieve a new feature conjunction of size $\le k$, the search complexity is bounded by $O(|\Phi|^k)$ \citep{DBLP:conf/aaai/LipovetzkyG17}. In task $r_{1b}$ (soaking a rag), an isolated transition $\{\neg S_r\} \mapsto \{S_r\}$ requires concurrently coordinating three features: holding the rag ($H_r$), reaching the sink ($p_s=0$), and toggling the tap ($T_s$). However, since $r_{1b}$ follows the establishment of $H_r$ in $r_{1a}$, BFS treats $H_r$ as a maintained feature. Since undoing this precondition yields longer, non-optimal paths paths that are effectively ignored by BFS, active coordination reduces to the conjunction $\langle T_s, p_s=0 \rangle$, yielding $w(r_{1b})=2$. While VLAs are non-symbolic, we show that $w$ serves as a rigorous proxy for the inherent planning burden imposed by an instruction, as evidenced by the performance trends observed in \Cref{sec:experiments}. 
 
-\section*{Acknowledgments}
+% Fine-grained instructions decompose high-width transitions into low-width sequences, displacing computational complexity from internal agent reasoning to explicit textual guidance. This narrows the grounding gap by reducing the latent coordination required to map language to valid action sequences.
 
-This document has been adapted
-by Steven Bethard, Ryan Cotterell and Rui Yan
-from the instructions for earlier ACL and NAACL proceedings, including those for
-ACL 2019 by Douwe Kiela and Ivan Vuli\'{c},
-NAACL 2019 by Stephanie Lukin and Alla Roskovskaya,
-ACL 2018 by Shay Cohen, Kevin Gimpel, and Wei Lu,
-NAACL 2018 by Margaret Mitchell and Stephanie Lukin,
-Bib\TeX{} suggestions for (NA)ACL 2017/2018 from Jason Eisner,
-ACL 2017 by Dan Gildea and Min-Yen Kan,
-NAACL 2017 by Margaret Mitchell,
-ACL 2012 by Maggie Li and Michael White,
-ACL 2010 by Jing-Shin Chang and Philipp Koehn,
-ACL 2008 by Johanna D. Moore, Simone Teufel, James Allan, and Sadaoki Furui,
-ACL 2005 by Hwee Tou Ng and Kemal Oflazer,
-ACL 2002 by Eugene Charniak and Dekang Lin,
-and earlier ACL and EACL formats written by several people, including
-John Chen, Henry S. Thompson and Donald Walker.
-Additional elements were taken from the formatting instructions of the \emph{International Joint Conference on Artificial Intelligence} and the \emph{Conference on Computer Vision and Pattern Recognition}.
+
+
+
+% the width $w(r)$ is the smallest $k$ such that IW($k$) solves $r$. Consider $r_{1b}$ (soaking the rag): if the instruction were expressed as a isolated transition $\{\neg S_r\} \mapsto \{S_r\}$, an agent would need to concurrently coordinate three features: holding the rag ($H_r$), reaching the sink ($p_s = 0$), and toggling the tap (sink) ($T_s$). However, because $r_{1b}$'s precondition requires $H_r$ to be established (via $r_{1a}$), and given that IW search explores states in breadth-first order, any plan that undoes an established feature is necessarily longer than one that preserves it and is subsequently pruned as suboptimal. Hence, the agent can treat $H_r$ as a maintained rather than an actively tracked feature. This reduces the concurrent feature tracking to $\langle T_s, p_s = 0 \rangle$, yielding $w(r_{1b})= 2$. Although the VLA agent does not perform explicit IW search, this width serves as a rigorous proxy for the inherent planning burden imposed by the instruction. The higher rule count and denser preconditions is the explicit indicators of finer instruction granularity. This shift displaces the planning complexity to explicit structural textual guidance. The resulting training data exhibits a more direct language-to-action mapping, thereby reducing the grounding gap that VLA agents must learn to bridge.
+
+
+
+% \paragraph{Fine-grained Instruction ($w=1$)} This variant further decomposes the task into six rules where each transition addresses at most one feature change. The task is fully serialized into three stages: preparation ($r_1: \{\neg H_r\} \mapsto \{H_r\}$; $r_2: \{\neg T_s\} \mapsto \{T_s\}$; $r_3: \{H_r, T_s, \neg S_r\} \mapsto \{S_r\}$); cleaning ($r_4: \{N_f > 0, \neg H_r, S_r\} \mapsto \{H_r\}$; $r_5: \{N_f > 0, H_r, S_r\} \mapsto \{N_f \downarrow\}$); and storage ($r_6: \{N_f = 0, \neg onfloor_{r}\} \mapsto \{onfloor_{r}\}$). The higher rule count and denser preconditions is the explicit indicators of increased instruction granularity. This shift displaces the planning complexity to explicit structural textual guidance. The resulting training data exhibits a more direct language-to-action mapping, thereby reducing the grounding gap that VLA agents must learn to bridge.
+
+To communicate these rules to VLA agents, we translate each rule into a natural-language sentence via a template-based generator. These templates verbalize the features within each rule; e.g., $\{\hlA{$H_r$}, \hlB{$\neg S_r$}\} \mapsto \{\hlC{$S_r$}\}$ is realized as ``If you are \hlA{holding the rag} but \hlB{the rag is not yet soaked}, \hlC{soak the rag}.'' This construction preserves the granularity differences defined by the rule width. Additional language prompt examples are provided in \Cref{app_sec:prompt_examples}.
+
+
+\section{Mini-BEHAVIOR-Gran Benchmark}
+\label{sec:benchmark}
+% Step 1: 首先介绍我们想要什么的benchmark: 要能够更isolate instruction granularity 的影响，然后visual perception difficulty 和 low level action control complexity 都要简单（从而避免confound）
+% 然后我们看一下之前mini behavior 自己是怎么justify自己的：
+% We present a new simplified benchmark, Mini-BEHAVIOR, that provides the benefits of simple
+% benchmarks for fast prototyping and training, while keeping the most relevant problem structure and
+% the characteristics from the task-level decision-making challenge in BEHAVIOR: the long-horizon,
+% heterogenousness of the activities, and the multi-object, multi-state, high variability of household
+% environments. Mini-BEHAVIOR re-defines BEHAVIOR tasks in a novel 3D Gridworld environment
+% with support for procedural generation for potentially infinite variants of each task.
+
+% Step 2: 因此我们选择在mini behavior的基础上进行扩展。然后之说我们在appendix 上有更详细的justification. Details on why these environments are \textbf{preferred over other test benchmarks} are provided in \Cref{app_sec:ant_defense_test_env}.
+
+To disentangle the influence of instruction granularity in VLA performance, we seek an environment that (1) retains long-horizon and heterogeneous activities so that instruction guidance meaningfully modulates the planning demand, while (2) simplifies perception and low-level control to avoid confounding factors. As such, we use \textsc{Mini-BEHAVIOR} \citep{jin2023minibehavior} as our testbed. Detailed justification for our choice over other environments is provided in \Cref{app_sec:ant_defense_test_env}.
+
+% Step 3: 要不要给一个表写上是哪些20 tasks 然后我提供的granularity levels for each task 有哪些（我感觉可以放在appendix里）
+% Step 4: 介绍offline dataset construction 是用了 BFWS planner 来 generate plans corresponding to the rule sets. 然而在inference time, 我们使用oracle instructor 来 generate filter and select valid rule to generate instruction by accessing the internal state of the environment to get current feature valuations $\phi(s)$ 然后 check which rule conditions are satisfied (需要formula), 然或说 \Cref{fig:experiment_illu} 进行说明。
+
+We introduce \textsc{Mini-BEHAVIOR-Gran}, the first VLA benchmark specifically designed to enable a controlled study and formal quantification of instruction granularity via \emph{rule width}. Specifically, we define a shared, domain-level feature set $\Phi$ that captures task-relevant attributes across all 20 complex household tasks on top of the symbolic state abstraction from the original benchmark. For each task, we design rule sets with varying widths (up to six levels). We verify that all rule sets are well-formed and solvable. We utilize an Oracle Instructor to deliver instructions during inference. This ensures that any observed performance drops are strictly attributable to the model's inability to ground specific granularity levels, rather than stochastic variations in instruction quality or applicability that would confound our cross-granularity analysis (see \Cref{fig:experiment_illu} right panel). At each time $t$, it evaluates the current feature vector $\phi(s_t)$, identifies the set of available rules $\mathcal{R}_{\text{a}} = \{r \in \mathcal{R} \mid \phi(s_t) \models C_r\}$. We sample an active rule $r_t \in \mathcal{R}_{\text{a}}$ and it is then processed by a template-based translator to generate a natural language instruction $l_t$, to match the VLA model's input format. $l_t$ is paired with the current observation $v_t$ and fed into the VLA model to predict action chunk $(a_t, ..., a_{t+k}) \sim \pi_{\text{vla}}(\cdot \mid v_t, l_t)$.
+
+
+% Step 5: 上价值，need to highlight that our finding can Transfer beyond Mini-BEHAVIOR，我门的feature set 是specific to household domains, 但是不是specific to mini-behavior. 
+
+% \textsc{Mini-BEHAVIOR-Gran} serves as a first-of-its-kind testbed for studying instruction granularity in VLA. By anchoring to an environment-wide feature abstraction $\Phi$, our formalization remains cross-task available, thereby supporting an open-ended set of activities defined over $\Phi$. Moreover, new features can be appended to support additional domains while keeping existing ones intact, allowing extension to other embodied environments that support symbolic state abstraction.
+
+
+\section{Experiments}
+\label{sec:experiments}
+% **话术：** “由于这是首个系统性研究指令粒度的 Benchmark，我们的实验重点在于揭示 **Instruction Granularity ($w$)** 与 **Learning Burden** 之间的本质联系。我们不追求在多个异构 Benchmark 上刷榜，而是在一个受控的环境中探索指令粒度对 VLA 的影响函数。”
+\subsection{Experimental Setup}
+\paragraph{Task Suite \& Training.} We use \textsc{Mini-BEHAVIOR-Gran}, which contains 20 complex tasks sharing the same feature set $\Phi$. We further classify instruction granularity into three \emph{relative} classes of \emph{Fine (F)}, \emph{Medium (M)}, and \emph{Coarse (C)} via per-task quantile binning. In most cases, this mapping corresponds to $w=0$ for Fine, $w=1$ for Medium, and $w \ge 2$ for Coarse. We evaluate seven training settings: (1) \textbf{Pure F/M/C} ($1\!:\!0\!:\!0$): trains exclusively on one granularity class; (2) \textbf{Centroid} ($1\!:\!1\!:\!1$): uniformly sample from all three classes; (3) \textbf{Axial F/M/C} ($3\!:\!1\!:\!1$): emphasizes one class with some exposure to the rest classes. Our dataset provides 50 training and 10 evaluation instances per task, each paired with reference trajectories generated by \textsc{BFWS} width-based planner from \citet{DBLP:conf/aaai/LipovetzkyG17} (see \Cref{app_sec:minibehavior_gran_details} for details).
+
+% \paragraph{Relative Instruction Binning.} A significant challenge in evaluating instruction granularity is that different tasks possess inherently different structural depths; for instance, opening_packages may only support a maximum width of $w=1$, whereas cleaning_the_kitchen extends to $w=5$. To maintain a balanced evaluation across this heterogeneous suite, we implement a per-task quantile-based binning strategy. For each domain, we sort the available symbolic widths and partition them into three relative levels: Fine (Low), Medium, and Coarse (High). In cases with limited width availability, we apply a priority-fill heuristic to ensure every task contributes to all three experimental categories. This normalization allows us to observe universal performance trends across the complexity spectrum, independent of the absolute planning width of any specific task.
+
+\paragraph{Action-Decoding Archetypes.} The primary architectural difference among latest VLA models lies in their action-decoding strategies \citep{zhong2025survey}. Hence, we employ a unified VLM backbone but vary three representative action-decoding strategies (see \Cref{fig:experiment_illu} left panel): (1) \textbf{Autoregressive} (AR), exampled by RT-2 \citep{DBLP:conf/corl/ZitkovichYXXXXW23}, OpenVLA \citep{DBLP:conf/corl/KimPKXB0RFSVKBT24} and others \citep{DBLP:journals/tmlr/ReedZPCNBGSKSEBREHCHVBF22,DBLP:conf/icml/HuangYMLLW0ZJ024,DBLP:conf/icra/ONeillRMGPLPGMJ24} that predict actions sequentially via causal attention; (2) \textbf{(Discrete) Diffusion}, which uses diffusion process for action chunk prediction \citep{pmlr-v305-black25a,bjorck2025gr00t,shukor2025smolvla}. We employ discrete diffusion \citep{liang2025discrete} for compatibility with the discrete action space of our testbed; (3) \textbf{Parallel Decoding}, utilizing bidirectional attention for single-pass action prediction to improve throughput, as demonstrated by OpenVLA-OFT \citep{kim2025fine}, PD-VLA \citep{DBLP:conf/iros/SongCDZZZGLWWML25} and other variants \citep{yin2025deepthinkvla,wang2025bitvla,xiao2025ava}. Details on model hyperparameters, hardwares and training schedules are in \Cref{app_sec:implementation_details}.
+
+\paragraph{Research Questions.} We address the following questions:
+
+\noindent\textbf{(Q1)} \textbf{Granularity Trade-offs.} How does instruction granularity impact Success Rate \textbf{(SR)} on within splits?
+
+\noindent\textbf{(Q2)} \textbf{Generalization.} Can VLA agents trained on certain granularities generalize to other unseen granularities? 
+
+\noindent\textbf{(Q3)} \textbf{Failure Dynamics.} When failing, does the agent get stuck (stagnation) or undo achieved progress (regression)?
+
+% 就是因为 coarse instruction会好点 出现了U-shape。
+% 然后这个其实值得研究。 所以你就进一步看 到底是它拿到了visual shortcut 还是说 因为语言太模糊了， 只能更多的依赖grounding
+
+\subsection{Main Results}
+
+We first answer \textbf{(Q1)}, short answers as follows:
+
+\begin{figure*}[t]
+    \centering
+    \begin{minipage}[t]{0.33\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q1_main.pdf}
+        \captionof{figure}{In-Distribution (matched train/test) SR across granularities (i.e., train Fine $\rightarrow$ test Fine, etc). A non-monotonic U-shaped trend appears.}
+        \label{fig:q1_learning_curves}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.66\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q3_training_setting_on_sr_across_width.pdf}
+        \captionof{figure}{The x-axis are test instruction width, and the y-axis are training setup. Transfer is asymmetric: train coarse $\rightarrow$ test fine works, but train fine $\rightarrow$ test coarse does not. Mixed-granularity training improves generalization. \emph{Axial-C} training setting performs best overall.}
+        \label{fig:q3_cross_granularity}
+    \end{minipage}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \begin{minipage}[t]{0.30\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q1_rule_call_dist.pdf}
+        \captionof{figure}{Rule call distribution across instruction granularities. \# of rule calls decreases with coarser instructions. It decouples instruction length from width.}
+        \label{fig:q1_rule_call_dist}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.30\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figures/q1_width_vs_task_horizon_heatmap.pdf}
+        \captionof{figure}{Impact of width and horizon on SR. SR decays with task horizon; larger instruction width imposes an additional burden even when horizon is fixed.}
+        \label{fig:q1_width_vs_task_horizon_heatmap}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q4_failure_type_extreme_task_example.pdf}
+        \captionof{figure}{Low-width but long task horizon (e.g., laying woods) tends to cause regression, while high-width tasks tend to stagnate. These contribute to the failure of planning.}
+        \label{fig:q4_failure_modes}
+    \end{minipage}
+\end{figure*}
+
+
+\textbf{(A1)} \emph{VLA performance follows a non-monotonic \emph{U-shape}, peaking at the Fine and Coarse extremes.}
+
+To establish a performance baseline, we first evaluate the models under matched granularity, where training and testing occur on the same instruction class ($F \to F$, $M \to M$, $C \to C$). As shown in \Cref{fig:q1_learning_curves}, all three action-decoding archetypes demonstrate a non-monotonic U-shaped discovery. Note that all instructions are generated via a unified template-based translator that directly verbalizes symbolic rule sets, ensuring uniform vocabulary, syntax, and phrasing across granularity levels and isolating rule width as the causal factor. We interpret this U-shaped curve as follows. When instructions provide a step-by-step mapping to actions (i.e., $w=0$), the learning burden is minimal, as the agent can directly follow instructions with little reasoning or planning effort. At the coarse end ($w \ge 2$), agents are motivated to develop internal planning skills to ground coarse instructions into actions. Importantly, since each coarse instruction maps to a broader set of visual and action patterns, it helps develop more robust and generalizable language grounding by providing more diverse training data. In contrast, medium instructions ($w\!=\!1$) occupy a sub-optimal grounding regime. They are too sparse to provide a direct language-to-action mapping, yet not coarse enough to foster internal planning skills, thereby resulting in the performance decline.
+
+From a width-based planning perspective, the U-shaped pattern surprises because coarser instructions should monotonically increase planning demands, making learning progressively harder. Yet, a common confounding factor is instruction sequence length (i.e., the number of rule calls required to complete a task), which also impacts SR due to error accumulation. Note that our evaluation uses the same underlying task set across granularities, and thus the reference atomic action sequence length is held constant. The only entangled factor is thus the rule call count. As shown in \Cref{fig:q1_rule_call_dist}, coarser instructions require fewer rule calls to accomplish the same task, as each instruction maps to a longer action sequence. The medium granularity operates at a moderate number of rule calls. This decouples instruction sequence length from instruction width and confirms the U-shape cannot be attributed to medium-granularity tasks requiring excessively longer instruction sequences or rule calls.
+
+To further decouple the effects of instruction width and sequence length on VLA performance, we analyze \Cref{fig:q1_width_vs_task_horizon_heatmap}, obtained by \emph{Centroid} setting as it has balanced exposure to all granularities. The heatmap provides empirical evidence that, for a fixed number of rule calls, SR decreases as instruction width increases. This demonstrates that the width metric, originally developed for symbolic planning, is a meaningful proxy for the difficulty faced by learning-based VLA agents.
+
+Next, we evaluates cross-granularity generalization, where models are trained on one instruction granularity and evaluated on another. Results are summarized in below:
+
+\textbf{(A2)} \emph{Language grounding is asymmetric: models trained on coarse texts generalize to detailed ones, but not vice versa.}
+
+\Cref{fig:q3_cross_granularity} reveals a clear asymmetry: models trained on coarse instructions generalize well to fine ones, demonstrating robust language grounding that abstracts away from granularity. Conversely, models trained on fine instructions do not generalize to coarse ones, implying a form of grounding that overfits to step-by-step specification. Mixed-granularity training mitigates this issue, with the coarse-weighted \emph{Axial-C} variant yielding the best generalization overall.
+
+\begin{figure*}[t]
+    \centering
+    \begin{minipage}[t]{0.41\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q5_sr_diff_by_training_setup.pdf}
+        \captionof{figure}{Both mixed and coarse-only training ``generalize'' better in novel instruction settings (smaller SR gap).}
+        \label{fig:sr_diff_by_training_setup}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.54\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q6_compare_baseline_models_attention_dist.pdf}
+        \captionof{figure}{Attention from action tokens. Self-attention dominates, followed by vision; No clear trend across granularity levels.}
+        \label{fig:attention_distribution_baseline_models}
+    \end{minipage}
+\end{figure*}
+
+% \begin{figure*}[t]
+% \centering
+%     \includegraphics[width=0.7\linewidth]{figures/q6_attention_distribution_across_model_types_vs_sent_enc.pdf}
+%     \captionof{figure}{Action-token attention across three decoding architectures ($\pm$ sentence encoding). Self-attention dominates, followed by vision; \textit{Discrete diffusion} attends more to language than the others. Sentence encoding reduces vision and self-attention, but induce attention sink.}
+%     \label{fig:q5_attention_distribution_across_model_types_vs_sent_enc}
+% \end{figure*}
+
+
+For \textbf{(Q3)}, the failure mode is dependent on task structure:
+
+\textbf{(A3)} \emph{Low-width but long-horizon tasks tend to cause regression, while high-width tasks tend to stagnate.}
+
+We interpret these failure modes through the lens of width-based planning (see \Cref{fig:q4_failure_modes}). In high-regression tasks, which often require manipulating multiple objects toward a collective goal, agents frequently exhibit subgoal serialization failures. In these settings, the model fails to maintain satisfied fluents over time, cycling back to earlier states. Conversely, stagnation in high-width tasks (e.g., making tea) reflects a width-planning bottleneck: as simultaneous feature dependencies increase ($w \ge 4$), agents struggle to track multiple simultaneous feature dependencies to enable a valid state progression. More analysis is in \Cref{app_sec:additional_experimental_results}.
+
+
+\section{Dilemma of Coarse Instruction Training}
+\label{sec:more_analysis_on_coarse_instruction_training}
+
+Our analyses in \textbf{(Q1)} and \textbf{(Q3)} suggest a practical advantage for training with coarse instructions: models maintain strong in-distribution performance while generalizing effectively to unseen, finer-grained instructions. To further evaluate this generalization capability, we test robustness to more extreme instruction variations: providing only a static goal description (fixed for the entire episode, akin to the \textsc{LIBERO} testbed \citep{DBLP:conf/nips/LiuZGFLZS23}) and providing no instruction at all.
+
+Results are shown in \Cref{fig:sr_diff_by_training_setup}. Mixed-granularity training, particularly the \emph{Axial-C} variant, achieves the highest SR when presented with the unseen static-goal descriptions. More strikingly, when the language input is entirely absent, \emph{Axial-C} maintains a non-trivial SR of 21\%. This raises a fundamental question: does the success of coarse instruction training stem from improved generalization via robust language grounding, or from ``language ignoring'', where the policy becomes invariant to language inputs?
+
+\paragraph{Quantifying Language Ignoring.}
+``Language ignoring'' is a phenomenon recently identified in VLA training, where agents appear to over-rely on visual patterns, making their policies invariant to language input \citep{xing2025shortcut,fei2025liberoplus}. A standard metric for this is $\Delta\mathrm{SR} = \mathrm{SR}{\text{w/ lang}} - \mathrm{SR}{\text{w/o lang}}$, where a smaller gap indicates stronger ignoring. Our data reveals a trend: models trained purely on coarse instructions (\emph{Pure-C}) exhibit a smaller $\Delta\mathrm{SR}$ (20.0\%) than those trained on fine instructions (\emph{Pure-F}), suggesting coarser training may induce greater language ignoring. 
+
+\paragraph{Attention Analysis.}
+To probe the model's internal reliance on language more directly, we analyze the attention distribution from action tokens to the vision, language, and self-modalities (see \Cref{fig:attention_distribution_baseline_models}). Contrary to a simple visual-shortcut hypothesis, we find no clear trend of decreasing attention to the language modality as instruction granularity coarsens. Across all training regimes, self-attention receives the largest share, followed by vision, with language consistently receiving the smallest portion. Notably, autoregressive models attend least to language, which could explain their lower overall SR in \Cref{fig:q1_learning_curves}. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/q7_perplexity_comparison.pdf}
+    \caption{Perplexity of a VLM model trained to predict instructions from visual context, compared across granularities. Coarse instructions are more predictable, supporting high $P(l \mid v)$ claim.}
+    \label{fig:perplexity_comparison}
+\end{figure}
+
+\paragraph{Why Coarse Instructions Encourage Language Ignoring?}
+\citet{xu2025seeingactpromptingspecify} posit a causal mechanism: if the language instruction $l$ is highly predictable from visual context $v$ (i.e., large $P(l \mid v)$), a multimodal model may learn to bypass language processing to save computational energy. This aligns with our benchmark, where expert trajectories are fixed but described at varying granularities: consider a surjective mapping $f$ from a fine-grained label space $L_{\text{fine}} = {l_1, \dots, l_n}$ to a coarser one $L_{\text{coarse}} = {c_1, \dots, c_m}$ with $m < n$. The conditional probability for a coarse label aggregates over its constituent fine labels: $P(c_j | v) = \sum_{l_i \in f^{-1}(c_j)} P(l_i | v)$. Since the same total probability mass is distributed over fewer coarse categories, the average $P(c_j | v)$ is higher. According to the theory, this increased predictability could encourage language ignoring for coarsely-trained models.
+
+Mixed-granularity training mitigates this effect by increasing the diversity of the language space $L$ seen during training, which lowers the average $P(l \mid v)$. We thus see all mixed-granularity models exhibit larger $\Delta\mathrm{SR}$ gaps than their pure counterparts, indicating reduced language ignoring. Among these, the fine-weighted mixture \emph{Axial-F} emerges as a particularly balanced choice, achieving a success rate comparable to \emph{Axial-C} while maintaining a substantially larger $\Delta\mathrm{SR}$. 
+
+Our analysis provides a complementary perspective on the language ignoring phenomenon, demonstrating its variation across instruction granularities, a factor not explored in prior work. The trade-off between final performance and language reliance highlights an open challenge in VLA design: how to structure training for both robust generalization and faithful language grounding.
+
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+% 在论文的局限性部分，主动、诚恳地讨论上述部分问题（如环境的简化、动态指导的理想化），并阐述未来如何在本工作基础上进行扩展研究（如在更复杂环境中验证、研究稀疏指令下的规划）。这能展现您思考的全面性，并化解审稿人的部分质疑。
+
+
+This work establishes rule width ($w$) as a cross-task formalism for instruction granularity, moving beyond syntactic heuristics to quantify the intrinsic planning burden of language guidance. Unlike syntactic heuristics (e.g., counting mentioned entities), $w$ captures the intrinsic planning demand imposed by environment dynamics, enabling consistent comparison across diverse embodied tasks. Our controlled analysis reveals a non-monotonic U-shaped relationship between $w$ and performance. This granularity-centric diagnosis demonstrates that deliberate instruction design and mixed-granularity training are essential for robust VLA alignment.
+
+\paragraph{Future Work.}
+Several promising directions follow. First, while this work focuses on instruction granularity, a natural extension is to investigate representation granularity across other modalities. Visual perception itself can be processed at varying levels of abstraction (e.g., semantic segmentations or structured scene graphs). Future research could explore how the granularity of visual inputs interacts with instruction width to shape the agent's internal planning demand. Second, the feature set $\Phi$ used to define width should not be limited to predefined predicates. Developing learnable, hierarchical feature modules that dynamically construct task-relevant state abstractions would allow the model to adjust its own ``internal granularity''. Investigating the cross-modal alignment between language, vision, and feature granularities will be crucial for future VLA studies.
+
+.
 
 % Bibliography entries for the entire Anthology, followed by custom entries
-%\bibliography{custom,anthology-overleaf-1,anthology-overleaf-2}
-
+%\bibliography{anthology,custom}
 % Custom bibliography entries only
 \bibliography{custom}
 
 \appendix
+% Start of appendices customization
 
-\section{Example Appendix}
-\label{sec:appendix}
+\section{Technical Appendix}
 
-This is an appendix.
+\section*{Appendix Table of Contents}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Anticipatory defense on the choice of test environments and metrics} (\Cref{app_sec:ant_defense_test_env}) \\
+    Justification for using \textsc{Mini-BEHAVIOR} over alternatives (e.g., iGibson, CALVIN) based on controllability, symbolic abstraction, and isolation of language-grounding challenges.
+    \item \textbf{Symbolic Representation of the Embodied Task} (\Cref{app_sec:classical_prob_def})
+    Formal definition of states, actions, and planning problems using classical STRIPS/PDDL semantics.
+    \item \textbf{Details of the \textsc{Mini-BEHAVIOR} Environment} (\Cref{app_sec:minibehavior_details})
+    Overview of scene layout, object types, action space, and perception model.
+    \item \textbf{Details of the \textsc{Mini-BEHAVIOR-Gran} Extension} (\Cref{app_sec:minibehavior_gran_details})
+    Procedure for generating multi-granularity instructions, details on the feature set, oracle instructor, and dataset construction.
+    \item \textbf{Rule Set and Natural Language Prompt Examples} (\Cref{app_sec:prompt_examples})
+    Details of the rule set bank of 20 tasks and sample generated instructions at different granularities.
+    \item \textbf{Implementation Details} (\Cref{app_sec:implementation_details})
+    Model architecture (Prismatic-7B backbone, SigLIP+DINOv2 visual encoders), training hyperparameters, optimizer settings.
+    \item \textbf{Additional Experimental Results} (\Cref{app_sec:additional_experimental_results})
+    Extended analysis and ablations.
+\end{enumerate}
+
+\input{appendix.tex}
 
 \end{document}

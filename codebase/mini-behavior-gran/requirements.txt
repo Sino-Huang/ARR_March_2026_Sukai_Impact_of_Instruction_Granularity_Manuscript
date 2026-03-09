@@ -1,0 +1,20 @@
+# python 3.9 is required
+pip<24.1
+setuptools==66.0.0
+wheel==0.38.4
+
+# install above first 
+
+Pillow
+matplotlib
+stable-baselines3~=2.6.0
+wandb
+tensorboard
+shimmy>=2.0
+tqdm
+Deprecated
+pddl 
+
+# install the two separately
+# gym-minigrid==1.0.3
+# gym==0.21.0

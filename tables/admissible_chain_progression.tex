@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\tiny
+\begin{tabularx}{\columnwidth}{l X c}
+\toprule
+\textbf{State Progression} & \textbf{Concurrent Features Tracked (Sequence of Tuples)} & \textbf{Width} \\ \midrule
+Initial State & $[\langle \rangle]$ & 0 \\
+Navigate to rag & $[\langle p_r = X \rangle, \ldots, \langle p_r = 0 \rangle]$ & 1 \\
+Pick up rag & $[\langle p_r = 0 \rangle, \langle H_r \rangle]$ & 1 \\
+Navigate to sink & $[\langle H_r, p_s = X \rangle, \ldots, \langle H_r, p_s = 0 \rangle]$ & 2 \\
+Turn on tap (sink) & $[\langle H_r, p_s = 0  \rangle,  \langle T_s \rangle]$ & 2 \\
+Soak rag & $[\langle H_r, T_s, p_s = 0  \rangle, \langle S_r \rangle]$ & \textbf{3} \\
+Navigate to Shoe 1 & $[\langle H_r, S_r, p_{f1} \downarrow \rangle, \ldots,] $ & \textbf{3} \\
+Clean Shoe 1 & $[\langle H_r, S_r, p_{f1} = 0 \rangle, \langle C_1 \rangle]$ & 3 \\
+Navigate to Shoe 2 & $[\langle H_r, S_r, C_1, p_{f2} \downarrow \rangle, \ldots ]$ & \textbf{4} \\
+Clean Shoe 2 & $[\langle H_r, S_r, C_1  , p_{f2} = 0 \rangle, \langle C_1, C_2   \rangle]$ & 4 \\
+Put rag on floor & $[\langle C_1, C_2, H_r \rangle, \ldots, \langle C_1, C_2, \text{onfloor}_r \rangle]$ & 3 \\ \bottomrule
+\end{tabularx}
+\caption{State progression and width for the ``Cleaning $k$ Shoes'' ($k=2$). Width scales as $w = k+2$.}
+\label{tab:task_width_scaling}
+\end{table}

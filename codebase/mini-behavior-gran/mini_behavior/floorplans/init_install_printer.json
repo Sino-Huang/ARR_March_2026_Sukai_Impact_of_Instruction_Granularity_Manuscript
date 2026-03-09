@@ -1,0 +1,71 @@
+{
+    "Grid": 
+    {
+        "mission": "install a printer",
+        "auto": {
+            "room_split_dirs": ["vert", "horz"],
+            "min_room_dim": 1,
+            "max_num_room": 4
+        },
+        "width": 7,
+        "height": 7,
+        "agents":
+        {
+            "pos": [5, 5],
+            "dir": null
+        },
+        "rooms":
+        {
+            "num": 2,
+            "initial":
+            [
+                {
+                    "top": [1, 1],
+                    "size": [3, 5],
+                    "furnitures": 
+                    {
+                        "num": 2,
+                        "initial": 
+                        [
+                            {
+                                "type": "stove",
+                                "state": null,
+                                "pos": [1, 1],
+                                "objs": {
+                                    "num": 0,
+                                    "initial": []
+                                }
+                            },
+                            {
+                                "type": "printer",
+                                "state": [["toggleable", 0]],
+                                "pos": [1, 5]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "top": [5, 1],
+                    "size": [1, 5],
+                    "furnitures": 
+                    {
+                        "num": 2,
+                        "initial": 
+                        [
+                            {
+                                "type": "apple",
+                                "state": [["cookable", 1]],
+                                "pos": [5,3]
+                            },
+                            {
+                                "type": "pan",
+                                "state": null,
+                                "pos": [5,4]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}
