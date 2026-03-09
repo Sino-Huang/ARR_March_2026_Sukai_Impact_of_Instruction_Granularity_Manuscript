@@ -1,4 +1,4 @@
-\begin{thebibliography}{50}
+\begin{thebibliography}{52}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Akula et~al.(2022)Akula, Gella, Padmakumar, Namazifar, Bansal, Thomason, and Hakkani{-}Tur}]{akula-etal-2022-alfred}
@@ -41,11 +41,6 @@ Dominik Drexler, Jendrik Seipp, and Hector Geffner. 2024.
 \newblock Expressing and exploiting subgoal structure in classical planning using sketches.
 \newblock \emph{J. Artif. Intell. Res.}, 80.
 
-\bibitem[{Fei et~al.(2025)Fei, Wang, Shi, Dai, Cai, Qian, Ji, He, Zhang, Fei, Fu, Gong, and Qiu}]{fei2025liberoplus}
-Senyu Fei, Siyin Wang, Junhao Shi, Zihao Dai, Jikun Cai, Pengfang Qian, Li~Ji, Xinzhe He, Shiduo Zhang, Zhaoye Fei, Jinlan Fu, Jingjing Gong, and Xipeng Qiu. 2025.
-\newblock \href {https://arxiv.org/abs/2510.13626} {Libero-plus: In-depth robustness analysis of vision-language-action models}.
-\newblock \emph{Preprint}, arXiv:2510.13626.
-
 \bibitem[{Glossop et~al.(2025)Glossop, Chen, Bhorkar, Shah, and Levine}]{glossop2025castcounterfactuallabelsimprove}
 Catherine Glossop, William Chen, Arjun Bhorkar, Dhruv Shah, and Sergey Levine. 2025.
 \newblock \href {https://arxiv.org/abs/2508.13446} {Cast: Counterfactual labels improve instruction following in vision-language-action models}.
@@ -81,8 +76,13 @@ Siddharth Karamcheti, Suraj Nair, Ashwin Balakrishna, Percy Liang, Thomas Kollar
 \newblock \href {https://openreview.net/forum?id=6FXtu8clyp} {Prismatic vlms: Investigating the design space of visually-conditioned language models}.
 \newblock In \emph{Forty-first International Conference on Machine Learning, {ICML} 2024, Vienna, Austria, July 21-27, 2024}.
 
-\bibitem[{Kim et~al.(2025)Kim, Finn, and Liang}]{kim2025fine}
-Moo~Jin Kim, Chelsea Finn, and Percy Liang. 2025.
+\bibitem[{Kim et~al.(2025{\natexlab{a}})Kim, Rhee, Kim, Kim, Lee, Sung, and Jung}]{kim-etal-2025-reflact}
+Jeonghye Kim, Sojeong Rhee, Minbeom Kim, Dohyung Kim, Sangmook Lee, Youngchul Sung, and Kyomin Jung. 2025{\natexlab{a}}.
+\newblock \href {https://doi.org/10.18653/v1/2025.emnlp-main.1697} {{R}efl{A}ct: World-grounded decision making in {LLM} agents via goal-state reflection}.
+\newblock In \emph{Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing}, pages 33433--33465, Suzhou, China. Association for Computational Linguistics.
+
+\bibitem[{Kim et~al.(2025{\natexlab{b}})Kim, Finn, and Liang}]{kim2025fine}
+Moo~Jin Kim, Chelsea Finn, and Percy Liang. 2025{\natexlab{b}}.
 \newblock Fine-tuning vision-language-action models: Optimizing speed and success.
 \newblock \emph{arXiv preprint arXiv:2502.19645}.
 
@@ -136,11 +136,6 @@ Nir Lipovetzky and Hector Geffner. 2017.
 \newblock Best-first width search: Exploration and exploitation in classical planning.
 \newblock In \emph{{AAAI}}, pages 3590--3596. {AAAI} Press.
 
-\bibitem[{Liu et~al.(2023)Liu, Zhu, Gao, Feng, Liu, Zhu, and Stone}]{DBLP:conf/nips/LiuZGFLZS23}
-Bo~Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, and Peter Stone. 2023.
-\newblock {LIBERO:} benchmarking knowledge transfer for lifelong robot learning.
-\newblock In \emph{NeurIPS}.
-
 \bibitem[{Ma et~al.(2025)Ma, Song, Zhuang, Hao, and King}]{ma2025surveyvisionlanguageactionmodelsembodied}
 Yueen Ma, Zixing Song, Yuzheng Zhuang, Jianye Hao, and Irwin King. 2025.
 \newblock \href {https://arxiv.org/abs/2405.14093} {A survey on vision-language-action models for embodied ai}.
@@ -160,6 +155,16 @@ Abby O'Neill, Abdul Rehman, Abhiram Maddukuri, Abhishek Gupta, Abhishek Padalkar
 Maxime Oquab, Timoth{\'{e}}e Darcet, Th{\'{e}}o Moutakanni, Huy~V. Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El{-}Nouby, Mido Assran, Nicolas Ballas, Wojciech Galuba, Russell Howes, Po{-}Yao Huang, Shang{-}Wen Li, Ishan Misra, Michael Rabbat, Vasu Sharma, and 7 others. 2024.
 \newblock Dinov2: Learning robust visual features without supervision.
 \newblock \emph{Trans. Mach. Learn. Res.}, 2024.
+
+\bibitem[{Patil et~al.(2024)Patil, Zhang, Wang, and Gonzalez}]{DBLP:conf/nips/PatilZ0G24}
+Shishir~G. Patil, Tianjun Zhang, Xin Wang, and Joseph~E. Gonzalez. 2024.
+\newblock Gorilla: Large language model connected with massive apis.
+\newblock In \emph{NeurIPS}.
+
+\bibitem[{Qin et~al.(2024)Qin, Liang, Ye, Zhu, Yan, Lu, Lin, Cong, Tang, Qian, Zhao, Hong, Tian, Xie, Zhou, Gerstein, Li, Liu, and Sun}]{DBLP:conf/iclr/QinLYZYLLCTQZHT24}
+Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang, Bill Qian, Sihan Zhao, Lauren Hong, Runchu Tian, Ruobing Xie, Jie Zhou, Mark Gerstein, Dahai Li, Zhiyuan Liu, and Maosong Sun. 2024.
+\newblock Toolllm: Facilitating large language models to master 16000+ real-world apis.
+\newblock In \emph{{ICLR}}. OpenReview.net.
 
 \bibitem[{Reed et~al.(2022)Reed, Zolna, Parisotto, Colmenarejo, Novikov, Barth{-}Maron, Gimenez, Sulsky, Kay, Springenberg, Eccles, Bruce, Razavi, Edwards, Heess, Chen, Hadsell, Vinyals, Bordbar, and de~Freitas}]{DBLP:journals/tmlr/ReedZPCNBGSKSEBREHCHVBF22}
 Scott~E. Reed, Konrad Zolna, Emilio Parisotto, Sergio~G{\'{o}}mez Colmenarejo, Alexander Novikov, Gabriel Barth{-}Maron, Mai Gimenez, Yury Sulsky, Jackie Kay, Jost~Tobias Springenberg, Tom Eccles, Jake Bruce, Ali Razavi, Ashley Edwards, Nicolas Heess, Yutian Chen, Raia Hadsell, Oriol Vinyals, Mahyar Bordbar, and Nando de~Freitas. 2022.
@@ -210,6 +215,11 @@ Lei Xiao, Jifeng Li, Juntao Gao, Feiyang Ye, Yan Jin, Jingjing Qian, Jing Zhang,
 Youguang Xing, Xu~Luo, Junlin Xie, Lianli Gao, Heng~Tao Shen, and Jingkuan Song. 2025.
 \newblock \href {https://openreview.net/forum?id=PTJopl2uaU} {Shortcut learning in generalist robot policies: The role of dataset diversity and fragmentation}.
 \newblock In \emph{9th Annual Conference on Robot Learning}.
+
+\bibitem[{Xiong et~al.(2025)Xiong, Song, Dong, Zhao, Song, XWang, and Li}]{xiong-etal-2025-mpo}
+Weimin Xiong, Yifan Song, Qingxiu Dong, Bingchan Zhao, Feifan Song, XWang, and Sujian Li. 2025.
+\newblock \href {https://doi.org/10.18653/v1/2025.findings-emnlp.210} {{MPO}: Boosting {LLM} agents with meta plan optimization}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2025}, pages 3914--3935, Suzhou, China. Association for Computational Linguistics.
 
 \bibitem[{Xu et~al.(2025)Xu, Zhu, Chen, Zhao, Huang, Yang, Lu, Xiong, Tomizuka, and Wang}]{xu2025seeingactpromptingspecify}
 Kechun Xu, Zhenjie Zhu, Anzhe Chen, Shuqi Zhao, Qing Huang, Yifei Yang, Haojian Lu, Rong Xiong, Masayoshi Tomizuka, and Yue Wang. 2025.

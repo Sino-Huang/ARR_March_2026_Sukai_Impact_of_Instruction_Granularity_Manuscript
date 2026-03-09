@@ -264,9 +264,7 @@ Agents' action sets constrain how state transitions are executed, but \emph{widt
 
 % NOTE: In this section, we need to transition from the intuitive concept of "planning demand" to a rigorous, quantifiable metric. Since we are adapting Rule Width from classical planning (Bonet et al., 2019), the structure should mirror a formal derivation: starting from a standard planning domain and ending with a metric that can be applied to natural language instructions via their symbolic grounding.
 
-The impact of \emph{instruction granularity} on VLA behavior remains underexplored largely because the field lacks a \textbf{formal, quantifiable, cross-task} measure of granularity. The most common heuristic, \emph{decomposition depth} \citep{DBLP:conf/corl/MyersZMFL24,DBLP:conf/icml/ShiIEKPVTWWFLDG25}, is unstable as discussed in \Cref{sec:introduction}. To bridge this gap, we formalize \emph{instruction granularity} as \emph{planning demand}---the internal search required to ground an instruction into an executable plan. This perspective captures the intuitive difference between fine- and coarse-grained instructions: fine-grained instructions provide a ``breadcrumb trail''  that narrows the search, whereas coarse instructions leave a much larger solution space to be explored to reach a state that fulfills the instruction.
-
-We operationalize planning demand using rule width ($w$), framing natural-language instructions as policy sketches \citep{DBLP:journals/jair/DrexlerSG24}. A policy sketch is a set of "if-then" rules that decompose a complex task into a simpler sub-problems. Under this framing, the granularity of an instruction corresponds to the structural guidance it provides: fine-grained instructions create sub-problems with minimal width, while coarse instructions leave a larger ``grounding gap'' for the agent to resolve internally. 
+The impact of \emph{instruction granularity} on VLA behavior remains underexplored largely because the field lacks a \textbf{formal, quantifiable, cross-task} measure of granularity. Building on the limitations of heuristic metrics discussed in \Cref{sec:introduction}, we formally equate \emph{instruction granularity} with \emph{latent planning demand}, i.e., the implicit decision-making burden required to ground text into executable actions. We operationalize this using \emph{rule width ($w$)} by framing natural-language instructions as policy sketches \citep{DBLP:journals/jair/DrexlerSG24}. Under this framework, fine-grained instructions decompose tasks into minimal-width sub-problems, whereas coarse instructions leave a large ``grounding gap'' that the agent must resolve internally.
 
 \subsection{Symbolic Task Representation}
 
@@ -276,12 +274,6 @@ To bridge raw states and high-level instructions, we define a set of \textbf{fea
 
 \subsection{Instructions as Rule Sets $\mathcal{R}$}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\linewidth]{figures/running_examples.pdf}
-    \caption{(Left) factoring $r_1$ into $r_{1a}$-$r_{1c}$ reduces the planning complexity that the agent must handle internally. More explicit linguistic guidance makes the mapping to action easier to learn. (Right) the long-horizon trajectory for the coarse rule ($\pi_{r_1}$, red) is broken into shorter segments by the finer-grained instructions.}
-    \label{fig:running_example}
-\end{figure}
 
 
 To study instruction granularity in a controlled manner, we formalize each instruction a symbolic interpretation as a set of ``if-then'' rules $\mathcal R = \{r_1,\ldots, r_m\}$ defined over the feature space $\Phi$, This rule-based representation does not aim to capture the full expressiveness of natural language; instead, it distills the constraint/goal structure that governs the computational cost incurred by a symbolic search algorithm (i.e., planning demand). Specifically, each $r_i$ is of the form $C_{r_i} \mapsto E_{r_i}$:
@@ -292,21 +284,25 @@ To study instruction granularity in a controlled manner, we formalize each instr
 These forms capture the core semantics of the instructions we study. A rule $r_i$ is \textbf{fulfilled} by a state sequence $(s, \dots, s')$ if $\phi(s) \models C_i$ and the pair $(\phi(s), \phi(s'))$ satisfies the changes in $E_i$ (e.g., $\forall (n \downarrow) \in E_{r_i}, \phi_n(s') < \phi_n(s)$) while keeping unmentioned features constant (i.e., $\phi_j(s') = \phi_j(s)$ for $j \notin E_i$).
 To ensure that the agent's performance strictly reflects its grounding ability rather than the unsolvability of the task, we guarantee that all instruction rule sets $\mathcal{R}$ are executable and dead-end-free. Formally, this is achieved by ensuring the rules are well-formed (i.e., they terminate at the goal) and satisfy the soundness and closure properties \citep{DBLP:conf/aaai/BonetG21}.
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/running_examples.pdf}
+    \caption{(Left) Factoring $r_1$ into $r_{1a}$-$r_{1c}$ reduces latent planning complexity via explicit action guidance. (Right) Fine instructions segment the long-horizon coarse trajectory ($\pi_{r_1}$, red).}
+    \label{fig:running_example}
+\end{figure}
+
 \subsection{Rule Width as a Granularity Measure}
 \label{subsec:rule_width_granularity}
 % (规则宽度作为粒度度量) 核心贡献部分。首先基于宽度理论，定义单条规则的宽度。然后，定义整个指令（即规则集）的宽度为其所有规则宽度的最大值。最后，论证该度量如何对应指令粒度：低宽度=细粒度（提供详细子目标），高宽度=粗粒度（留下更多并发规划需求）。
 The width $w(r_i)$ of a rule $r_i$ represents the number of state variables (features) that must be tracked concurrently to fulfill the transition. Formally, for a rule to have width $k$, the agent must coordinate at most $k$ features from $\Phi$ to reach the effect $E_i$ from a state satisfying $C_i$ \citep{DBLP:conf/ecai/LipovetzkyG12}.
 
-We define the granularity of an instruction $\mathcal{R}$ by its width-based planning bottleneck: the maximum width among its constituent rules:
-\begin{equation}
-    w(\mathcal R) = \max_{r_i \in \mathcal R} w(r_i).
-\end{equation}
+We define the granularity of an instruction $\mathcal{R}$ by its width-based planning bottleneck: the maximum width among its constituent rules: $w(\mathcal R) = \max_{r_i \in \mathcal R} w(r_i)$.
 
 % (贯穿实例) 使用一个具体任务（例如您提到的“铺设木地板”），完整演示上述过程：任务的目标、定义的特征、为不同粒度设计的规则集，以及计算出的规则宽度。用此例直观说明“宽度”如何作为调节指令粒度的旋钮。
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.92\linewidth]{figures/experiment_illu.pdf}
+    \includegraphics[width=0.89\linewidth]{figures/experiment_illu.pdf}
     \caption{\textsc{Mini-BEHAVIOR-Gran} Experimental Pipeline. We evaluate the impact of instruction granularity across three VLA action-decoding strategies. During inference time, an Oracle Instructor evaluates the current world state to decide available rule set $\mathcal R_a$ and active rule $r_t$. A rule-based natural language instruction $l_t$ is generated accordingly. The process iterates until completion or max steps.}
     \label{fig:experiment_illu}
 \end{figure*}
@@ -373,6 +369,28 @@ We introduce \textsc{Mini-BEHAVIOR-Gran}, the first VLA benchmark specifically d
 
 % \textsc{Mini-BEHAVIOR-Gran} serves as a first-of-its-kind testbed for studying instruction granularity in VLA. By anchoring to an environment-wide feature abstraction $\Phi$, our formalization remains cross-task available, thereby supporting an open-ended set of activities defined over $\Phi$. Moreover, new features can be appended to support additional domains while keeping existing ones intact, allowing extension to other embodied environments that support symbolic state abstraction.
 
+\begin{figure*}[t]
+    \centering
+    \begin{minipage}[t]{0.30\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q1_rule_call_dist.pdf}
+        \captionof{figure}{Rule call distribution across instruction granularities. \# of rule calls decreases with coarser instructions. It decouples instruction length from width.}
+        \label{fig:q1_rule_call_dist}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.30\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q1_width_vs_task_horizon_heatmap.pdf}
+        \captionof{figure}{Impact of width and horizon on SR. SR decays with task horizon; larger instruction width imposes an additional burden even when horizon is fixed.}
+        \label{fig:q1_width_vs_task_horizon_heatmap}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.33\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figures/q1_main.pdf}
+        \captionof{figure}{In-Distribution (matched train/test) SR across granularities (i.e., train Fine $\rightarrow$ test Fine, etc). A non-monotonic U-shaped trend appears.}
+        \label{fig:q1_learning_curves}
+    \end{minipage}
+\end{figure*}
 
 \section{Experiments}
 \label{sec:experiments}
@@ -382,75 +400,42 @@ We introduce \textsc{Mini-BEHAVIOR-Gran}, the first VLA benchmark specifically d
 
 % \paragraph{Relative Instruction Binning.} A significant challenge in evaluating instruction granularity is that different tasks possess inherently different structural depths; for instance, opening_packages may only support a maximum width of $w=1$, whereas cleaning_the_kitchen extends to $w=5$. To maintain a balanced evaluation across this heterogeneous suite, we implement a per-task quantile-based binning strategy. For each domain, we sort the available symbolic widths and partition them into three relative levels: Fine (Low), Medium, and Coarse (High). In cases with limited width availability, we apply a priority-fill heuristic to ensure every task contributes to all three experimental categories. This normalization allows us to observe universal performance trends across the complexity spectrum, independent of the absolute planning width of any specific task.
 
+
+
 \paragraph{Action-Decoding Archetypes.} The primary architectural difference among latest VLA models lies in their action-decoding strategies \citep{zhong2025survey}. Hence, we employ a unified VLM backbone but vary three representative action-decoding strategies (see \Cref{fig:experiment_illu} left panel): (1) \textbf{Autoregressive} (AR), exampled by RT-2 \citep{DBLP:conf/corl/ZitkovichYXXXXW23}, OpenVLA \citep{DBLP:conf/corl/KimPKXB0RFSVKBT24} and others \citep{DBLP:journals/tmlr/ReedZPCNBGSKSEBREHCHVBF22,DBLP:conf/icml/HuangYMLLW0ZJ024,DBLP:conf/icra/ONeillRMGPLPGMJ24} that predict actions sequentially via causal attention; (2) \textbf{(Discrete) Diffusion}, which uses diffusion process for action chunk prediction \citep{pmlr-v305-black25a,bjorck2025gr00t,shukor2025smolvla}. We employ discrete diffusion \citep{liang2025discrete} for compatibility with the discrete action space of our testbed; (3) \textbf{Parallel Decoding}, utilizing bidirectional attention for single-pass action prediction to improve throughput, as demonstrated by OpenVLA-OFT \citep{kim2025fine}, PD-VLA \citep{DBLP:conf/iros/SongCDZZZGLWWML25} and other variants \citep{yin2025deepthinkvla,wang2025bitvla,xiao2025ava}. Details on model hyperparameters, hardwares and training schedules are in \Cref{app_sec:implementation_details}.
 
-\paragraph{Research Questions.} We address the following questions:
-
-\noindent\textbf{(Q1)} \textbf{Granularity Trade-offs.} How does instruction granularity impact Success Rate \textbf{(SR)} on within splits?
-
-\noindent\textbf{(Q2)} \textbf{Generalization.} Can VLA agents trained on certain granularities generalize to other unseen granularities? 
-
-\noindent\textbf{(Q3)} \textbf{Failure Dynamics.} When failing, does the agent get stuck (stagnation) or undo achieved progress (regression)?
-
-% 就是因为 coarse instruction会好点 出现了U-shape。
-% 然后这个其实值得研究。 所以你就进一步看 到底是它拿到了visual shortcut 还是说 因为语言太模糊了， 只能更多的依赖grounding
-
-\subsection{Main Results}
-
-We first answer \textbf{(Q1)}, short answers as follows:
-
-\begin{figure*}[t]
-    \centering
-    \begin{minipage}[t]{0.33\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/q1_main.pdf}
-        \captionof{figure}{In-Distribution (matched train/test) SR across granularities (i.e., train Fine $\rightarrow$ test Fine, etc). A non-monotonic U-shaped trend appears.}
-        \label{fig:q1_learning_curves}
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.66\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/q3_training_setting_on_sr_across_width.pdf}
-        \captionof{figure}{The x-axis are test instruction width, and the y-axis are training setup. Transfer is asymmetric: train coarse $\rightarrow$ test fine works, but train fine $\rightarrow$ test coarse does not. Mixed-granularity training improves generalization. \emph{Axial-C} training setting performs best overall.}
-        \label{fig:q3_cross_granularity}
-    \end{minipage}
-\end{figure*}
-
-\begin{figure*}[t]
-    \centering
-    \begin{minipage}[t]{0.30\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/q1_rule_call_dist.pdf}
-        \captionof{figure}{Rule call distribution across instruction granularities. \# of rule calls decreases with coarser instructions. It decouples instruction length from width.}
-        \label{fig:q1_rule_call_dist}
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.30\textwidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{figures/q1_width_vs_task_horizon_heatmap.pdf}
-        \captionof{figure}{Impact of width and horizon on SR. SR decays with task horizon; larger instruction width imposes an additional burden even when horizon is fixed.}
-        \label{fig:q1_width_vs_task_horizon_heatmap}
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.32\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/q4_failure_type_extreme_task_example.pdf}
-        \captionof{figure}{Low-width but long task horizon (e.g., laying woods) tends to cause regression, while high-width tasks tend to stagnate. These contribute to the failure of planning.}
-        \label{fig:q4_failure_modes}
-    \end{minipage}
-\end{figure*}
+\subsection{Establishing the Yardstick: Decoupling Horizon from Width}
+\label{sec:decoupling}
 
 
-\textbf{(A1)} \emph{VLA performance follows a non-monotonic \emph{U-shape}, peaking at the Fine and Coarse extremes.}
 
-To establish a performance baseline, we first evaluate the models under matched granularity, where training and testing occur on the same instruction class ($F \to F$, $M \to M$, $C \to C$). As shown in \Cref{fig:q1_learning_curves}, all three action-decoding archetypes demonstrate a non-monotonic U-shaped discovery. Note that all instructions are generated via a unified template-based translator that directly verbalizes symbolic rule sets, ensuring uniform vocabulary, syntax, and phrasing across granularity levels and isolating rule width as the causal factor. We interpret this U-shaped curve as follows. When instructions provide a step-by-step mapping to actions (i.e., $w=0$), the learning burden is minimal, as the agent can directly follow instructions with little reasoning or planning effort. At the coarse end ($w \ge 2$), agents are motivated to develop internal planning skills to ground coarse instructions into actions. Importantly, since each coarse instruction maps to a broader set of visual and action patterns, it helps develop more robust and generalizable language grounding by providing more diverse training data. In contrast, medium instructions ($w\!=\!1$) occupy a sub-optimal grounding regime. They are too sparse to provide a direct language-to-action mapping, yet not coarse enough to foster internal planning skills, thereby resulting in the performance decline.
+A critical confounder in evaluating VLA planning complexity is the task sequence length. However, in language-guided execution, instructions inherently decompose long-horizon tasks into segments. Consequently, the relevant measure of sequential burden shifts from the raw atomic horizon (total low-level action steps) to the instruction horizon, i.e., the number of rule calls issued by the instructor.
 
-From a width-based planning perspective, the U-shaped pattern surprises because coarser instructions should monotonically increase planning demands, making learning progressively harder. Yet, a common confounding factor is instruction sequence length (i.e., the number of rule calls required to complete a task), which also impacts SR due to error accumulation. Note that our evaluation uses the same underlying task set across granularities, and thus the reference atomic action sequence length is held constant. The only entangled factor is thus the rule call count. As shown in \Cref{fig:q1_rule_call_dist}, coarser instructions require fewer rule calls to accomplish the same task, as each instruction maps to a longer action sequence. The medium granularity operates at a moderate number of rule calls. This decouples instruction sequence length from instruction width and confirms the U-shape cannot be attributed to medium-granularity tasks requiring excessively longer instruction sequences or rule calls.
+To strictly isolate rule width ($w$) from sequential burden, we train all agents on the same set of tasks. This ensures that the distribution of atomic horizons (total low-level steps) encountered during training is held constant across agents, leaving the number of rule calls and instruction granularity as variables: fine-grained instructions ($w=0$) aggressively decompose the task into numerous low-width rule calls, resulting in a low average steps per rule call; coarse instructions ($w \ge 2$), by contrast, yield fewer rule calls with a higher average steps per call (\Cref{fig:q1_rule_call_dist}).
 
-To further decouple the effects of instruction width and sequence length on VLA performance, we analyze \Cref{fig:q1_width_vs_task_horizon_heatmap}, obtained by \emph{Centroid} setting as it has balanced exposure to all granularities. The heatmap provides empirical evidence that, for a fixed number of rule calls, SR decreases as instruction width increases. This demonstrates that the width metric, originally developed for symbolic planning, is a meaningful proxy for the difficulty faced by learning-based VLA agents.
+To empirically validate $w$ as a rigorous measure of decision-making complexity under this controlled setup, we analyze \Cref{fig:q1_width_vs_task_horizon_heatmap} using the \emph{Centroid} setting. The heatmap reveals that, even when holding the instruction horizon fixed, Success Rate (SR) decays monotonically as rule width increases. This demonstrates that $w$ serves as a rigorous metric for instruction granularity, successfully isolating the intrinsic burden of concurrent feature tracking ($O(|\Phi|^w)$) from the cumulative errors of multiple rule calls.
 
-Next, we evaluates cross-granularity generalization, where models are trained on one instruction granularity and evaluated on another. Results are summarized in below:
 
-\textbf{(A2)} \emph{Language grounding is asymmetric: models trained on coarse texts generalize to detailed ones, but not vice versa.}
+\subsection{The U-Shaped Paradox and Capacity Cap}
 
-\Cref{fig:q3_cross_granularity} reveals a clear asymmetry: models trained on coarse instructions generalize well to fine ones, demonstrating robust language grounding that abstracts away from granularity. Conversely, models trained on fine instructions do not generalize to coarse ones, implying a form of grounding that overfits to step-by-step specification. Mixed-granularity training mitigates this issue, with the coarse-weighted \emph{Axial-C} variant yielding the best generalization overall.
+
+
+
+
+To establish a baseline, we train models using the \emph{Pure F/M/C} setting. the models are trained and evaluated on the same granularity class. As shown in \Cref{fig:q1_learning_curves}, all VLA archetypes exhibit a non-monotonic \emph{U-shaped performance curve}. 
+
+At the fine extreme ($w=0$), where instructions require minimal latent reasoning to be grounded into actions, models achieve high performance. Performance then decreases at medium granularity ($w=1$), before unexpectedly rebounding at the coarse regime ($w \ge 2$). This contradicts the assumption that higher planning width should monotonically degrade learning.
+
+Crucially, beyond this U-shaped regime, we identify a hard capacity cap at $w \ge 4$ (shown in \Cref{fig:q3_cross_granularity}). For tasks requiring the concurrent tracking of four or more state features, all models fail regardless of the action head archetypes or training settings. This exposes a fundamental language grounding bottleneck in current VLA models, demonstrating that $w$ precisely marks this capacity boundary.
+
+
+\begin{figure}[t]
+      \centering
+    \includegraphics[width=0.8\linewidth]{figures/q7_perplexity_comparison.pdf}
+    \caption{Perplexity of a VLM model trained to predict instructions from visual context, compared across granularities. Coarse instructions are more predictable, supporting high $P(l \mid v)$ claim.}
+    \label{fig:perplexity_comparison}
+\end{figure}
+
 
 \begin{figure*}[t]
     \centering
@@ -468,57 +453,78 @@ Next, we evaluates cross-granularity generalization, where models are trained on
     \end{minipage}
 \end{figure*}
 
-% \begin{figure*}[t]
-% \centering
-%     \includegraphics[width=0.7\linewidth]{figures/q6_attention_distribution_across_model_types_vs_sent_enc.pdf}
-%     \captionof{figure}{Action-token attention across three decoding architectures ($\pm$ sentence encoding). Self-attention dominates, followed by vision; \textit{Discrete diffusion} attends more to language than the others. Sentence encoding reduces vision and self-attention, but induce attention sink.}
-%     \label{fig:q5_attention_distribution_across_model_types_vs_sent_enc}
-% \end{figure*}
+\subsection{Mechanistic Probe: The Grounding Valley}
+Why does performance rebound at $w \ge 2$ while collapsing at $w=1$? We demonstrate this is driven by a competition between \emph{instruction predictability} and \emph{latent planning complexity}. 
 
+\paragraph{Predictability and Perplexity.} As granularity coarsens, text diversity decreases. Consider a surjective mapping $f$ from a fine-grained label space $L_{\text{fine}}$ to a coarser one $L_{\text{coarse}}$. The conditional probability of a coarse label aggregates its constituent fine labels: $P(c_j \mid v) = \sum_{l_i \in f^{-1}(c_j)} P(l_i \mid v)$. 
 
-For \textbf{(Q3)}, the failure mode is dependent on task structure:
+Consequently, coarse-grained instructions are statistically more predictable from visual contexts alone. We empirically validate this by fine-tuning a Vision-Language Model (Qwen3-VL-4B via LoRA) to predict instructions strictly from initial visual observations. The resulting prediction perplexities $P(l \mid v)$ (1.081, 1.065, and 1.048 for Fine, Medium, and Coarse granularities, respectively) confirm a monotonic decrease as instructions become coarser, highlighting that higher-level task abstractions are better entailed by the visual state.
 
-\textbf{(A3)} \emph{Low-width but long-horizon tasks tend to cause regression, while high-width tasks tend to stagnate.}
+\paragraph{Language Ignoring Shortcuts.} High predictability ($P(l \mid v)$) incentivizes multimodal models to bypass expensive language processing \citep{xu2025seeingactpromptingspecify}. We quantify this ``language ignoring'' via $\Delta\mathrm{SR} = \mathrm{SR}_{\text{w/ lang}} - \mathrm{SR}_{\text{w/o lang}}$. Models trained purely on coarse instructions exhibit a smaller gap ($\Delta\mathrm{SR}=20.0\%$) than fine-trained ones, confirming they develop policy invariance to text and operate as vision-dominant policies. However, attention analysis (\Cref{fig:attention_distribution_baseline_models}) reveals there is no obvious reduction in language-token attention. This suggests that in VLA architectures, maintained attention weights do not necessarily equate to language grounding, highlighting a complex dynamic that requires future investigation. 
 
-We interpret these failure modes through the lens of width-based planning (see \Cref{fig:q4_failure_modes}). In high-regression tasks, which often require manipulating multiple objects toward a collective goal, agents frequently exhibit subgoal serialization failures. In these settings, the model fails to maintain satisfied fluents over time, cycling back to earlier states. Conversely, stagnation in high-width tasks (e.g., making tea) reflects a width-planning bottleneck: as simultaneous feature dependencies increase ($w \ge 4$), agents struggle to track multiple simultaneous feature dependencies to enable a valid state progression. More analysis is in \Cref{app_sec:additional_experimental_results}.
+\paragraph{The Grounding Valley.} We thus see a non-monotonic relationship between instruction predictability and language grounding complexity:
 
-
-\section{Dilemma of Coarse Instruction Training}
-\label{sec:more_analysis_on_coarse_instruction_training}
-
-Our analyses in \textbf{(Q1)} and \textbf{(Q3)} suggest a practical advantage for training with coarse instructions: models maintain strong in-distribution performance while generalizing effectively to unseen, finer-grained instructions. To further evaluate this generalization capability, we test robustness to more extreme instruction variations: providing only a static goal description (fixed for the entire episode, akin to the \textsc{LIBERO} testbed \citep{DBLP:conf/nips/LiuZGFLZS23}) and providing no instruction at all.
-
-Results are shown in \Cref{fig:sr_diff_by_training_setup}. Mixed-granularity training, particularly the \emph{Axial-C} variant, achieves the highest SR when presented with the unseen static-goal descriptions. More strikingly, when the language input is entirely absent, \emph{Axial-C} maintains a non-trivial SR of 21\%. This raises a fundamental question: does the success of coarse instruction training stem from improved generalization via robust language grounding, or from ``language ignoring'', where the policy becomes invariant to language inputs?
-
-\paragraph{Quantifying Language Ignoring.}
-``Language ignoring'' is a phenomenon recently identified in VLA training, where agents appear to over-rely on visual patterns, making their policies invariant to language input \citep{xing2025shortcut,fei2025liberoplus}. A standard metric for this is $\Delta\mathrm{SR} = \mathrm{SR}{\text{w/ lang}} - \mathrm{SR}{\text{w/o lang}}$, where a smaller gap indicates stronger ignoring. Our data reveals a trend: models trained purely on coarse instructions (\emph{Pure-C}) exhibit a smaller $\Delta\mathrm{SR}$ (20.0\%) than those trained on fine instructions (\emph{Pure-F}), suggesting coarser training may induce greater language ignoring. 
-
-\paragraph{Attention Analysis.}
-To probe the model's internal reliance on language more directly, we analyze the attention distribution from action tokens to the vision, language, and self-modalities (see \Cref{fig:attention_distribution_baseline_models}). Contrary to a simple visual-shortcut hypothesis, we find no clear trend of decreasing attention to the language modality as instruction granularity coarsens. Across all training regimes, self-attention receives the largest share, followed by vision, with language consistently receiving the smallest portion. Notably, autoregressive models attend least to language, which could explain their lower overall SR in \Cref{fig:q1_learning_curves}. 
-
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/q7_perplexity_comparison.pdf}
-    \caption{Perplexity of a VLM model trained to predict instructions from visual context, compared across granularities. Coarse instructions are more predictable, supporting high $P(l \mid v)$ claim.}
-    \label{fig:perplexity_comparison}
-\end{figure}
+    \begin{minipage}[t]{0.62\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q3_training_setting_on_sr_across_width.pdf}
+        \captionof{figure}{The x-axis are test instruction width, and the y-axis are training setup. Transfer is asymmetric: train coarse $\rightarrow$ test fine works, but train fine $\rightarrow$ test coarse does not. Mixed-granularity training improves generalization. \emph{Axial-C} training setting performs best overall.}
+        \label{fig:q3_cross_granularity}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.37\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/q4_failure_type_extreme_task_example.pdf}
+        \captionof{figure}{Low-width but long task horizon (e.g., laying woods) tends to cause regression, while high-width tasks tend to stagnate.}
+        \label{fig:q4_failure_modes}
+    \end{minipage}
+\end{figure*}
 
-\paragraph{Why Coarse Instructions Encourage Language Ignoring?}
-\citet{xu2025seeingactpromptingspecify} posit a causal mechanism: if the language instruction $l$ is highly predictable from visual context $v$ (i.e., large $P(l \mid v)$), a multimodal model may learn to bypass language processing to save computational energy. This aligns with our benchmark, where expert trajectories are fixed but described at varying granularities: consider a surjective mapping $f$ from a fine-grained label space $L_{\text{fine}} = {l_1, \dots, l_n}$ to a coarser one $L_{\text{coarse}} = {c_1, \dots, c_m}$ with $m < n$. The conditional probability for a coarse label aggregates over its constituent fine labels: $P(c_j | v) = \sum_{l_i \in f^{-1}(c_j)} P(l_i | v)$. Since the same total probability mass is distributed over fewer coarse categories, the average $P(c_j | v)$ is higher. According to the theory, this increased predictability could encourage language ignoring for coarsely-trained models.
 
-Mixed-granularity training mitigates this effect by increasing the diversity of the language space $L$ seen during training, which lowers the average $P(l \mid v)$. We thus see all mixed-granularity models exhibit larger $\Delta\mathrm{SR}$ gaps than their pure counterparts, indicating reduced language ignoring. Among these, the fine-weighted mixture \emph{Axial-F} emerges as a particularly balanced choice, achieving a success rate comparable to \emph{Axial-C} while maintaining a substantially larger $\Delta\mathrm{SR}$. 
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Fine ($w=0$):} \emph{Successful Grounding.} Low $P(l|v)$ (high perplexity, \Cref{fig:perplexity_comparison}) means language provides unique information. Combined with low-width grounding burden (\Cref{sec:decoupling}), the model reliably maps instructions to actions, yielding high SR (\Cref{fig:q1_learning_curves}).
 
-Our analysis provides a complementary perspective on the language ignoring phenomenon, demonstrating its variation across instruction granularities, a factor not explored in prior work. The trade-off between final performance and language reliance highlights an open challenge in VLA design: how to structure training for both robust generalization and faithful language grounding.
+    \item \textbf{Medium ($w=1$):} \emph{The Alignment Trap.} As $P(l|v)$ rises, language becomes partially redundant, and the model reduces its reliance on text ($\Delta\mathrm{SR}$ drops). However, unlike the coarse setting where language can be safely ignored, here language remains just useful enough to prevent the model from fully committing to a vision-only policy. The agent falls into a representational gap: language is hard to ground, yet still too present to abandon.
 
-\section{Conclusion and Future Work}
+    \item \textbf{Coarse ($2 \le w \le 3$):} \emph{Modality Collapse.} High $P(l|v)$ (\Cref{fig:perplexity_comparison}) causes the model to exploit visual shortcuts: $\Delta\mathrm{SR}$ approaches 20\% (\Cref{fig:sr_diff_by_training_setup}), which is a signature of modality collapse.
+
+    \item \textbf{Capacity Cap ($w \ge 4$):} \emph{Cognitive Overload.} The visual shortcuts exploited in the coarse regime fail to scale. When a task demands tracking $\ge 4$ concurrent state features purely from visual (w/o explicit memory module), the planning complexity reaches $O(|\Phi|^4)$ \citep{DBLP:conf/aaai/LipovetzkyG17}. Current VLA architectures cannot sustain this grounding load: performance uniformly collapses across all models at $w \ge 4$ (\Cref{fig:q3_cross_granularity}), explaining the hard empirical ceiling identified earlier.
+\end{itemize}
+
+\paragraph{Mitigating Modality Collapse via Axial Training.} 
+Having diagnosed language-ignoring as a byproduct of high predictability, we hypothesize that increasing the diversity of the training language space $L$ should artificially lower the average $P(l \mid v)$, thereby forcing the agent to re-engage with the text. Our mixed-granularity training results confirm this mechanism. All mixed-granularity models exhibit substantially larger $\Delta\mathrm{SR}$ gaps compared to their \emph{Pure-X} counterparts, indicating a successful reduction in language ignoring. Among these, the fine-weighted mixture \emph{Axial-F} emerges as the optimal structural compromise: it achieves an overall success rate comparable to the coarse-heavy \emph{Axial-C}, while maintaining a significantly larger $\Delta\mathrm{SR}$.
+
+
+
+
+\subsection{Other Results}
+Understanding the predictability-complexity trade-off clarifies our out-of-distribution transfer results and failure modes.
+
+\textbf{Asymmetric Generalization:} We observe a strict directional asymmetry (\Cref{fig:q3_cross_granularity}): coarse-trained models successfully zero-shot transfer to fine texts, but fine-trained models fail on coarse texts. This corroborates our earlier $\Delta\mathrm{SR}$ analysis: coarse training induces a vision-biased policy that generalizes robustly across instruction granularities. Conversely, fine training induces an over-reliance on dense instruction guidance, making the policy brittle when such guidance is withdrawn.
+
+
+\textbf{Failure Modes:} \textbf{Failure Modes.} Agent failure distributions bifurcate strictly with width (\Cref{fig:q4_failure_modes}). Low-width, long-horizon tasks (e.g., laying wood floors) predominantly suffer from \emph{regression}: the agent violates previously satisfied fluents and cycles back to prior states, reflecting subgoal serialization failures. High-width tasks ($w \ge 3$), by contrast, exhibit \emph{stagnation}: the agent freezes, unable to resolve concurrent feature dependencies ($O(|\Phi|^w)$) required to initiate a valid state transition. This dichotomy mirrors the width-based complexity landscape (see \Cref{app_sec:additional_experimental_results} for details).
+
+
+\section{Conclusion}
 \label{sec:conclusion}
 % 在论文的局限性部分，主动、诚恳地讨论上述部分问题（如环境的简化、动态指导的理想化），并阐述未来如何在本工作基础上进行扩展研究（如在更复杂环境中验证、研究稀疏指令下的规划）。这能展现您思考的全面性，并化解审稿人的部分质疑。
 
 
-This work establishes rule width ($w$) as a cross-task formalism for instruction granularity, moving beyond syntactic heuristics to quantify the intrinsic planning burden of language guidance. Unlike syntactic heuristics (e.g., counting mentioned entities), $w$ captures the intrinsic planning demand imposed by environment dynamics, enabling consistent comparison across diverse embodied tasks. Our controlled analysis reveals a non-monotonic U-shaped relationship between $w$ and performance. This granularity-centric diagnosis demonstrates that deliberate instruction design and mixed-granularity training are essential for robust VLA alignment.
+This work establishes rule width ($w$) as a rigorous, cross-task formalism for instruction granularity, moving beyond syntactic heuristics or task-dependent depths to quantify the state-tracking burden of language guidance, serving as an effective proxy for measuring language grounding difficulty in language-guided neural agents. We observed a non-monotonic relationship between granularity and performance, driven by a trade-off between instruction predictability ($P(l \mid v)$) and latent planning complexity ($O(|\Phi|^w)$). We demonstrate that mixed-granularity training mitigates modality collapse and preserves language grounding without sacrificing the robust visual reasoning skills learned from coarse trajectories.
 
-\paragraph{Future Work.}
-Several promising directions follow. First, while this work focuses on instruction granularity, a natural extension is to investigate representation granularity across other modalities. Visual perception itself can be processed at varying levels of abstraction (e.g., semantic segmentations or structured scene graphs). Future research could explore how the granularity of visual inputs interacts with instruction width to shape the agent's internal planning demand. Second, the feature set $\Phi$ used to define width should not be limited to predefined predicates. Developing learnable, hierarchical feature modules that dynamically construct task-relevant state abstractions would allow the model to adjust its own ``internal granularity''. Investigating the cross-modal alignment between language, vision, and feature granularities will be crucial for future VLA studies.
+
+\section{Limitations}
+\label{sec:limitations}
+
+While this work systematically isolates the impact of language granularity on VLA planning, several boundaries constrain its current scope:
+
+\paragraph{Discrete Action Spaces.} We evaluate our framework in environments with discrete action spaces, a common abstraction in language-conditioned embodied AI (e.g., ALFWorld-based agent \citep{xiong-etal-2025-mpo, kim-etal-2025-reflact}) and LLM-based agent systems \citep{DBLP:conf/iclr/QinLYZYLLCTQZHT24, DBLP:conf/nips/PatilZ0G24}, where high-level reasoning is decoupled from low-level execution via skill primitives or API calls. This choice is intentional: it isolates symbolic planning from continuous control noise, allowing us to cleanly attribute observed effects to instruction granularity. However, extending this granularity-aware framework to hybrid discrete-continuous or continuous action spaces remains essential for real-world robotics applications, where low-level motor commands interact with high-level linguistic abstractions.
+
+\paragraph{Predefined State Features ($\Phi$).} Our formulation of rule width relies on a predefined set of general environmental predicates. While this set captures commonsense knowledge for household activities, it assumes task-relevant state abstractions are given a priori. Future work should explore developing learnable, hierarchical feature modules that dynamically construct task-relevant state abstractions would allow the model to adjust its own ``internal granularity''.
+
+\paragraph{Static Visual Granularity.} As a controlled study of instruction granularity, we hold visual granularity constant across conditions. Yet visual perception itself inherently operates at multiple levels of abstraction from raw pixels to object segmentation images to scene graphs. Investigating the cross-modal interplay between visual representation granularity and instruction width is a critical next step.
+
 
 .
 
@@ -545,7 +551,7 @@ Several promising directions follow. First, while this work focuses on instructi
     \item \textbf{Rule Set and Natural Language Prompt Examples} (\Cref{app_sec:prompt_examples})
     Details of the rule set bank of 20 tasks and sample generated instructions at different granularities.
     \item \textbf{Implementation Details} (\Cref{app_sec:implementation_details})
-    Model architecture (Prismatic-7B backbone, SigLIP+DINOv2 visual encoders), training hyperparameters, optimizer settings.
+    Model architecture (Prismatic-7B backbone, SigLIP+DINOv2 visual encoders), training hyperparameters, optimizer settings. VLM Predictor architecture and training details.
     \item \textbf{Additional Experimental Results} (\Cref{app_sec:additional_experimental_results})
     Extended analysis and ablations.
 \end{enumerate}

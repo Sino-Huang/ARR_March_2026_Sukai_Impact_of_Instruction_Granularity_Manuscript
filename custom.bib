@@ -1261,3 +1261,92 @@ url={https://openreview.net/forum?id=tu4dFUsW5z}
   year={2021},
   journal={arXiv preprint arXiv:2109.06780},
 }
+
+@inproceedings{xiong-etal-2025-mpo,
+    title = "{MPO}: Boosting {LLM} Agents with Meta Plan Optimization",
+    author = "Xiong, Weimin  and
+      Song, Yifan  and
+      Dong, Qingxiu  and
+      Zhao, Bingchan  and
+      Song, Feifan  and
+      XWang  and
+      Li, Sujian",
+    editor = "Christodoulopoulos, Christos  and
+      Chakraborty, Tanmoy  and
+      Rose, Carolyn  and
+      Peng, Violet",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2025",
+    month = nov,
+    year = "2025",
+    address = "Suzhou, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.findings-emnlp.210/",
+    doi = "10.18653/v1/2025.findings-emnlp.210",
+    pages = "3914--3935",
+    ISBN = "979-8-89176-335-7",
+    abstract = "Recent advancements in large language models (LLMs) have enabled LLM-based agents to successfully tackle interactive planning tasks. However, despite their successes, existing approaches often suffer from planning hallucinations and require retraining for each new agent. To address these challenges, we propose the **M**eta **P**lan **O**ptimization (**MPO**) framework, , which enhances agent planning capabilities by directly incorporating explicit guidance. Unlike previous methods that rely on complex knowledge, which either require significant human effort or lack quality assurance, MPO leverages high-level general guidance through meta plans to assist agent planning and enables continuous optimization of the meta plans based on feedback from the agent{'}s task execution. Our experiments conducted on two representative tasks demonstrate that MPO significantly outperforms existing baselines. Moreover, our analysis indicates that MPO provides a plug-and-play solution that enhances both task completion efficiency and generalization capabilities in previous unseen scenarios."
+}
+
+
+@inproceedings{DBLP:conf/iclr/QinLYZYLLCTQZHT24,
+  author       = {Yujia Qin and
+                  Shihao Liang and
+                  Yining Ye and
+                  Kunlun Zhu and
+                  Lan Yan and
+                  Yaxi Lu and
+                  Yankai Lin and
+                  Xin Cong and
+                  Xiangru Tang and
+                  Bill Qian and
+                  Sihan Zhao and
+                  Lauren Hong and
+                  Runchu Tian and
+                  Ruobing Xie and
+                  Jie Zhou and
+                  Mark Gerstein and
+                  Dahai Li and
+                  Zhiyuan Liu and
+                  Maosong Sun},
+  title        = {ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world
+                  APIs},
+  booktitle    = {{ICLR}},
+  publisher    = {OpenReview.net},
+  year         = {2024}
+}
+
+
+@inproceedings{DBLP:conf/nips/PatilZ0G24,
+  author       = {Shishir G. Patil and
+                  Tianjun Zhang and
+                  Xin Wang and
+                  Joseph E. Gonzalez},
+  title        = {Gorilla: Large Language Model Connected with Massive APIs},
+  booktitle    = {NeurIPS},
+  year         = {2024}
+}
+
+@inproceedings{kim-etal-2025-reflact,
+    title = "{R}efl{A}ct: World-Grounded Decision Making in {LLM} Agents via Goal-State Reflection",
+    author = "Kim, Jeonghye  and
+      Rhee, Sojeong  and
+      Kim, Minbeom  and
+      Kim, Dohyung  and
+      Lee, Sangmook  and
+      Sung, Youngchul  and
+      Jung, Kyomin",
+    editor = "Christodoulopoulos, Christos  and
+      Chakraborty, Tanmoy  and
+      Rose, Carolyn  and
+      Peng, Violet",
+    booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2025",
+    address = "Suzhou, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.emnlp-main.1697/",
+    doi = "10.18653/v1/2025.emnlp-main.1697",
+    pages = "33433--33465",
+    ISBN = "979-8-89176-332-6",
+    abstract = "Recent advances in LLM agents have largely built on reasoning backbones like ReAct, which interleave thought and action in complex environments. However, ReAct often produces ungrounded or incoherent reasoning steps, leading to misalignment between the agent{'}s actual state and goals. Our analysis finds that this stems from ReAct{'}s inability to maintain consistent internal beliefs and goal alignment, causing compounding errors and hallucinations. To address this, we introduce ReflAct, a novel backbone that shifts reasoning from merely planning next actions to continuously reflecting on the agent{'}s state relative to its goal. By explicitly grounding decisions in states and enforcing ongoing goal alignment, ReflAct dramatically improves strategic reliability. This design delivers substantial empirical gains: ReflAct surpasses ReAct by 27.7{\%} on average, achieving a 93.3{\%} success rate in ALFWorld. Notably, ReflAct even outperforms ReAct with added enhancement modules (e.g., Reflexion, WKM), showing that strengthening the core reasoning backbone is key to reliable agent performance."
+}

@@ -33,7 +33,7 @@ Table \ref{tab:env_comparison} provides a detailed comparison of Mini-BEHAVIOR a
 \textbf{RoboTwin 2.0} & Continuous & Short & 3D & No & Continuous control; no symbolic abstraction; dual-arm manipulation focus; hard to segment expert trajectories and construct granular instructions. \\
 \textbf{CALVIN} & Continuous & Medium & 3D & No & Hard to design instruction granularity due to continuous action space (though provides diverse language); confounds planning with control difficulties. \\
 \textbf{ALFRED} & Discrete & Long & 3D Photo & Support & 3D partially observable; poor infrastructure support for VLA training; high rendering cost. \\
-\textbf{iGibson / BEHAVIOR-1K} & Continuous & Long & 3D Photo & Partial & Good for long-horizon tasks, but 3D realistic vision context becomes a confounder \\
+\textbf{iGibson / BEHAVIOR-1K} & Continuous & Long & 3D Photo & Partial & Good for long-horizon tasks, but 3D realistic vision context becomes a confounder. \\
 \bottomrule
 \end{tabular}%
 \end{table*}
@@ -88,10 +88,11 @@ The environment defines two primary categories of features: Boolean State Featur
 \subsubsection{Boolean State Features}
 These features evaluate whether a specific object instance satisfies a predicate. They require grounding (binding to specific object instances, e.g., \texttt{rag-01}).
 
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \caption{Boolean State Features}
 \label{tab:bool_features}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{l|l|l}
 \hline
 \textbf{Feature} & \textbf{Applicable Objects} & \textbf{Semantics} \\ \hline
@@ -101,8 +102,9 @@ These features evaluate whether a specific object instance satisfies a predicate
 \texttt{isSoaked} & Rags, Sponges & Is the cleaning tool wet? \\
 \texttt{isCleaned} & Shoes, Dishes, Floor & Is the object free of stains? \\
 \texttt{isDustFree} & Furniture, Surfaces & Is the object free of dust? \\ \hline
-\end{tabular}
-\end{table*}
+\end{tabular}%
+}
+\end{table}
 
 \subsubsection{Quantitative and Spatial Features}
 These features capture distances, counts, and spatial relationships. Crucially, they support temporal comparison allowing conditions such as ``distance decreased'' or ``count dropped to zero.''
@@ -708,6 +710,33 @@ Optimization Steps & 100,000 \\
 Steps Before Decay & 80,000 \\
 Learning Rate & $2.5 \times 10^{-4}$ \\
 Batch Size (per GPU) & $7 - 8$ \\
+\bottomrule
+\end{tabular} %
+}
+\end{table}
+
+We also train a lightweight VLM predictor to quantify instruction predictability via perplexity. The model is fine-tuned using Low-Rank Adaptation (LoRA) on the Qwen3-VL-4B-Instruct backbone, with vision encoders frozen to preserve visual grounding capabilities established during pretraining. All models are trained on \textsc{Mini-BEHAVIOR-Gran} instruction and image training data pairs, with training and evaluation splits maintained consistently across experiments. Hardware and Duration: Training was conducted on a single node equipped with 4$\times$ NVIDIA RTX 5090 GPUs. Each training run for 2 epochs. Table \ref{tab:qwen_hyperparameters} summarizes the core hyperparameters used for VLM predictor training.
+
+\begin{table}[H]
+\centering
+\caption{Hyperparameters for Qwen3-VL-4B-Instruct fine-tuning on \textsc{Mini-BEHAVIOR-Gran} (High-domain).}
+\label{tab:qwen_hyperparameters}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l|c}
+\toprule
+\textbf{Hyperparameter} & \textbf{Value} \\
+\midrule
+Base Model & Qwen3-VL-4B-Instruct \\
+Visual Encoders & Frozen (Qwen3-VL native) \\
+Parameter Efficient Tuning & LoRA (Rank $r=64$, $\alpha=128$) \\
+LoRA Target Modules & All linear layers \\
+Compute Hardware & 4$\times$ NVIDIA RTX 5090 \\
+Training Epochs & 2 \\
+Learning Rate & $1.0 \times 10^{-5}$ \\
+Learning Rate Scheduler & Cosine with 10\% warmup \\
+Batch Size (per GPU) & 32 \\
+Gradient Accumulation Steps & 1 \\
+DeepSpeed Strategy & Zero-2 \\
 \bottomrule
 \end{tabular} %
 }
