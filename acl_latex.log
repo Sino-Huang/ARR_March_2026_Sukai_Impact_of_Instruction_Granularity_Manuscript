@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2026.1.8)  10 MAR 2026 09:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2026.1.8)  10 MAR 2026 23:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -885,12 +885,12 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
 [3]
-<figures/running_examples.pdf, id=308, 591.20876pt x 265.99374pt>
+<figures/running_examples.pdf, id=312, 591.20876pt x 265.99374pt>
 File: figures/running_examples.pdf Graphic file (type pdf)
 <use figures/running_examples.pdf>
 Package pdftex.def Info: figures/running_examples.pdf  used on input line 289.
 (pdftex.def)             Requested size: 219.08614pt x 98.57037pt.
-<figures/experiment_illu.pdf, id=311, 611.28375pt x 250.9375pt>
+<figures/experiment_illu.pdf, id=315, 611.28375pt x 250.9375pt>
 File: figures/experiment_illu.pdf Graphic file (type pdf)
 <use figures/experiment_illu.pdf>
 Package pdftex.def Info: figures/experiment_illu.pdf  used on input line 305.
@@ -898,20 +898,25 @@ Package pdftex.def Info: figures/experiment_illu.pdf  used on input line 305.
 
 
 
+Underfull \hbox (badness 2753) in paragraph at lines 333--334
+\T1/ptm/m/n/10.95 (+20) driven Breadth-First Search ([][]Lipovet-zky and
+ []
+
+
 
 [4 <./figures/running_examples.pdf>]
 
-<figures/q1_rule_call_dist.pdf, id=662, 304.13625pt x 199.74625pt>
+<figures/q1_rule_call_dist.pdf, id=668, 304.13625pt x 199.74625pt>
 File: figures/q1_rule_call_dist.pdf Graphic file (type pdf)
 <use figures/q1_rule_call_dist.pdf>
 Package pdftex.def Info: figures/q1_rule_call_dist.pdf  used on input line 378.
 (pdftex.def)             Requested size: 136.57462pt x 89.69905pt.
-<figures/q1_width_vs_task_horizon_heatmap.pdf, id=663, 317.185pt x 242.9075pt>
+<figures/q1_width_vs_task_horizon_heatmap.pdf, id=669, 317.185pt x 242.9075pt>
 File: figures/q1_width_vs_task_horizon_heatmap.pdf Graphic file (type pdf)
 <use figures/q1_width_vs_task_horizon_heatmap.pdf>
 Package pdftex.def Info: figures/q1_width_vs_task_horizon_heatmap.pdf  used on input line 385.
 (pdftex.def)             Requested size: 136.57462pt x 104.59273pt.
-<figures/q1_main.pdf, id=664, 308.15125pt x 238.8925pt>
+<figures/q1_main.pdf, id=670, 308.15125pt x 238.8925pt>
 File: figures/q1_main.pdf Graphic file (type pdf)
 <use figures/q1_main.pdf>
 Package pdftex.def Info: figures/q1_main.pdf  used on input line 391.
@@ -925,6 +930,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 401--402
 
 [5 <./figures/experiment_illu.pdf>]
 
+<figures/q5_sr_diff_by_training_setup.pdf, id=2085, 497.86pt x 232.87pt>
+File: figures/q5_sr_diff_by_training_setup.pdf Graphic file (type pdf)
+<use figures/q5_sr_diff_by_training_setup.pdf>
+Package pdftex.def Info: figures/q5_sr_diff_by_training_setup.pdf  used on input line 421.
+(pdftex.def)             Requested size: 254.93558pt x 119.24536pt.
+<figures/q7_loss_comparison.pdf, id=2086, 340.27126pt x 221.82875pt>
+File: figures/q7_loss_comparison.pdf Graphic file (type pdf)
+<use figures/q7_loss_comparison.pdf>
+Package pdftex.def Info: figures/q7_loss_comparison.pdf  used on input line 427.
+(pdftex.def)             Requested size: 182.09486pt x 118.70935pt.
 
 
 [6 <./figures/q1_rule_call_dist.pdf> <./figures/q1_width_vs_task_horizon_heatmap.pdf
@@ -934,59 +949,45 @@ pdfTeX warning: pdflatex (file ./figures/q1_width_vs_task_horizon_heatmap.pdf): 
 
 pdfTeX warning: pdflatex (file ./figures/q1_main.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >]
-<figures/q7_perplexity_comparison.pdf, id=2317, 340.27126pt x 220.825pt>
-File: figures/q7_perplexity_comparison.pdf Graphic file (type pdf)
-<use figures/q7_perplexity_comparison.pdf>
-Package pdftex.def Info: figures/q7_perplexity_comparison.pdf  used on input line 431.
-(pdftex.def)             Requested size: 175.26958pt x 113.74466pt.
-<figures/q5_sr_diff_by_training_setup.pdf, id=2318, 497.86pt x 232.87pt>
-File: figures/q5_sr_diff_by_training_setup.pdf Graphic file (type pdf)
-<use figures/q5_sr_diff_by_training_setup.pdf>
-Package pdftex.def Info: figures/q5_sr_diff_by_training_setup.pdf  used on input line 441.
-(pdftex.def)             Requested size: 186.65175pt x 87.3047pt.
-<figures/q6_compare_baseline_models_attention_dist.pdf, id=2319, 569.12625pt x 196.735pt>
-File: figures/q6_compare_baseline_models_attention_dist.pdf Graphic file (type pdf)
-<use figures/q6_compare_baseline_models_attention_dist.pdf>
-Package pdftex.def Info: figures/q6_compare_baseline_models_attention_dist.pdf  used on input line 447.
-(pdftex.def)             Requested size: 245.82875pt x 84.97864pt.
+Underfull \hbox (badness 2150) in paragraph at lines 444--445
+[] []\T1/ptm/b/n/10.95 (+20) Be-hav-ioral Ev-i-dence of Modal-ity Col-lapse.[]
+ []
 
 
-<figures/q3_training_setting_on_sr_across_width.pdf, id=2323, 607.26875pt x 233.87375pt>
+Underfull \hbox (badness 2359) in paragraph at lines 447--449
+\T1/ptm/m/n/10.95 (+20) di-tional prob-a-bil-ity of a coarse la-bel ag-gre-
+ []
+
+
+
+<figures/q3_training_setting_on_sr_across_width.pdf, id=2328, 607.26875pt x 233.87375pt>
 File: figures/q3_training_setting_on_sr_across_width.pdf Graphic file (type pdf)
 <use figures/q3_training_setting_on_sr_across_width.pdf>
-Package pdftex.def Info: figures/q3_training_setting_on_sr_across_width.pdf  used on input line 468.
+Package pdftex.def Info: figures/q3_training_setting_on_sr_across_width.pdf  used on input line 457.
 (pdftex.def)             Requested size: 273.14923pt x 105.1958pt.
-<figures/q4_failure_type_extreme_task_example.pdf, id=2324, 318.18875pt x 206.7725pt>
+<figures/q4_failure_type_extreme_task_example.pdf, id=2329, 318.18875pt x 206.7725pt>
 File: figures/q4_failure_type_extreme_task_example.pdf Graphic file (type pdf)
 <use figures/q4_failure_type_extreme_task_example.pdf>
-Package pdftex.def Info: figures/q4_failure_type_extreme_task_example.pdf  used on input line 474.
+Package pdftex.def Info: figures/q4_failure_type_extreme_task_example.pdf  used on input line 463.
 (pdftex.def)             Requested size: 159.33821pt x 103.54375pt.
 
 
-[7 <./figures/q7_perplexity_comparison.pdf>]
-Underfull \hbox (badness 2261) in paragraph at lines 498--499
+[7 <./figures/q5_sr_diff_by_training_setup.pdf> <./figures/q7_loss_comparison.pdf
+
+pdfTeX warning: pdflatex (file ./figures/q7_loss_comparison.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>]
+Underfull \hbox (badness 2261) in paragraph at lines 487--488
 [] []\T1/ptm/b/n/10.95 (+20) Asym-met-ric Gen-er-al-iza-tion.[] \T1/ptm/m/n/10.95 (+20) We ob-serve a
  []
 
 
-Underfull \vbox (badness 1142) has occurred while \output is active []
 
 
 
-
-
-[8 <./figures/q5_sr_diff_by_training_setup.pdf> <./figures/q6_compare_baseline_models_attention_dist.pdf
-
-pdfTeX warning: pdflatex (file ./figures/q6_compare_baseline_models_attention_dist.pdf): PDF inclusion: multiple pdfs with page group included in a single page
-> <./figures/q3_training_setting_on_sr_across_width.pdf
-
-pdfTeX warning: pdflatex (file ./figures/q3_training_setting_on_sr_across_width.pdf): PDF inclusion: multiple pdfs with page group included in a single page
-> <./figures/q4_failure_type_extreme_task_example.pdf
+[8 <./figures/q3_training_setting_on_sr_across_width.pdf> <./figures/q4_failure_type_extreme_task_example.pdf
 
 pdfTeX warning: pdflatex (file ./figures/q4_failure_type_extreme_task_example.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >] (./acl_latex.bbl
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 15--18
 []\T1/ptm/m/n/10 (+20) Kevin Black, Noah Brown, James Darpinian,
  []
@@ -1002,71 +1003,73 @@ Underfull \hbox (badness 2245) in paragraph at lines 15--18
  []
 
 
-Underfull \hbox (badness 1655) in paragraph at lines 55--58
+
+
+Underfull \hbox (badness 1655) in paragraph at lines 60--63
 []\T1/ptm/m/n/10 (+20) Chi-Pin Huang, Yueh-Hua Wu, Min-Hung Chen,
  []
 
 
-Underfull \hbox (badness 1264) in paragraph at lines 55--58
+Underfull \hbox (badness 1264) in paragraph at lines 60--63
 [][]\T1/ptm/m/n/10 (+20) Thinkact: Vision-language-action rea-son-ing via
  []
 
 
-Underfull \hbox (badness 5022) in paragraph at lines 55--58
+Underfull \hbox (badness 5022) in paragraph at lines 60--63
 \T1/ptm/m/n/10 (+20) re-in-forced vi-sual la-tent plan-ning[][].  \T1/ptm/m/it/10 (+20) Preprint\T1/ptm/m/n/10 (+20) ,
  []
 
 
 
 [9]
-Underfull \hbox (badness 2698) in paragraph at lines 85--88
+Underfull \hbox (badness 2698) in paragraph at lines 90--93
 []\T1/ptm/m/n/10 (+20) Moo Jin Kim, Chelsea Finn, and Percy Liang.
  []
 
 
-Underfull \hbox (badness 1394) in paragraph at lines 105--108
+Underfull \hbox (badness 1394) in paragraph at lines 110--113
 \T1/ptm/m/n/10 (+20) Hunter, Kyu-Young Kim, Alan Lou, Caleb R.
  []
 
 
 
 
-Underfull \hbox (badness 1642) in paragraph at lines 150--153
+Underfull \hbox (badness 1642) in paragraph at lines 155--158
 \T1/ptm/m/n/10 (+20) Ab-hishek Gupta, Ab-hishek Padalkar, Abra-ham
  []
 
 
-Underfull \hbox (badness 1024) in paragraph at lines 150--153
+Underfull \hbox (badness 1024) in paragraph at lines 155--158
 \T1/ptm/m/n/10 (+20) learn-ing datasets and RT-X mod-els : Open x-
  []
 
 
-Underfull \hbox (badness 2173) in paragraph at lines 155--158
+Underfull \hbox (badness 2173) in paragraph at lines 160--163
 \T1/ptm/m/n/10 (+20) Huy V. Vo, Marc Szafraniec, Vasil Khali-dov,
+ []
+
+
+Underfull \hbox (badness 1057) in paragraph at lines 165--168
+[]\T1/ptm/m/n/10 (+20) Shishir G. Patil, Tian-jun Zhang, Xin Wang, and
  []
 
 
 
 [10]
-Underfull \hbox (badness 1057) in paragraph at lines 160--163
-[]\T1/ptm/m/n/10 (+20) Shishir G. Patil, Tian-jun Zhang, Xin Wang, and
- []
-
-
-Underfull \hbox (badness 2635) in paragraph at lines 170--173
+Underfull \hbox (badness 2635) in paragraph at lines 175--178
 []\T1/ptm/m/n/10 (+20) Scott E. Reed, Kon-rad Zolna, Emilio Parisotto,
  []
 
 
-Underfull \hbox (badness 1062) in paragraph at lines 180--183
+Underfull \hbox (badness 1062) in paragraph at lines 185--188
 []\T1/ptm/m/n/10 (+20) Mohit Shrid-har, Jesse Thoma-son, Daniel Gor-don,
  []
 
 
 
+)
 
-
-[11]) (./appendix.tex
+[11] (./appendix.tex
 
 
 Overfull \hbox (0.84384pt too wide) in paragraph at lines 31--31
@@ -1098,11 +1101,8 @@ Overfull \hbox (5.77103pt too wide) in paragraph at lines 25--39
  [][] 
  []
 
-
-
-[12]
 LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 57.
- (/usr/share/texmf-dist/tex/latex/inconsolata/t1zi4.fd
+(/usr/share/texmf-dist/tex/latex/inconsolata/t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
@@ -1113,9 +1113,11 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 
 
+[12{/usr/share/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]
+Underfull \vbox (badness 1748) has occurred while \output is active []
 
 
-[13{/usr/share/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]
+
 LaTeX Font Info:    Font shape `T1/zi4/b/n' will be
 (Font)              scaled to size 10.95pt on input line 113.
 
@@ -1123,7 +1125,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 113--114
 []\T1/zi4/b/n/10.95 DistanceToNearest(type, condition)\T1/ptm/m/n/10.95 (+20) :
  []
 
-<figures/plan_steps_distribution_boxplot.png, id=2957, 1011.78pt x 433.62pt>
+
+
+[13]
+<figures/plan_steps_distribution_boxplot.png, id=2737, 1011.78pt x 433.62pt>
 File: figures/plan_steps_distribution_boxplot.png Graphic file (type png)
 <use figures/plan_steps_distribution_boxplot.png>
 Package pdftex.def Info: figures/plan_steps_distribution_boxplot.png  used on input line 165.
@@ -1151,13 +1156,13 @@ Overfull \hbox (10.94702pt too wide) in paragraph at lines 270--279
  []
 
 
-
-[14]
 Overfull \hbox (10.95215pt too wide) in paragraph at lines 290--297
 [][] 
  []
 
 
+
+[14]
 Overfull \hbox (10.94987pt too wide) in paragraph at lines 298--307
 [][] 
  []
@@ -1188,8 +1193,6 @@ Overfull \hbox (10.9545pt too wide) in paragraph at lines 361--370
  []
 
 
-
-
 Overfull \hbox (10.95424pt too wide) in paragraph at lines 371--380
 [][] 
  []
@@ -1198,6 +1201,8 @@ Overfull \hbox (10.95424pt too wide) in paragraph at lines 371--380
 Overfull \hbox (10.95238pt too wide) in paragraph at lines 381--390
 [][] 
  []
+
+
 
 
 Overfull \hbox (10.95369pt too wide) in paragraph at lines 409--443
@@ -1227,18 +1232,13 @@ Overfull \hbox (10.955pt too wide) in paragraph at lines 470--479
  []
 
 
-Underfull \vbox (badness 2478) has occurred while \output is active []
-
-
-
-
 Overfull \hbox (10.95631pt too wide) in paragraph at lines 480--489
 [][] 
  []
 
 
 
-[16]
+
 Overfull \hbox (10.95247pt too wide) in paragraph at lines 513--543
 [][]
  []
@@ -1249,6 +1249,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 513--543
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[16]
 Overfull \hbox (10.95433pt too wide) in paragraph at lines 552--558
 [][] 
  []
@@ -1288,16 +1293,16 @@ Underfull \hbox (badness 7308) in paragraph at lines 722--722
  []
 
 
-Underfull \vbox (badness 2591) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-<figures/q1_task_success_rate.pdf, id=2997, 877.2775pt x 212.795pt>
+<figures/q1_task_success_rate.pdf, id=2775, 877.2775pt x 212.795pt>
 File: figures/q1_task_success_rate.pdf Graphic file (type pdf)
 <use figures/q1_task_success_rate.pdf>
 Package pdftex.def Info: figures/q1_task_success_rate.pdf  used on input line 758.
 (pdftex.def)             Requested size: 455.24411pt x 110.42673pt.
-<figures/q4_failure_type_dist_by_width.pdf, id=2999, 536.0025pt x 230.8625pt>
+<figures/q4_failure_type_dist_by_width.pdf, id=2777, 536.0025pt x 230.8625pt>
 File: figures/q4_failure_type_dist_by_width.pdf Graphic file (type pdf)
 <use figures/q4_failure_type_dist_by_width.pdf>
 Package pdftex.def Info: figures/q4_failure_type_dist_by_width.pdf  used on input line 767.
@@ -1307,36 +1312,43 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[18])
+[18]
+<figures/q6_compare_baseline_models_attention_dist.pdf, id=2787, 569.12625pt x 196.735pt>
+File: figures/q6_compare_baseline_models_attention_dist.pdf Graphic file (type pdf)
+<use figures/q6_compare_baseline_models_attention_dist.pdf>
+Package pdftex.def Info: figures/q6_compare_baseline_models_attention_dist.pdf  used on input line 777.
+(pdftex.def)             Requested size: 219.08614pt x 75.73268pt.
 
 
+)
 
-[19
-
- <./figures/q1_task_success_rate.pdf> <./figures/q4_failure_type_dist_by_width.pdf
+[19 <./figures/q1_task_success_rate.pdf> <./figures/q4_failure_type_dist_by_width.pdf
 
 pdfTeX warning: pdflatex (file ./figures/q4_failure_type_dist_by_width.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <./figures/q6_compare_baseline_models_attention_dist.pdf
+
+pdfTeX warning: pdflatex (file ./figures/q6_compare_baseline_models_attention_dist.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >] [20] (./acl_latex.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `acl_latex.out' has not changed.
-(rerunfilecheck)             Checksum: 2621F461B3A0AB6DA2A55C6DA42B04C2;9375.
+(rerunfilecheck)             Checksum: 9A29D839F8A982A8C482A1EB7E096EE5;9676.
  ) 
 Here is how much of TeX's memory you used:
- 33230 strings out of 475160
- 624229 string characters out of 5766573
- 1329602 words of memory out of 5000000
- 54925 multiletter control sequences out of 15000+600000
- 660066 words of font info for 502 fonts, out of 8000000 for 9000
+ 33237 strings out of 475160
+ 624218 string characters out of 5766573
+ 1330602 words of memory out of 5000000
+ 54927 multiletter control sequences out of 15000+600000
+ 660295 words of font info for 504 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,15n,95p,2278b,754s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></usr/share/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on acl_latex.pdf (20 pages, 3093449 bytes).
+Output written on acl_latex.pdf (20 pages, 3060319 bytes).
 PDF statistics:
- 3292 PDF objects out of 3580 (max. 8388607)
- 2327 compressed objects within 24 object streams
- 159 named destinations out of 1000 (max. 500000)
- 81334 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 3289 PDF objects out of 3580 (max. 8388607)
+ 2326 compressed objects within 24 object streams
+ 160 named destinations out of 1000 (max. 500000)
+ 81342 words of extra memory for PDF output out of 89155 (max. 10000000)
 

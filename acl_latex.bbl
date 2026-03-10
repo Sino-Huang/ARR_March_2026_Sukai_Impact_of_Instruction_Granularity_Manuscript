@@ -41,6 +41,11 @@ Dominik Drexler, Jendrik Seipp, and Hector Geffner. 2024.
 \newblock Expressing and exploiting subgoal structure in classical planning using sketches.
 \newblock \emph{J. Artif. Intell. Res.}, 80.
 
+\bibitem[{Fei et~al.(2025)Fei, Wang, Shi, Dai, Cai, Qian, Ji, He, Zhang, Fei, Fu, Gong, and Qiu}]{fei2025liberoplus}
+Senyu Fei, Siyin Wang, Junhao Shi, Zihao Dai, Jikun Cai, Pengfang Qian, Li~Ji, Xinzhe He, Shiduo Zhang, Zhaoye Fei, Jinlan Fu, Jingjing Gong, and Xipeng Qiu. 2025.
+\newblock \href {https://arxiv.org/abs/2510.13626} {Libero-plus: In-depth robustness analysis of vision-language-action models}.
+\newblock \emph{Preprint}, arXiv:2510.13626.
+
 \bibitem[{Glossop et~al.(2025)Glossop, Chen, Bhorkar, Shah, and Levine}]{glossop2025castcounterfactuallabelsimprove}
 Catherine Glossop, William Chen, Arjun Bhorkar, Dhruv Shah, and Sergey Levine. 2025.
 \newblock \href {https://arxiv.org/abs/2508.13446} {Cast: Counterfactual labels improve instruction following in vision-language-action models}.
@@ -220,11 +225,6 @@ Youguang Xing, Xu~Luo, Junlin Xie, Lianli Gao, Heng~Tao Shen, and Jingkuan Song.
 Weimin Xiong, Yifan Song, Qingxiu Dong, Bingchan Zhao, Feifan Song, XWang, and Sujian Li. 2025.
 \newblock \href {https://doi.org/10.18653/v1/2025.findings-emnlp.210} {{MPO}: Boosting {LLM} agents with meta plan optimization}.
 \newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2025}, pages 3914--3935, Suzhou, China. Association for Computational Linguistics.
-
-\bibitem[{Xu et~al.(2025)Xu, Zhu, Chen, Zhao, Huang, Yang, Lu, Xiong, Tomizuka, and Wang}]{xu2025seeingactpromptingspecify}
-Kechun Xu, Zhenjie Zhu, Anzhe Chen, Shuqi Zhao, Qing Huang, Yifei Yang, Haojian Lu, Rong Xiong, Masayoshi Tomizuka, and Yue Wang. 2025.
-\newblock \href {https://arxiv.org/abs/2512.11218} {Seeing to act, prompting to specify: A bayesian factorization of vision language action policy}.
-\newblock \emph{Preprint}, arXiv:2512.11218.
 
 \bibitem[{Yang et~al.(2024)Yang, Zhang, and Hou}]{DBLP:conf/wuwnet/Yang0H24}
 Ruochu Yang, Fumin Zhang, and Mengxue Hou. 2024.

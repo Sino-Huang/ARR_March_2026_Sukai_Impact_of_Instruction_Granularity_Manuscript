@@ -769,6 +769,25 @@ Figure \ref{fig:failure_type_dist_by_width} presents the distribution of failure
     \label{fig:failure_type_dist_by_width}
 \end{figure}
 
+
+\subsection{VLA Transformer Attention Weight Visualization}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/q6_compare_baseline_models_attention_dist.pdf}
+    \captionof{figure}{Attention from action tokens. Self-attention dominates, followed by vision; No clear trend across granularity levels.}
+    \label{fig:attention_distribution_baseline_models}
+\end{figure}
+
+Attention analysis (\Cref{fig:attention_distribution_baseline_models}) reveals there is no obvious reduction in language-token attention. This suggests that in VLA architectures, maintained attention weights do not necessarily equate to language grounding, highlighting a complex dynamic that requires future investigation. 
+
+Nevertheless, a closer inspection of the attention distributions reveals distinct architectural behaviors and compensatory mechanisms.
+
+\paragraph{Autoregressive Models (Compensatory Reading).} Autoregressive generation exhibits a heavy baseline reliance on historical action tokens (accounting for $0.74$ of normalized attention in the Fine setting). Interestingly, when presented with Coarse instructions, attention to the dynamic instruction increases ($\uparrow 0.07$) while action attention decreases ($\downarrow 0.11$). This suggests a compensatory mechanism: as the rule width $w$ increases and immediate subgoals disappear, the model attempts to ground more heavily on the language prompt to search for clues.
+
+\paragraph{Parallel Decoding (Attending more on action modality).} This architecture demonstrates a stark multimodal decoupling under coarse instructions. The attention paid to visual tokens drops significantly ($\downarrow 0.11$) in the Coarse setting, accompanied by an increased reliance on generated action tokens ($\uparrow 0.09$). This could imply that without detailed instruction guidance at each step, parallel decoding intend to trust more on action history to decide the next actions, showing a different strategy from autoregressive models.
+
+\paragraph{Discrete Diffusion (Structural Stability).} Diffusion models exhibit the most balanced attention distribution, maintaining the highest baseline attention to both dynamic instructions ($0.20$) and visual features ($0.32$). Notably, this distribution remains remarkably rigid regardless of instruction granularity (with fluctuations bounded within $\pm 0.04$).
 \subsection{Sample Generated Instructions by Granularity} \label{app_sec:sample_instructions}
 
 To illustrate the qualitative differences between granularity levels, we provide five random samples for each category below. Note how Low (L) granularity explicitly specifies navigation and preconditions (e.g., move toward,'' not yet at''), while High (H) granularity focuses almost exclusively on the final state change (e.g., ``reduce the count of...''), shown in Table~\ref{tab:sample_instructions}.
