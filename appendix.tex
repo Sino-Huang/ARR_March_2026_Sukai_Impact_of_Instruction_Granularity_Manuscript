@@ -770,6 +770,25 @@ Figure \ref{fig:failure_type_dist_by_width} presents the distribution of failure
     \label{fig:failure_type_dist_by_width}
 \end{figure}
 
+\subsection{More Plots for Width vs. Other Linguistic Heuristics as Metric for Language Grounding Complexity}
+
+As shown in the correlation heatmap \Cref{fig:correlation_heatmap}, $w$ is the only metric that maintains a stable negative correlation with Success Rate across all horizons. In contrast, surface metrics like Token Count and Entity Count exhibit near-zero or even positive correlations in shorter horizons (e.g., $r=0.09$ for 1-5 steps). This confirms the Complexity Paradox: while longer, more detailed instructions (higher token/entity counts) could actually provide helpful guidance that improves SR, increasing the latent planning width ($w$) invariably degrades performance.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/q8_correlation_heatmap.pdf}
+    \caption{Correlation heatmap between instruction width and other linguistic heuristics.}
+    \label{fig:correlation_heatmap}
+\end{figure}
+
+Similarly, the consistency analysis in \Cref{fig:consistency_comparison} shows that $w$ possesses the lowest standard deviation ($\sigma=0.033$), indicating its predictive reliability is invariant to task horizons. Surface metrics, particularly Action Verbs ($\sigma=0.155$), are highly volatile. It also shows that $w$ provides the highest mean predictive power ($|r|=0.220$), more than doubling the predictive strength of Token Count ($0.076$) or Entity Count ($0.072$).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/q8_consistency_comparison.pdf}
+    \caption{Consistency comparison between instruction width and other linguistic heuristics.}
+    \label{fig:consistency_comparison}
+\end{figure}
 
 \subsection{VLA Transformer Attention Weight Visualization}
 
