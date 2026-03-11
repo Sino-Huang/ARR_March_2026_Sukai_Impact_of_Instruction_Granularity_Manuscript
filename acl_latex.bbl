@@ -1,10 +1,15 @@
-\begin{thebibliography}{53}
+\begin{thebibliography}{55}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Akula et~al.(2022)Akula, Gella, Padmakumar, Namazifar, Bansal, Thomason, and Hakkani{-}Tur}]{akula-etal-2022-alfred}
 Arjun~R. Akula, Spandana Gella, Aishwarya Padmakumar, Mahdi Namazifar, Mohit Bansal, Jesse Thomason, and Dilek Hakkani{-}Tur. 2022.
 \newblock {ALFRED-L:} investigating the role of language for action learning in interactive visual environments.
 \newblock In \emph{{EMNLP}}, pages 9369--9378. Association for Computational Linguistics.
+
+\bibitem[{Arumugam et~al.(2017)Arumugam, Karamcheti, Gopalan, Wong, and Tellex}]{arumugam2017accurately}
+Dilip Arumugam, Siddharth Karamcheti, Nakul Gopalan, Lawson~LS Wong, and Stefanie Tellex. 2017.
+\newblock Accurately and efficiently interpreting human-robot instructions of varying granularities.
+\newblock \emph{arXiv preprint arXiv:1704.06616}.
 
 \bibitem[{Bjorck et~al.(2025)Bjorck, Casta{\~n}eda, Cherniadev, Da, Ding, Fan, Fang, Fox, Hu, Huang et~al.}]{bjorck2025gr00t}
 Johan Bjorck, Fernando Casta{\~n}eda, Nikita Cherniadev, Xingye Da, Runyu Ding, Linxi Fan, Yu~Fang, Dieter Fox, Fengyuan Hu, Spencer Huang, and 1 others. 2025.
@@ -250,6 +255,11 @@ Cheng Yin, Yankai Lin, Wang Xu, Sikyuen Tam, Xiangrui Zeng, Zhiyuan Liu, and Zho
 Xiaohua Zhai, Basil Mustafa, Alexander Kolesnikov, and Lucas Beyer. 2023.
 \newblock Sigmoid loss for language image pre-training.
 \newblock In \emph{{ICCV}}, pages 11941--11952. {IEEE}.
+
+\bibitem[{Zhang et~al.(2026)Zhang, Zhu, Zhou, and Chen}]{zhang2026restoringlinguisticgroundingvla}
+Ninghao Zhang, Bin Zhu, Shijie Zhou, and Jingjing Chen. 2026.
+\newblock \href {https://arxiv.org/abs/2603.06001} {Restoring linguistic grounding in vla models via train-free attention recalibration}.
+\newblock \emph{Preprint}, arXiv:2603.06001.
 
 \bibitem[{Zheng et~al.(2024)Zheng, Mishra, Chen, Cheng, Chi, Le, and Zhou}]{DBLP:conf/iclr/ZhengMCCCLZ24}
 Huaixiu~Steven Zheng, Swaroop Mishra, Xinyun Chen, Heng{-}Tze Cheng, Ed~H. Chi, Quoc~V. Le, and Denny Zhou. 2024.

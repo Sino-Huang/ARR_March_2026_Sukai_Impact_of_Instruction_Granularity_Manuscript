@@ -130,7 +130,7 @@
 %
 % and set <dim> to something 5cm or larger.
 
-\title{The U-Shaped Challenge of Language Grounding: How Instruction Granularity Shapes Agent Behavior}
+\title{The U-Shaped Challenge of Language Grounding: How Instruction Granularity Shapes Instruction Following Agent Behavior}
 
 % Author information can be set in various styles:
 % For several authors from the same institution:
@@ -238,12 +238,12 @@ The term \emph{abstraction} is viewed as \emph{representational compression}---u
 Importantly, granularity can vary independently of abstraction: ``tidy the room'' is coarse but non-abstract (it leaves the exact required actions underspecified, yet it lacks representational compression.), whereas ``repeat wiping until clean'' is relatively specific yet abstract (it prescribes an action but uses a loop condition to compress multiple executions).
 
 While not framed as the term ``granularity'', we acknowledge that a rich body of work has focused on augmenting language specificity and its impact, for example through coarse-to-fine semantic parsing \citep{dong-lapata-2018-coarse,DBLP:conf/ijcai/LiLF020}.
-Other work generates compositional instructions via constraint dropout and sub-task recombination \citep{huang-etal-2025-musc}, or construct counterfactual instructions to augment data diversity \citep{glossop2025castcounterfactuallabelsimprove}.
+Other work generates compositional instructions via constraint dropout and sub-task recombination \citep{huang-etal-2025-musc}, or construct counterfactual instructions to augment diversity \citep{glossop2025castcounterfactuallabelsimprove}.
 
-Varying instruction detail is often handled via a simple two-part decomposition: high-level plans are converted into sequences of low-level steps before being grounded into actions \citep{DBLP:conf/wuwnet/Yang0H24,DBLP:conf/icml/ShiIEKPVTWWFLDG25}. Most recent Vision Language Action (VLA) works, however, operate with static language instructions \citep{ma2025surveyvisionlanguageactionmodelsembodied,li2025cogvla}. Some models like InstructVLA and ThinkAct explore having chain-of-thought reasoning steps before action decoding \citep{yang2025instructvlavisionlanguageactioninstructiontuning,huang2025thinkactvisionlanguageactionreasoningreinforced}. These hierarchical definitions remain task-specific and qualitative, lacking a unified, cross-task metric to establish shared granularity levels across tasks. Consequently, quantitatively controlled studies on the formal dynamics of instruction granularity remain scarce in the embodied AI domain.
+Varying instruction detail is often handled via a simple two-part decomposition: high-level plans are converted into sequences of low-level steps before being grounded into actions \citep{arumugam2017accurately, DBLP:conf/wuwnet/Yang0H24,DBLP:conf/icml/ShiIEKPVTWWFLDG25}. Most recent Vision Language Action (VLA) works, however, operate with static language instructions \citep{ma2025surveyvisionlanguageactionmodelsembodied,li2025cogvla}. Some models like InstructVLA and ThinkAct explore having chain-of-thought reasoning steps before action decoding \citep{yang2025instructvlavisionlanguageactioninstructiontuning,huang2025thinkactvisionlanguageactionreasoningreinforced}. These hierarchical definitions remain task-specific and qualitative, lacking a unified, cross-task metric to establish shared granularity levels across tasks. Consequently, quantitatively controlled studies on the formal dynamics of instruction granularity remain scarce in the embodied AI domain.
 
 \noindent\textbf{Language Grounding vs. Shortcuts.} 
-Prior work highlights a dichotomy between fragile language sensitivity \citep{akula-etal-2022-alfred} and visuo-motor shortcuts \citep{xing2025shortcut}. We reconcile this via rule width ($w$): low $w$ exhibits low predictability ($P(l| v)$), enforcing deep language grounding. Conversely, $w \ge 2$ yields high $P(l | v)$: this redundancy induces a shift toward shallow grounding, where agents default to visual priors.
+Prior work highlights a dichotomy between fragile language sensitivity \citep{akula-etal-2022-alfred} and visuo-motor shortcuts \citep{xing2025shortcut, zhang2026restoringlinguisticgroundingvla}. We reconcile this via rule width ($w$): low $w$ exhibits low predictability ($P(l| v)$), enforcing deep language grounding. Conversely, $w \ge 2$ yields high $P(l | v)$: this redundancy induces a shift toward shallow grounding, where agents default to visual priors.
 
 
 \section{Rule Width as Instruction Granularity}
