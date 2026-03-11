@@ -1,4 +1,4 @@
-\begin{thebibliography}{55}
+\begin{thebibliography}{53}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Akula et~al.(2022)Akula, Gella, Padmakumar, Namazifar, Bansal, Thomason, and Hakkani{-}Tur}]{akula-etal-2022-alfred}
@@ -86,18 +86,13 @@ Siddharth Karamcheti, Suraj Nair, Ashwin Balakrishna, Percy Liang, Thomas Kollar
 \newblock \href {https://openreview.net/forum?id=6FXtu8clyp} {Prismatic vlms: Investigating the design space of visually-conditioned language models}.
 \newblock In \emph{Forty-first International Conference on Machine Learning, {ICML} 2024, Vienna, Austria, July 21-27, 2024}.
 
-\bibitem[{Kim et~al.(2025{\natexlab{a}})Kim, Shin, Lee, Jung, and Seo}]{kim2025make}
-Bumsoo Kim, Wonseop Shin, Kyuchul Lee, Yonghoon Jung, and Sanghyun Seo. 2025{\natexlab{a}}.
-\newblock Make vlm recognize visual hallucination on cartoon character image with pose information.
-\newblock In \emph{2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)}, pages 5398--5407. IEEE.
-
-\bibitem[{Kim et~al.(2025{\natexlab{b}})Kim, Rhee, Kim, Kim, Lee, Sung, and Jung}]{kim-etal-2025-reflact}
-Jeonghye Kim, Sojeong Rhee, Minbeom Kim, Dohyung Kim, Sangmook Lee, Youngchul Sung, and Kyomin Jung. 2025{\natexlab{b}}.
+\bibitem[{Kim et~al.(2025{\natexlab{a}})Kim, Rhee, Kim, Kim, Lee, Sung, and Jung}]{kim-etal-2025-reflact}
+Jeonghye Kim, Sojeong Rhee, Minbeom Kim, Dohyung Kim, Sangmook Lee, Youngchul Sung, and Kyomin Jung. 2025{\natexlab{a}}.
 \newblock \href {https://doi.org/10.18653/v1/2025.emnlp-main.1697} {{R}efl{A}ct: World-grounded decision making in {LLM} agents via goal-state reflection}.
 \newblock In \emph{Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing}, pages 33433--33465, Suzhou, China. Association for Computational Linguistics.
 
-\bibitem[{Kim et~al.(2025{\natexlab{c}})Kim, Finn, and Liang}]{kim2025fine}
-Moo~Jin Kim, Chelsea Finn, and Percy Liang. 2025{\natexlab{c}}.
+\bibitem[{Kim et~al.(2025{\natexlab{b}})Kim, Finn, and Liang}]{kim2025fine}
+Moo~Jin Kim, Chelsea Finn, and Percy Liang. 2025{\natexlab{b}}.
 \newblock Fine-tuning vision-language-action models: Optimizing speed and success.
 \newblock \emph{arXiv preprint arXiv:2502.19645}.
 
@@ -170,11 +165,6 @@ Abby O'Neill, Abdul Rehman, Abhiram Maddukuri, Abhishek Gupta, Abhishek Padalkar
 Maxime Oquab, Timoth{\'{e}}e Darcet, Th{\'{e}}o Moutakanni, Huy~V. Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El{-}Nouby, Mido Assran, Nicolas Ballas, Wojciech Galuba, Russell Howes, Po{-}Yao Huang, Shang{-}Wen Li, Ishan Misra, Michael Rabbat, Vasu Sharma, and 7 others. 2024.
 \newblock Dinov2: Learning robust visual features without supervision.
 \newblock \emph{Trans. Mach. Learn. Res.}, 2024.
-
-\bibitem[{Pardyl et~al.(2025)Pardyl, Matuszek, Przebieracz, Cygan, Zieli{\'n}ski, and Wolczyk}]{pardyl2025flysearch}
-Adam Pardyl, Dominik Matuszek, Mateusz Przebieracz, Marek Cygan, Bartosz~Micha{\l} Zieli{\'n}ski, and Maciej Wolczyk. 2025.
-\newblock \href {https://openreview.net/forum?id=IJ2cOji0ME} {Flysearch: Exploring how vision-language models explore}.
-\newblock In \emph{The Thirty-ninth Annual Conference on Neural Information Processing Systems Datasets and Benchmarks Track}.
 
 \bibitem[{Patil et~al.(2024)Patil, Zhang, Wang, and Gonzalez}]{DBLP:conf/nips/PatilZ0G24}
 Shishir~G. Patil, Tianjun Zhang, Xin Wang, and Joseph~E. Gonzalez. 2024.
