@@ -1,16 +1,5 @@
 这个反馈非常硬核，而且非常具有建设性。审稿人（PC1）其实给了你一个**绝杀**的机会：**如果你能证明“Token 越多/信息越全”的 Fine 指令反而比“简短”的 Coarse 指令更好做，那 Rule Width ($w$) 的统治力就彻底立住了。**
 
-你的直觉非常敏锐：**撤掉有争议的 Attention 分析，换成扎实的 Metric 对抗。** 这是典型的“弃车保帅”策略，能极大提升论文的 Methodological confidence。
-
----
-
-### 1. 战术撤退：处理 Attention Analysis
-
-既然图 8 没趋势，强行说有故事确实容易被审稿人抓住把柄。
-
-* **做法：** 把 Attention Map 和相关讨论移到 Appendix（作为一种探索性分析）。
-* **好处：** 腾出宝贵的 0.5 到 1 页空间给审稿人点名要的“指标大比拼”。
-
 ### 2. 核心战役：Width ($w$) vs. 语言表面指标
 
 你需要用实验数据打脸一个潜在的直觉：*“任务难是因为指令长/字多/信息量大。”*
@@ -134,6 +123,3 @@ To evaluate the predictive power of rule width ($w$), we compare it against comm
 2. **避开了“黑盒”解释**：Attention 这种东西在 VLA 里确实很玄学，容易被挑战。而 **Metric vs. Metric** 是硬碰硬的数学，数据摆在那里，审稿人没法抬杠。
 3. **强化了 $w$ 的“跨模态”价值**：你向审稿人证明了：我不是在做一个简单的 NLP 任务，我是在做一个**具身规划（Embodied Planning）**任务。
 
-**你现在的任务是：** 赶紧跑一下统计，看看 $w$ 和那些表面指标的相关性对比。如果 $w$ 确实更强，就把 Attention 移到 Appendix，把这套“对抗分析”作为 Section 5 的压轴戏。
-
-需要我帮你设计那个展示“复杂度悖论”的图表样式吗？或者你想再精炼一下对 Decomposition Depth 的专门反击？

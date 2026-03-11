@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex acl_latex"] 1773145089.4987 "acl_latex.aux" "acl_latex.bbl" "acl_latex" 1773145155.38736 0
+["bibtex acl_latex"] 1773216809.6267 "acl_latex.aux" "acl_latex.bbl" "acl_latex" 1773216847.89223 0
   "./acl_natbib.bst" 1773020910.98451 45186 3d1af46d62cc9172ef6e42b56c1cd613 ""
   "./custom.bib" 1773072382.55059 54313 8a754a56ec8d90003fe5e5287f1763e7 ""
-  "acl_latex.aux" 1773145155.2022 54384 e0cc5170054857818ef2f0afd3295705 "pdflatex"
+  "acl_latex.aux" 1773216847.70963 54364 9d317d065da14fbbaed9323840e0ca39 "pdflatex"
   (generated)
   "acl_latex.bbl"
   "acl_latex.blg"
   (rewritten before read)
-["pdflatex"] 1773145153.63538 "/home/sukaih/Documents/Study_Documents/MonashRF/Instruction_Granularity-ARR-MAR-26/acl_latex.tex" "acl_latex.pdf" "acl_latex" 1773145155.38757 0
-  "/home/sukaih/Documents/Study_Documents/MonashRF/Instruction_Granularity-ARR-MAR-26/acl_latex.tex" 1773145153.52324 55244 81ef3b93f7ff65a39e4832708789d273 ""
+["pdflatex"] 1773216846.09606 "/home/sukaih/Documents/Study_Documents/MonashRF/Instruction_Granularity-ARR-MAR-26/acl_latex.tex" "acl_latex.pdf" "acl_latex" 1773216847.89244 0
+  "/home/sukaih/Documents/Study_Documents/MonashRF/Instruction_Granularity-ARR-MAR-26/acl_latex.tex" 1773216807.45584 55651 3e53c1dbf7b503c35495c620fe9d2bbb ""
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1767555874 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc" 1767555874 7631 5169ff1acd97ff1c4ab83563c99f96f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1767555874 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -249,11 +249,11 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1767831481 5323809 3f6f0d8988ffbc9eb4eb1e8b5527c1db ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1767831438 2008709 a64c30eb9e080ed3a7eb1b6b8811ac78 ""
   "acl.sty" 1773020911.02051 11615 e2c027f483aa40e577ed34264c8b0655 ""
-  "acl_latex.aux" 1773145155.2022 54384 e0cc5170054857818ef2f0afd3295705 "pdflatex"
-  "acl_latex.bbl" 1773145089.55582 24781 1d5b051d6188865f04cbd8ae4123d8d1 "bibtex acl_latex"
-  "acl_latex.out" 1773145155.2042 9676 9a29d839f8a982a8c482a1eb7e096ee5 "pdflatex"
-  "acl_latex.tex" 1773145153.52324 55244 81ef3b93f7ff65a39e4832708789d273 ""
-  "appendix.tex" 1773137890.91898 48192 3d8962e7363995e85aa5bdced37c8781 ""
+  "acl_latex.aux" 1773216847.70963 54364 9d317d065da14fbbaed9323840e0ca39 "pdflatex"
+  "acl_latex.bbl" 1773216809.69062 24781 1d5b051d6188865f04cbd8ae4123d8d1 "bibtex acl_latex"
+  "acl_latex.out" 1773216847.71163 9676 9a29d839f8a982a8c482a1eb7e096ee5 "pdflatex"
+  "acl_latex.tex" 1773216807.45584 55651 3e53c1dbf7b503c35495c620fe9d2bbb ""
+  "appendix.tex" 1773216845.97763 48213 93ddb5c4f586b85cb3166c852738d4d7 ""
   "figures/experiment_illu.pdf" 1773019739.06644 717059 1dc65184b6a9c955e1c3ffbdfe15bce0 ""
   "figures/plan_steps_distribution_boxplot.png" 1773019739.06697 563001 f13439a60c496ba5fd5312f95fe00c83 ""
   "figures/q1_main.pdf" 1773019739.06742 99229 3f7515ebe5cff075bd7307d961729a99 ""
@@ -265,7 +265,7 @@
   "figures/q4_failure_type_extreme_task_example.pdf" 1773019739.06924 102045 09bb420746d8f90f7c99c943aa4285f0 ""
   "figures/q5_sr_diff_by_training_setup.pdf" 1773019739.06957 126919 b85c89873342965bec65506acec4c28e ""
   "figures/q6_compare_baseline_models_attention_dist.pdf" 1773019739.06985 140049 ee97e0b35f970ecbadf44e989c146232 ""
-  "figures/q7_loss_comparison.pdf" 1773144906.17831 55196 078246f824f3136ead43939c134daa2b ""
+  "figures/q7_loss_comparison.pdf" 1773216788.0428 74818 add4a31d89c799fd55a70392377520bc ""
   "figures/running_examples.pdf" 1773019739.06996 469211 d7825521493e79aab472f5e23bad0c69 ""
   "tables/admissible_chain_progression.tex" 1773042159.60771 1326 a017753853e937b5c4f73505d52d631a ""
   (generated)
