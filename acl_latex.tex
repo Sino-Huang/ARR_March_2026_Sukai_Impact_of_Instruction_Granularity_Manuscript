@@ -264,25 +264,23 @@ Agents' action sets constrain how state transitions are executed, but \emph{widt
 
 % NOTE: In this section, we need to transition from the intuitive concept of "planning demand" to a rigorous, quantifiable metric. Since we are adapting Rule Width from classical planning (Bonet et al., 2019), the structure should mirror a formal derivation: starting from a standard planning domain and ending with a metric that can be applied to natural language instructions via their symbolic grounding.
 
-The impact of \emph{instruction granularity} on language-guided embodied agent performance remains underexplored largely because the field lacks a \textbf{formal, quantifiable, cross-task} measure of granularity. Building on the limitations of heuristic metrics discussed in \Cref{sec:introduction}, we formally equate \emph{instruction granularity} with \emph{latent planning demand}, i.e., the implicit decision-making burden required to ground text into executable actions. We operationalize this using \emph{rule width ($w$)} by framing natural-language instructions as policy sketches \citep{DBLP:journals/jair/DrexlerSG24}. Under this framework, fine-grained instructions decompose tasks into minimal-width sub-problems, whereas coarse instructions leave a large ``grounding gap'' that the agent must resolve internally.
+The impact of \emph{instruction granularity} on language-guided embodied agent performance remains underexplored largely because the field lacks a \textbf{formal, quantifiable, cross-task} measure of granularity. Building on the limitations of heuristic metrics discussed in \Cref{sec:introduction}, we formally equate \emph{instruction granularity} with \emph{latent planning demand}, i.e., the implicit decision-making burden required to ground text into executable actions. We operationalize this using \emph{rule width ($w$)} \citep{DBLP:journals/jair/DrexlerSG24}. 
 
 \subsection{Symbolic Task Representation}
 
-While our agents will be trained on raw multimodal observations, we adopt a symbolic, relational state abstraction. Many embodied benchmarks provide such structured representations---object properties and relations---that can be expressed as \emph{fluents} to form symbolic state or goal conditions \citep{shridhar2020alfred,DBLP:conf/corl/LiHGMPWFLSKL0F024}. Formally , we consider a classical planning problem $P = \langle \mathcal{F}, \mathcal{A}, I, G \rangle$, where $\mathcal{F}$ is a set of fluents, $\mathcal{A}$ a set of actions, $I$ the initial state, and $G$ the goal. 
+While our agents will be trained on raw multimodal observations, we adopt a symbolic, relational state abstraction as our problem setting. Many embodied benchmarks provide such structured representations: object properties and relations are expressed as \emph{fluents} to form symbolic state or goal conditions internally in their engine \citep{shridhar2020alfred,DBLP:conf/corl/LiHGMPWFLSKL0F024}. Formally, we consider a classical planning problem $P = \langle \mathcal{F}, \mathcal{A}, I, G \rangle$, where $\mathcal{F}$ is a set of fluents, $\mathcal{A}$ a set of actions, $I$ the initial state, and $G$ the goal. 
 
-To bridge raw states and high-level instructions, we define a set of \textbf{features} $\Phi = \{\phi_1, \ldots, \phi_n\}$, where $\phi_i$ is a Boolean or integer-valued function over state space $S$. These features serve as domain-level abstractions that capture task-relevant aspects of the environment. Thus, each $s$ is associated with a \textbf{feature valuation vector} $\phi(s) = \left(\phi_1(s), \ldots, \phi_n(s)\right)$.
+The key advantage of width is its task-independence. By defining a shared feature set $\Phi = \{\phi_1, \ldots, \phi_n\}$ across the domain, instructions can be formalized as a set of ``if-then'' rules specifying state progressions in terms of feature valuation vectors $\phi(s) = \left(\phi_1(s), \ldots, \phi_n(s)\right)$. This establishes a unified metric space where the level of granularity of any instruction can be compared across different tasks.
 
 \subsection{Instructions as Rule Sets $\mathcal{R}$} % Sec 3.3
 
-
-
-We formalize each instruction as a symbolic interpretation, represented as a set of ``if-then'' rules $\mathcal R = \{r_1,\ldots, r_m\}$ defined over the feature space $\Phi$, This rule-based representation does not aim to capture the full expressiveness of natural language; instead, it distills the constraint/goal structure that governs the computational cost incurred by a symbolic search algorithm (i.e., planning demand). Specifically, each $r_i$ is of the form $C_{r_i} \mapsto E_{r_i}$:
+Concretely, we represent each instruction as a set of rules $\mathcal{R} = \{r_1,\ldots, r_m\}$ defined over $\Phi$, where each $r_i$ is of the form $C_{r_i} \mapsto E_{r_i}$:
 \begin{itemize}[leftmargin=*]
     \item $C_{r_i}$ (the \emph{condition}) is a conjunction of feature constraints. For a Boolean feature $p$, a constraint is $p$ or $\lnot p$; for a numerical feature $n$, it is $n = 0$ or $n > 0$.
     \item $E_{r_i}$ (the \emph{effect}) is a conjunction of feature changes. For a Boolean feature $p$, an effect is $p$, $\lnot p$, or $p?$ (allowing any change); for a numerical feature $n$, it is $n\downarrow$ (decrease), $n\uparrow$ (increase), or $n?$ (any change).
 \end{itemize}
 These forms capture the core semantics of the instructions we study. A rule $r_i$ is \textbf{fulfilled} by a state sequence $(s, \dots, s')$ if $\phi(s) \models C_{r_i}$ and the pair $(\phi(s), \phi(s'))$ satisfies the changes in $E_{r_i}$ (e.g., $\forall (n \downarrow) \in E_{r_i}, \phi_n(s') < \phi_n(s)$) while keeping unmentioned features constant (i.e., $\phi_j(s') = \phi_j(s)$ for $j \notin E_{r_i}$).
-To ensure that the agent's performance strictly reflects its grounding ability rather than the unsolvability of the task, we guarantee that all instruction rule sets $\mathcal{R}$ are executable and dead-end-free. Formally, this is achieved by ensuring the rules are well-formed (i.e., they terminate at the goal) and satisfy the soundness and closure properties \citep{DBLP:conf/aaai/BonetG21}.
+All instruction rule sets $\mathcal{R}$ are constructed to be executable and dead-end-free by satisfying the soundness and closure properties (i.e., they terminate at the goal) \citep{DBLP:conf/aaai/BonetG21}. This guarantee ensures that the agent's performance strictly reflects the language grounding complexity of different granularity levels, isolating it from task unsolvability.
 
 \begin{figure}[t]
     \centering
@@ -294,15 +292,15 @@ To ensure that the agent's performance strictly reflects its grounding ability r
 \subsection{Rule Width as a Granularity Measure} % Sec 3.4
 \label{subsec:rule_width_granularity}
 % (规则宽度作为粒度度量) 核心贡献部分。首先基于宽度理论，定义单条规则的宽度。然后，定义整个指令（即规则集）的宽度为其所有规则宽度的最大值。最后，论证该度量如何对应指令粒度：低宽度=细粒度（提供详细子目标），高宽度=粗粒度（留下更多并发规划需求）。
-The width $w(r_i)$ of a rule $r_i$ represents the number of state variables (features) that must be tracked concurrently to fulfill the transition. Formally, for a rule to have width $k$, the agent must coordinate at most $k$ features from $\Phi$ to reach the effect $E_{r_i}$ from a state satisfying $C_{r_i}$ \citep{DBLP:conf/ecai/LipovetzkyG12}.
+The width $w(r_i)$ of a rule $r_i$ represents the maximum number of features that must be simultaneously tracked in any state along an optimal transition from a state satisfying $C_{r_i}$ to one satisfying $E_{r_i}$ \citep{DBLP:conf/ecai/LipovetzkyG12}. This is distinct from simply counting the features that appear in the condition or effect, as those may be handled sequentially; it reflects the maximal concurrency required to execute the rule. We define the granularity of an instruction $\mathcal{R}$ as the maximum width among its constituent rules: $w(\mathcal R) = \max_{r_i \in \mathcal R} w(r_i)$.
 
-We define the granularity of an instruction $\mathcal{R}$ by its width-based planning bottleneck: the maximum width among its constituent rules: $w(\mathcal R) = \max_{r_i \in \mathcal R} w(r_i)$.
+Low width corresponds to fine-grained instructions that decompose tasks into minimal, easily grounded subproblems; high width indicates coarse instructions that leave a large ``grounding gap'' for the agent to resolve internally.
 
 % (贯穿实例) 使用一个具体任务（例如您提到的“铺设木地板”），完整演示上述过程：任务的目标、定义的特征、为不同粒度设计的规则集，以及计算出的规则宽度。用此例直观说明“宽度”如何作为调节指令粒度的旋钮。
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.85\linewidth]{figures/experiment_illu.pdf}
+    \includegraphics[width=0.95\linewidth]{figures/experiment_illu.pdf}
     \caption{\textsc{Mini-BEHAVIOR-Gran} Experimental Pipeline. We evaluate the impact of instruction granularity across three VLA action-decoding strategies. During inference time, an Oracle Instructor evaluates the current world state to decide available rule set $\mathcal R_a$ and active rule $r_t$. A rule-based natural language instruction $l_t$ is generated accordingly. The process iterates until completion or max steps.}
     \label{fig:experiment_illu}
 \end{figure*}
@@ -547,6 +545,10 @@ This work introduces rule width ($w$) as a cross-task formalism for instruction 
 
 \appendix
 % Start of appendices customization
+
+\section{Use of LLM Statement} 
+An LLM was used only for polishing language; the scientific content is entirely original.
+
 
 \section{Technical Appendix}
 
