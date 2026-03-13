@@ -206,21 +206,6 @@ Instruction granularity remains an uncontrolled variable in language-guided embo
 \section{Introduction}
 \label{sec:introduction}
 
-% what is the task, what is the input output, why this is important
-
-Language-guided embodied agents learn a policy $\pi(a|v,l)$ that maps visual observations $v$ and language instructions $l$ to executable actions $a$. Recent progress has largely focused on model architectures, most notably the Vision-Language-Action (VLA) paradigm and its advanced variants that adapt \emph{world models} for future frame prediction ($v_t \mapsto v_{t+1}$) or \emph{Chain-of-Thought} (CoT) reasoning for intermediate planning. Yet the impact of \emph{instruction granularity} remains underexplored. Instruction granularity refers to the level of detail provided in $l$ to guide agent decision-making, and it is typically an uncontrolled variable in current datasets and evaluations. It matters because varying granularity fundamentally alters the cross-modal alignment difficulty and the latent planning burden imposed on the agent. Understanding this impact is crucial not only for optimizing instruction design during training, but also for ensuring model robustness across the diverse human instruction styles encountered at test time.
-
-% research gap, why few people have studied this, and what are the challenges. 1. lack of benchmark that systematically varies granularity for one task while controlling for other factors. 2. lack well-accepted metric to quantify granularity in a way that reflects the agent's language grounding difficulty. 
-
-A systematic investigation of instruction granularity has been hindered by two key bottlenecks. First, current embodied AI benchmarks seldomly support controlled manipulation of instruction granularity while holding other confounding factors (e.g., task horizon, perceptual complexity) constant. In most cases each task is assigned with a single static instruction, with 
-
-
-% thus what we have done 
-
-% contribution bullet point. 
-
-----
-
 Despite the rapid progress in language-guided embodied AI, the community has yet to establish a consensus on a unified metric to quantify the granularity of instructions during language grounding. In this domain, language serves a specific functional role: it provides structural information to decompose complex tasks and reduce the search space of the underlying sequential decision-making process. Consequently, \emph{instruction granularity} should not be conflated with superficial syntactic properties, such as sentence length or the number of entities mentioned; rather, it must rigorously reflect the \emph{decision-making burden} that remains for the agent to resolve internally after grounding the language into the action space.
 
 Existing research conceptualizes instruction granularity through two dominant lenses, both of which struggle to provide a consistent measure of the decision-making burden required for grounding.
