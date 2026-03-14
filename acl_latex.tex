@@ -123,6 +123,9 @@
 \crefname{section}{\S}{\S\S}
 \Crefname{section}{\S}{\S\S}
 
+\newtheorem*{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma} % Shares the same counter as theorem
 
 % If the title and author information does not fit in the area allocated, uncomment the following
 %
@@ -130,7 +133,7 @@
 %
 % and set <dim> to something 5cm or larger.
 
-\title{The U-Shaped Challenge of Language Grounding: How Instruction Granularity Shapes Instruction Following Agent Behavior}
+\title{Mini-BEHAVIOR-Gran: Revealing U-Shaped Effects of Instruction Granularity on Language-Guided Embodied Agents}
 
 % Author information can be set in various styles:
 % For several authors from the same institution:
@@ -200,65 +203,134 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Instruction granularity remains an uncontrolled variable in language-guided embodied AI, leaving its impact unknown. We propose an agent-centric formalization of granularity as rule width ($w$), a cross-task metric adapted from width-based planning. By measuring the peak concurrent state-feature dependencies an agent must resolve, we introduce $w$ as a measure of instruction granularity and show that it consistently correlates with the decision-making burden neural agents face when grounding language. We also introduce \textsc{Mini-BEHAVIOR-Gran}, a controlled benchmark systematically varying $w$ across 20 tasks while holding perception and control constant. Our analysis reveals a non-monotonic, U-shaped performance curve: while fine-grained instructions ($w \le 1$) enforce deep semantic alignment, coarse ones ($w \ge 2$) induce shallow grounding and visuo-motor shortcuts driven by high instruction predictability ($P(l|v)$). We further uncover a generalization asymmetry, where coarse-trained models transfer to fine instructions but not vice-versa, and show that mixed-granularity training is essential for robust language grounding. 
+Instruction granularity is an important yet poorly controlled variable in language-guided embodied AI. Existing benchmarks typically pair each task with a single static instruction, making it difficult to study how agent behavior changes when the same task is described at different levels of detail. We introduce \textsc{Mini-BEHAVIOR-Gran}, a new benchmark for controlled studies of instruction granularity that extends \textsc{Mini-BEHAVIOR} with multiple instruction variants per task, ranging from high-level goal descriptions to step-by-step guidance. Using this benchmark, we compare four candidate metrics for cross-task granularity quantification: token count, entity count, action-verb count, and \emph{planning-width}, and find that width correlates most consistently with agent performance. Using width to organize training and evaluation further reveals a non-monotonic U-shaped relationship between instruction granularity and performance, with peaks at both fine and coarse extremes. Further analysis suggests that the coarse-granularity performance rebound is associated with shallow grounding, where agents learn vision-dominant policies.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:introduction}
 
-% what is the task, what is the input output, why this is important
+% Step 1: what is the task, what is the input output, why this is important
 
-Language-guided embodied agents learn a policy $\pi(a|v,l)$ that maps visual observations $v$ and language instructions $l$ to executable actions $a$. Recent progress has largely focused on model architectures, most notably the Vision-Language-Action (VLA) paradigm and its advanced variants that adapt \emph{world models} for future frame prediction ($v_t \mapsto v_{t+1}$) or \emph{Chain-of-Thought} (CoT) reasoning for intermediate planning. Yet the impact of \emph{instruction granularity} remains underexplored. Instruction granularity refers to the level of detail provided in $l$ to guide agent decision-making, and it is typically an uncontrolled variable in current datasets and evaluations. It matters because varying granularity fundamentally alters the cross-modal alignment difficulty and the latent planning burden imposed on the agent. Understanding this impact is crucial not only for optimizing instruction design during training, but also for ensuring model robustness across the diverse human instruction styles encountered at test time.
+Language-guided embodied agents learn a policy $\pi(a|v,l)$ that maps visual observations $v$ and language instructions $l$ to executable actions $a$. Recent progress has largely focused on model architectures, most notably the Vision-Language-Action (VLA) paradigm \citep{DBLP:conf/corl/KimPKXB0RFSVKBT24,pmlr-v305-black25a,shukor2025smolvla} and its advanced variants that adapt \emph{world models} for future frame prediction ($v_t \mapsto v_{t+1}$) \citep{wu2026pragmaticvlafoundationmodel,DBLP:conf/cvpr/ZhaoLKFZWLMHFHL25,bi2025motusunifiedlatentaction} or \emph{Chain-of-Thought} (CoT) reasoning for intermediate planning \citep{ye2025vlar1enhancingreasoningvisionlanguageaction,nvidia2025gr00tn1openfoundation,yin2025deepthinkvla}. Yet the impact of \emph{instruction granularity} remains underexplored. Instruction granularity refers to the level of detail provided in $l$ to guide agent decision-making \citep{arumugam2017accurately}, and it is typically an uncontrolled variable in current datasets and evaluations. It matters because varying granularity fundamentally alters the cross-modal alignment difficulty and the latent planning burden imposed on the agent. Understanding this impact is crucial not only for optimizing instruction design during training, but also for ensuring model robustness across diverse human instruction styles encountered at test time.
 
-% research gap, why few people have studied this, and what are the challenges. 1. lack of benchmark that systematically varies granularity for one task while controlling for other factors. 2. lack well-accepted metric to quantify granularity in a way that reflects the agent's language grounding difficulty. 
+% Step 2: research gap, why few people have studied this, and what are the challenges. 1. lack of benchmark that systematically varies granularity for one task while controlling for other factors. 2. lack well-accepted metric to quantify granularity in a way that reflects the agent's language grounding difficulty. 
 
-A systematic investigation of instruction granularity has been hindered by two key bottlenecks. First, current embodied AI benchmarks seldomly support controlled manipulation of instruction granularity while holding other confounding factors (e.g., task horizon, perceptual complexity) constant. In most cases each task is assigned with a single static instruction, with 
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/running_example.png}
+    \caption{For the same task (cleaning $k$ shoes), a coarse instruction requires the agent to infer target entities and executable actions. In contrast, a fine-grained instruction provides more detailed steps, significantly reducing the language grounding effort to reach the goal.}
+    \label{fig:running_example_init}
+\end{figure}
 
+A systematic investigation of instruction granularity has been hindered by two key bottlenecks. First, existing embodied AI benchmarks lack controlled variation in instruction granularity. Typically, each task instance is paired with a single, static instruction, making it difficult to study how an agent's performance scales as instructions shift from fine-grained (e.g., detailed step-by-step) to coarse (e.g., high-level goal descriptions). For example, popular benchmarks such as \textsc{LIBERO} and \textsc{BEHAVIOR-1K} provide only fixed or high-level instructions. Even recent suites like \textsc{LIBERO-Plus} \citep{fei2025liberoplus}, which aim to increase diversity, primarily vary visual conditions (e.g., lighting, sensor noise) while keeping the language input fixed.
 
-% thus what we have done 
+Second, and perhaps more fundamentally, the field lacks a well-accepted and formalized metric for quantifying \emph{instruction granularity}. Since granularity represents the density of guidance provided for decision-making, an ideal metric should directly reflect the complexity of grounding language into executable actions. With the advent of Large Language Models (LLMs), a seemingly natural proxy is to use the hierarchical depth of an instruction, i.e., its specific level within a decomposed plan, as a measure of granularity \citep{gao2025vlaos}. However, such a metric fails to support meaningful cross-task comparisons because it conflates instructional detail with the task's inherent complexity. Different tasks exhibit fundamentally different internal structures: some involve interleaved subgoals that resist clean hierarchical decomposition (e.g., the Sussman anomaly; \citealp{sussman1975computer}), whereas others can be arbitrarily elongated into superficial substeps. Consequently, hierarchical levels cannot establish a consistent granularity scale across diverse tasks, thereby undermining their utility for investigating the general impacts of granularity on language grounding. 
+
+% Step 3: thus what we have done, to enable systematic study of the impact of instruction granularity on language-guided embodied agent learning, we introudce Mini-BHEAVIOR-Gran. (Give some stats about this benchmark.) Then say within this benchmark, we further test 4 different cross-task metric candidate for instruction granularity: token counts, entity counts, action verb counts and width (introduce what is width as NLP people do not know it) (width vs depth it does not conflate with task structure). Introduce the concept of width, and say we found width as metric that best correlates with the agent's performance across tasks horizon and VLA model variants. Then using width as the granularity metric, we train the agents using different instruction with varying granularity quantified by width, and find a non-monotonic U-shaped relationship. Finally, we did some probe analysis to diagnose the underlying mechanism of this U-shaped relationship.
+
+To enable systematic study of how instruction granularity shapes language-guided embodied agents, we introduce \textsc{Mini-BEHAVIOR-Gran}, an extension of \textsc{Mini-BEHAVIOR} \citep{jin2023minibehavior} that provides multiple instruction variants per task, spanning from high-level goal description to step-by-step instructions. Leveraging Minigrid's engine \citep{chevalier-boisvert2023minigrid}, we construct 803 unique problem instances across 20 domains, yielding 10,253 trajectory episodes, each paired with dynamic instructions that evolve as the agent progresses through the task. 
+Within this controlled setting, we compare four metrics for quantifying granularity: token count, entity count, action-verb count, and \emph{width}. Adapted from width-based planning, width measures planning complexity as the maximum number of state features that must be jointly tracked to execute an instruction \citep{DBLP:conf/aaai/BonetFG19,DBLP:journals/jair/DrexlerSG24}. As discussed earlier, while \emph{decomposition depth} might seem a natural proxy for latent planning complexity, it fails to support cross-task comparison. In contrast, \emph{width} is defined over a \emph{shared feature space} common to all tasks, enabling scores that are comparable across tasks and capture the inherent planning burden an instruction imposes.
+
+Our study shows that \emph{width} correlates more consistently with agent performance across task horizons and VLA model variants than the other three metrics, suggesting that it is a stronger quantitative proxy for instruction granularity in language grounding. Using width to organize training conditions at different granularities, we further uncover a non-monotonic U-shaped relationship between instruction granularity and agent performance. Finally, we probe the mechanisms underlying this effect. Using instruction predictability ($P(l|v)$) as a diagnostic signal, we find that the performance rebound at coarse granularity is associated with shallow grounding, whereby agents tend to bypass multimodal alignment and rely on vision-dominant policies.
 
 % contribution bullet point. 
-
-----
-
-Despite the rapid progress in language-guided embodied AI, the community has yet to establish a consensus on a unified metric to quantify the granularity of instructions during language grounding. In this domain, language serves a specific functional role: it provides structural information to decompose complex tasks and reduce the search space of the underlying sequential decision-making process. Consequently, \emph{instruction granularity} should not be conflated with superficial syntactic properties, such as sentence length or the number of entities mentioned; rather, it must rigorously reflect the \emph{decision-making burden} that remains for the agent to resolve internally after grounding the language into the action space.
-
-Existing research conceptualizes instruction granularity through two dominant lenses, both of which struggle to provide a consistent measure of the decision-making burden required for grounding.
-Studies in Natural Language Processing (NLP) typically operationalize granularity via surface-form properties, such as textual specificity or discourse structure (e.g., number of entities mentioned) \citep{dong-lapata-2018-coarse,huang-etal-2025-musc}. While these effectively measure syntactic complexity, they adopt a \emph{text-centric} rather than \emph{agent-centric} view. Consequently, they cannot quantify how much an instruction reduces an embodied agent's \emph{decision-making burden}.
-
-From an \emph{agent-centric} perspective, the essential function of instruction is to decompose complex tasks into tractable sub-problems, thereby reducing the planning burden \citep{DBLP:conf/aips/DrexlerSG22}. 
-Recent work in LLM-based agents thus treats granularity as \emph{decomposition depth}---the extent to which an instruction enumerates subgoals versus stating only the final objective \citep{DBLP:conf/wuwnet/Yang0H24,DBLP:conf/corl/MyersZMFL24,DBLP:conf/icml/ShiIEKPVTWWFLDG25,zhong2025survey}. 
-While this aligns with our view that \emph{instruction granularity} modulates planning demand, decomposition depth remains an unstable, task-dependent proxy. It conflates instructional guidance with the task's inherent structure: complex tasks with interleaved subgoals may resist breakdown (e.g., the Sussman Anomaly \citep{sussman1975computer}), while trivial ones can be artificially elongated.
-
-To operationalize this, we draw inspiration from the concept of policy sketches \citep{DBLP:journals/jair/DrexlerSG24} and formalize instruction granularity as rule width ($w$) \citep{DBLP:conf/aaai/BonetFG19}. We hypothesize that $w$ captures the decision-making burden that an instruction imposes, and we provide initial empirical evidence supporting this hypothesis, showing that it is a more reliable indicator than common linguistic heuristics. To this end, the contributions of our paper are:
-
-\textbf{(1) Width as a Formalism for Instruction Granularity:} We formalize instruction granularity as \emph{rule width} ($w$), adapting a concept from width-based planning \citep{DBLP:conf/aaai/BonetFG19,DBLP:journals/jair/DrexlerSG24} that measures the peak number of concurrent state variables (features $\Phi$) that must be tracked to fulfill the instructions. We argue $w$ measures the \emph{intrinsic decision complexity} of a task-instruction pair, applicable to both symbolic and neural agents (\Cref{sec:granularity_as_width}).
-
-\textbf{(2) A Controlled Benchmark:} We present \textsc{Mini-BEHAVIOR-Gran}, the first testbed to isolate instruction granularity from confounding factors like task horizon and perception. It enables the first study of how instruction granularity affects language-guided embodied agent performance (\Cref{sec:benchmark}).
-
-\textbf{(3) The U-Shaped Trend and Width Cap:} In this controlled benchmark, we identify a non-monotonic U-shaped relationship where performance peaks at the Fine ($w=0$) and Coarse ($w \ge 2$) extremes. We also identify a performance collapse at high width ($w \ge 4$): agents fail to fulfill instructions requiring maintaining concurrent features $\ge 4$,  revealing a sharp language grounding boundary within our experimental setting (\Cref{sec:experiments}).
-
-\textbf{(4) Shallow Grounding and Visuo-Motor Shortcuts:} We diagnose the performance rebound at $w \ge 2$ not as true mastery, but as a shift toward \emph{shallow grounding}. Driven by high instruction predictability ($P(l|v)$), agents increasingly rely on visuo-motor shortcuts rather than deep semantic alignment. Through controlled semantic perturbations, we show that mixed-granularity training mitigates this vulnerability, equipping agents with deeper semantic resilience against suboptimal instructions. Additionally, we identify an \emph{asymmetric generalization} pattern: agents trained on coarse instructions successfully transfer to fine-grained ones, but not vice versa.
+\paragraph{Contribution.} We make the following contributions: \textbf{(1)} Introduce \textsc{Mini-BEHAVIOR-Gran}, a benchmark for controlled study of instruction granularity. \textbf{(2)} Demonstrate that \emph{width} is the most consistent cross-task proxy among the metrics we evaluate. \textbf{(3)} Unveil a non-monotonic U-shaped relationship between granularity and agent performance; and \textbf{(4)} Provide evidence that the coarse-granularity performance rebound is linked to shallow grounding.
 
 
+\section{\textsc{Mini-Behavior-Gran}: A Controlled Benchmark for Instruction Granularity}
+
+Following prior work on varying granularities and abstraction in robot instructions \citep{DBLP:journals/arobots/ArumugamKGWRWT19}, we define \emph{instruction granularity as the level of details and abstraction with which a language instruction specifies a task. In embodied settings, instruction granularity determines the latent planning complexity that an agent must resolve to map instructions into executable actions.} 
+
+% Lizhen suggest we do not put large amount to discuss width. But move the focus to how to construct this benchmark. So we still need to say we are having symbolic representations under the hood, and a shared features space across tasks, feature can be either boolean or numerical types. Then we state how to construct the instructions with varying granularity, we first define the instruction as a set of rules defined over the shared feature space, where each rule is an if-then statement specifying a desired state progression. Then start from finest-grained granularity, we concatenate two adjecent rules to get a coarser-grained instruction, and we can repeat this process until we get the coarsest-grained instruction. Then we provide a running example to illustrate this process. Then we show quantify of this benchmark (some stats). Then we show list of the 4 candidate metrics for instruction granularity, and we show stats about the distribution of these metrics across the instruction variants in our benchmark. Then we can discuss a bit what about is width because this is correlated to search complexity of width-based planning, and clearly state that no evidence yet that this search complexity in planning algorithms is directly related to the language grounding complexity for learning-based agents, but this is good try to quantify the instruction granularity in a way that is more grounded in the agent's decision-making process, while the assumption under other metrics are that more tokens, entities, or action verbs directly translate to more complex grounding. 
+
+Reiterating the example in \Cref{fig:running_example_init}, we note that a coarse instruction (e.g., ``clean the shoes'') leaves the agent with a large language grounding gap, as it must infer the target entities (e.g., which shoes to clean) and the executable actions (e.g., how to clean). In contrast, a fine-grained instruction provides detailed steps that significantly reduce the language grounding effort to fulfill the same task. In this section, we describe how we construct \textsc{Mini-BEHAVIOR-Gran} to systematically vary instruction granularity for the same task.
+
+\subsection{Shared Feature Space and Symbolic Layer}
+Many embodied AI simulators expose symbolic representations alongside raw pixel observations for task specification, progress monitoring, or success evaluation \citep{shridhar2020alfred, puig2020watchandhelp, li2022igibson, DBLP:conf/corl/0002ZWGSMWLLSAH22}. We leverage this symbolic backbone to define a shared feature space $\Phi$ common across all tasks, representing each environment state $s$ as a feature vector $\phi(s) = (\phi_1(s), \ldots, \phi_n(s))$. Features in $\Phi$ include both Boolean variables (e.g., $H_r$: holding the rag; $S_r$: the rag is soaked) and numerical variables (e.g., $p_r$: distance to the rag; $N_f$: number of uncleaned shoes). This shared feature space provides the underlying vocabulary for representing instructions, which in turn allows us to quantify instruction granularity across tasks.
+
+\subsection{Rule-Based Instruction Representation}
+Building on the shared feature space $\Phi$, we construct each instruction as a set of \emph{``if-then'' rules} that specify desired state progression. This choice is motivated by the fact that sequential decision-making tasks in automated planning are commonly modeled in terms of state variables and transitions with preconditions and effects, following the STRIPS formalism \citep{haslum2019introduction}. Thus, rule-based instructions explicitly encode the latent planning complexity an instruction imposes, as agents must determine how to transition from states satisfying a rule's precondition to those satisfying its effect. Concretely, an instruction in this study is a set of rules $\mathcal{R} = \{r_1, \ldots, r_m\}$, where each rule $r_i$ is of the form $C_{r_i} \mapsto E_{r_i}$:
+
+\begin{itemize}[leftmargin=*]
+    \item $C_{r_i}$ (the \emph{condition}) is a conjunction of feature constraints. For a Boolean feature $p$, a constraint is $p$ or $\lnot p$; for a numerical feature $n$, it is $n = 0$ or $n > 0$.
+    \item $E_{r_i}$ (the \emph{effect}) is a conjunction of feature changes. For a Boolean feature $p$, an effect is $p$, $\lnot p$, or $p?$ (allowing any change); for a numerical feature $n$, it is $n\downarrow$ (decrease), $n\uparrow$ (increase), or $n?$ (any change).
+\end{itemize}
+
+For each task, we begin by manually constructing a finest-grained rule set $\mathcal{R}^{(0)}$ that decomposes the task into atomic steps, i.e., each rule typically can be fulfilled by a single action. We use the task of \emph{cleaning k shoes} as a running example. \Cref{tab:shoe_features} lists the relevant features from the shared space $\Phi$ used in this task.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Feature} & \textbf{Description} \\
+\midrule
+$H_r$ & holding the rag (Boolean) \\
+$p_r$ & distance to the nearest rag (numerical) \\
+$p_s$ & distance to the sink (numerical) \\
+$p_f$ & distance to the nearest uncleaned shoe (numerical) \\
+$N_f$ & number of uncleaned shoes (numerical) \\
+$T_s$ & tap (sink) is turned on (Boolean) \\
+$S_r$ & rag is soaked (Boolean) \\
+$C_i$ & shoe $i$ is cleaned (Boolean) \\
+$O_r$ & rag is on the floor (Boolean) \\
+\bottomrule
+\end{tabular}
+\caption{Features used in the Cleaning Shoes task.}
+\label{tab:shoe_features}
+\end{table}
+
+$\mathcal{R}^{(0)}$ contains over a dozen atomic rules. For brevity, we show representative rules from each phase (full set in \Cref{app_sec:prompt_examples}).
+\begin{quote}
+\scriptsize
+\textbf{Representative rules from $\mathcal{R}^{(0)}$ (Cleaning Shoes).}
+\begin{align*}
+\{\neg H_r,\, p_r > 0\} &\mapsto \{p_r \downarrow\} && \text{(approach rag)}\\
+\{H_r,\, \neg T_s,\, p_s = 0\} &\mapsto \{T_s\} && \text{(turn on tap)}\\
+\{H_r,\, T_s,\, p_s = 0\} &\mapsto \{S_r\} && \text{(soak rag)}\\
+\{S_r,\, N_f > 0,\, p_f > 0\} &\mapsto \{p_f \downarrow\} && \text{(approach shoe)}\\
+\{S_r,\, N_f > 0,\, p_f = 0\} &\mapsto \{N_f \downarrow,\, \neg H_r\} && \text{(clean and drop)}\\
+\{N_f = 0,\, \neg O_r,\, H_r\} &\mapsto \{\neg H_r,\, O_r\} && \text{(put away rag)}
+\end{align*}
+\end{quote}
+
+A coarse rule is not created by mechanically concatenating the preconditions and effects of its constituent atomic rules. Instead, we treat each merge as an abstraction of a contiguous subplan segment into a macro-rule. The macro-rule exposes only the \emph{net input/output interface} of that segment: its condition specifies when the segment applies, and its effect captures the overall progress achieved. Features that can be consumed entirely within the segment are thus omitted from the coarse rule. As shown in \Cref{fig:running_example}, the $\mathcal{R}^{(2)}$ rules for picking up the rag ($r_{1a}$), soaking it ($r_{1b}$), and cleaning one shoe ($r_{1c}$) form a coherent subplan chunk $r_1$ that abstracts into a single coarse rule in $\mathcal{R}^{(3)}$, which captures the net progress of cleaning one shoe while hiding the intermediate features $H_r$ and $S_r$.
+
+After each merge, we verify the semantic validity of the resulting coarse rules through expert review and use a planning solver to ensure every rule sequence $\mathcal{R}^{(k)}$ is well-formed: sequentially reachable, goal-terminating, and dead-end-free \citep{DBLP:conf/aaai/BonetG21}.
 
 
-\section{Related Work}
-\label{sec:related_work}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/running_examples.pdf}
+    \caption{A running example of constructing coarse-grained instructions by merging atomic rules into macro-rules. Features $H_r$ and $S_r$ are omitted as they can be consumed entirely within the subplan chunk.}
+    \label{fig:running_example}
+\end{figure}
 
-\textbf{Instruction Abstraction and Granularity.}
-In this work, \emph{Instruction granularity} refers to the extent to which state and action constraints are explicitly specified versus left for the agent to infer when grounding language into actions.
-This is distinct from, yet often conflated with the concept of \emph{linguistic abstraction}.
-The term \emph{abstraction} is viewed as \emph{representational compression}---using a compact description to stand for multiple instances or executions. This definition is common in prior work of computational thinking \citep{Wing2010ComputationalTW,DBLP:journals/tacl/LachmyPMT22,DBLP:conf/iclr/ZhengMCCCLZ24}.
-Importantly, granularity can vary independently of abstraction: ``tidy the room'' is coarse but non-abstract (it leaves the exact required actions underspecified, yet it lacks representational compression.), whereas ``repeat wiping until clean'' is relatively specific yet abstract (it prescribes an action but uses a loop condition to compress multiple executions).
 
-While not framed as the term ``granularity'', we acknowledge that a rich body of work has focused on augmenting language specificity and its impact, for example through coarse-to-fine semantic parsing \citep{dong-lapata-2018-coarse,DBLP:conf/ijcai/LiLF020}.
-Other work generates compositional instructions via constraint dropout and sub-task recombination \citep{huang-etal-2025-musc}, or construct counterfactual instructions to augment diversity \citep{glossop2025castcounterfactuallabelsimprove}.
+\subsection{Dynamic Instruction Generation}
+\lipsum
 
-Varying instruction detail is often handled via a simple two-part decomposition: high-level plans are converted into sequences of low-level steps before being grounded into actions \citep{arumugam2017accurately, DBLP:conf/wuwnet/Yang0H24,DBLP:conf/icml/ShiIEKPVTWWFLDG25}. Most recent Vision Language Action (VLA) works, however, operate with static language instructions \citep{ma2025surveyvisionlanguageactionmodelsembodied,li2025cogvla}. Some models like InstructVLA and ThinkAct explore having chain-of-thought reasoning steps before action decoding \citep{yang2025instructvlavisionlanguageactioninstructiontuning,huang2025thinkactvisionlanguageactionreasoningreinforced}. These hierarchical definitions remain task-specific and qualitative, lacking a unified, cross-task metric to establish shared granularity levels across tasks. Consequently, quantitatively controlled studies on the formal dynamics of instruction granularity remain scarce in the embodied AI domain.
+\subsection{Benchmark Analysis}
 
-\noindent\textbf{Language Grounding vs. Shortcuts.} 
-Prior work highlights a dichotomy between fragile language sensitivity \citep{akula-etal-2022-alfred} and visuo-motor shortcuts \citep{xing2025shortcut, zhang2026restoringlinguisticgroundingvla}. We reconcile this via rule width ($w$): low $w$ exhibits low predictability ($P(l| v)$), enforcing deep language grounding. Conversely, $w \ge 2$ yields high $P(l | v)$: this redundancy induces a shift toward shallow grounding, where agents default to visual priors.
+\section{Quantifying Instruction Granularity}
+
+\subsection{Desiderata for Cross-Task Granularity Metrics}
+
+\subsection{Candidate Metrics}
+
+\subsection{Instantiating Width in \textsc{Mini-BEHAVIOR-Gran}}
+
+\section{Experiments}
+
+\subsection{Experimental Setup}
+
+\subsection{RQ1: Which metric best captures instruction granularity?}
+
+\subsection{RQ2: How does agent performance vary across instruction granularity?}
+
+\subsection{RQ3: What drives the observed U-shaped effect?}
+
+\subsection{RQ4: How robust is this effect across transfer and failure settings?}
 
 
 \section{Rule Width as Instruction Granularity}
@@ -297,12 +369,6 @@ Concretely, we represent each instruction as a set of rules $\mathcal{R} = \{r_1
 These forms capture the core semantics of the instructions we study. A rule $r_i$ is \textbf{fulfilled} by a state sequence $(s, \dots, s')$ if $\phi(s) \models C_{r_i}$ and the pair $(\phi(s), \phi(s'))$ satisfies the changes in $E_{r_i}$ (e.g., $\forall (n \downarrow) \in E_{r_i}, \phi_n(s') < \phi_n(s)$) while keeping unmentioned features constant (i.e., $\phi_j(s') = \phi_j(s)$ for $j \notin E_{r_i}$).
 All instruction rule sets $\mathcal{R}$ are constructed to be executable and dead-end-free by satisfying the soundness and closure properties (i.e., they terminate at the goal) \citep{DBLP:conf/aaai/BonetG21}. This guarantee ensures that the agent's performance strictly reflects the language grounding complexity of different granularity levels, isolating it from task unsolvability.
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\linewidth]{figures/running_examples.pdf}
-    \caption{(Left) Factoring $r_1$ into $r_{1a}$-$r_{1c}$ reduces latent planning complexity via explicit action guidance. (Right) Fine instructions segment the long-horizon coarse trajectory ($\pi_{r_1}$, red).}
-    \label{fig:running_example}
-\end{figure}
 
 \subsection{Rule Width as a Granularity Measure} % Sec 3.4
 \label{subsec:rule_width_granularity}
@@ -327,7 +393,7 @@ We continue the running example to demonstrate two instruction sets, each repres
 \paragraph{Coarse-Grained Instruction ($w(\mathcal R) = 3$ )} This instruction states only the high-level rules and their desired ordering, leaving the internal structure of each sub-task implicit:
 \begin{itemize}[leftmargin=*]
     \item $r_1 : \{N_f > 0\} \mapsto \{N_f \downarrow\}$ (clean a shoe; $w=3$)
-    \item $r_2 : \{N_f = 0, \neg onfloor_{r}\} \mapsto \{onfloor_{r}\}$ (put the rag on the floor after cleaning shoes; $w=1$)
+    \item $r_2 : \{N_f = 0, \neg O_r\} \mapsto \{O_r\}$ (put the rag on the floor after cleaning shoes; $w=1$)
 \end{itemize}
 
 % (Two-column figure spanning the top of the page)Panel A: Admissible Chains. A comparison table of "Working Memory" requirements. Shows how $w=3$ requires a 3-feature tuple, while $w=1$ breaks the task into single-feature "stepping stones."Panel B: Feature Tracking Profile. A plot showing the tuple size (active feature tracking) over the task duration. $w=3$ shows a high, sustained peak; $w=1$ shows a low, consistent baseline.Panel C: The Grounding Gap. A conceptual diagram visualizing the "Informational Void" where the agent must rely on learned biases rather than explicit instructions.
@@ -337,7 +403,7 @@ We continue the running example to demonstrate two instruction sets, each repres
     \item $r_{1a} : \{\neg H_r\} \mapsto \{H_r\}$ (pick up the rag; $w = 1$)
     \item $r_{1b} : \{H_r, \neg S_r \} \mapsto \{S_r, H_r?\}$ (soak the rag)
     \item $r_{1c} : \{N_f > 0, S_r \} \mapsto \{N_f \downarrow\}$ (clean; $w = 2$)
-    \item $r_2 : \{N_f = 0, \neg onfloor_{r}\} \mapsto \{onfloor_{r}\}$ (put the rag on the floor; $w = 1$)
+    \item $r_2 : \{N_f = 0, \neg O_r\} \mapsto \{O_r\}$ (put the rag on the floor; $w = 1$)
 \end{itemize}
 This rule set is well-formed: it is goal-terminating via $r_2$, and the rules are sequentially reachable, meaning the successor state of any fulfilled rule (that is not the goal) also meets the condition of at least one rule in $\mathcal{R}$. The set is also robust to perturbations: if an agent drops the rag after soaking it ($\neg H_r$), the rule set remains applicable by reverting to $r_{1a}$ to reacquire the rag before proceeding to the cleaning task ($r_{1c}$). 
 
@@ -354,7 +420,7 @@ This intuition is formally grounded in novelty-driven Breadth-First Search \cite
 
 
 
-% \paragraph{Fine-grained Instruction ($w=1$)} This variant further decomposes the task into six rules where each transition addresses at most one feature change. The task is fully serialized into three stages: preparation ($r_1: \{\neg H_r\} \mapsto \{H_r\}$; $r_2: \{\neg T_s\} \mapsto \{T_s\}$; $r_3: \{H_r, T_s, \neg S_r\} \mapsto \{S_r\}$); cleaning ($r_4: \{N_f > 0, \neg H_r, S_r\} \mapsto \{H_r\}$; $r_5: \{N_f > 0, H_r, S_r\} \mapsto \{N_f \downarrow\}$); and storage ($r_6: \{N_f = 0, \neg onfloor_{r}\} \mapsto \{onfloor_{r}\}$). The higher rule count and denser preconditions is the explicit indicators of increased instruction granularity. This shift displaces the planning complexity to explicit structural textual guidance. The resulting training data exhibits a more direct language-to-action mapping, thereby reducing the grounding gap that VLA agents must learn to bridge.
+% \paragraph{Fine-grained Instruction ($w=1$)} This variant further decomposes the task into six rules where each transition addresses at most one feature change. The task is fully serialized into three stages: preparation ($r_1: \{\neg H_r\} \mapsto \{H_r\}$; $r_2: \{\neg T_s\} \mapsto \{T_s\}$; $r_3: \{H_r, T_s, \neg S_r\} \mapsto \{S_r\}$); cleaning ($r_4: \{N_f > 0, \neg H_r, S_r\} \mapsto \{H_r\}$; $r_5: \{N_f > 0, H_r, S_r\} \mapsto \{N_f \downarrow\}$); and storage ($r_6: \{N_f = 0, \neg O_r\} \mapsto \{O_r\}$). The higher rule count and denser preconditions is the explicit indicators of increased instruction granularity. This shift displaces the planning complexity to explicit structural textual guidance. The resulting training data exhibits a more direct language-to-action mapping, thereby reducing the grounding gap that VLA agents must learn to bridge.
 
 To communicate these rules to language-guided embodied agents, we translate each rule into a natural-language sentence via a template-based generator. These templates verbalize the features within each rule; e.g., $\{\hlA{$H_r$}, \hlB{$\neg S_r$}\} \mapsto \{\hlC{$S_r$}\}$ is realized as ``If you are \hlA{holding the rag} but \hlB{the rag is not yet soaked}, \hlC{soak the rag}.'' This construction preserves the granularity differences defined by the rule width. Additional language prompt examples are provided in \Cref{app_sec:prompt_examples}.
 
@@ -532,6 +598,24 @@ Having diagnosed this shallow reliance as a byproduct of high predictability, we
 
 
 \paragraph{Failure Modes.} Agent failure distributions bifurcate strictly with width (\Cref{fig:q4_failure_modes}). Low-width, long-horizon tasks predominantly suffer from \emph{regression}: the agent violates previously satisfied fluents and cycles back to prior states, reflecting subgoal serialization failures. High-width tasks ($w \ge 3$), by contrast, exhibit \emph{stagnation}: the agent freezes, unable to resolve concurrent feature dependencies ($O(|\Phi|^w)$) required to initiate a valid state transition. This dichotomy mirrors the width-based complexity landscape (see \Cref{app_sec:additional_experimental_results} for details).
+
+
+\section{Related Work}
+\label{sec:related_work}
+
+\textbf{Instruction Abstraction and Granularity.}
+In this work, \emph{Instruction granularity} refers to the extent to which state and action constraints are explicitly specified versus left for the agent to infer when grounding language into actions.
+This is distinct from, yet often conflated with the concept of \emph{linguistic abstraction}.
+The term \emph{abstraction} is viewed as \emph{representational compression}---using a compact description to stand for multiple instances or executions. This definition is common in prior work of computational thinking \citep{Wing2010ComputationalTW,DBLP:journals/tacl/LachmyPMT22,DBLP:conf/iclr/ZhengMCCCLZ24}.
+Importantly, granularity can vary independently of abstraction: ``tidy the room'' is coarse but non-abstract (it leaves the exact required actions underspecified, yet it lacks representational compression.), whereas ``repeat wiping until clean'' is relatively specific yet abstract (it prescribes an action but uses a loop condition to compress multiple executions).
+
+While not framed as the term ``granularity'', we acknowledge that a rich body of work has focused on augmenting language specificity and its impact, for example through coarse-to-fine semantic parsing \citep{dong-lapata-2018-coarse,DBLP:conf/ijcai/LiLF020}.
+Other work generates compositional instructions via constraint dropout and sub-task recombination \citep{huang-etal-2025-musc}, or construct counterfactual instructions to augment diversity \citep{glossop2025castcounterfactuallabelsimprove}.
+
+Varying instruction detail is often handled via a simple two-part decomposition: high-level plans are converted into sequences of low-level steps before being grounded into actions \citep{arumugam2017accurately, DBLP:conf/wuwnet/Yang0H24,DBLP:conf/icml/ShiIEKPVTWWFLDG25}. Most recent Vision Language Action (VLA) works, however, operate with static language instructions \citep{ma2025surveyvisionlanguageactionmodelsembodied,li2025cogvla}. Some models like InstructVLA and ThinkAct explore having chain-of-thought reasoning steps before action decoding \citep{yang2025instructvlavisionlanguageactioninstructiontuning,huang2025thinkactvisionlanguageactionreasoningreinforced}. These hierarchical definitions remain task-specific and qualitative, lacking a unified, cross-task metric to establish shared granularity levels across tasks. Consequently, quantitatively controlled studies on the formal dynamics of instruction granularity remain scarce in the embodied AI domain.
+
+\noindent\textbf{Language Grounding vs. Shortcuts.} 
+Prior work highlights a dichotomy between fragile language sensitivity \citep{akula-etal-2022-alfred} and visuo-motor shortcuts \citep{xing2025shortcut, zhang2026restoringlinguisticgroundingvla}. We reconcile this via rule width ($w$): low $w$ exhibits low predictability ($P(l| v)$), enforcing deep language grounding. Conversely, $w \ge 2$ yields high $P(l | v)$: this redundancy induces a shift toward shallow grounding, where agents default to visual priors.
 
 
 \section{Conclusion}

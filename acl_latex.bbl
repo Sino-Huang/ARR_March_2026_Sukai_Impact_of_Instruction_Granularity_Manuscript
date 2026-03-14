@@ -1,4 +1,4 @@
-\begin{thebibliography}{55}
+\begin{thebibliography}{63}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Akula et~al.(2022)Akula, Gella, Padmakumar, Namazifar, Bansal, Thomason, and Hakkani{-}Tur}]{akula-etal-2022-alfred}
@@ -6,10 +6,20 @@ Arjun~R. Akula, Spandana Gella, Aishwarya Padmakumar, Mahdi Namazifar, Mohit Ban
 \newblock {ALFRED-L:} investigating the role of language for action learning in interactive visual environments.
 \newblock In \emph{{EMNLP}}, pages 9369--9378. Association for Computational Linguistics.
 
+\bibitem[{Arumugam et~al.(2019)Arumugam, Karamcheti, Gopalan, Williams, Rhee, Wong, and Tellex}]{DBLP:journals/arobots/ArumugamKGWRWT19}
+Dilip Arumugam, Siddharth Karamcheti, Nakul Gopalan, Edward~C. Williams, Mina Rhee, Lawson L.~S. Wong, and Stefanie Tellex. 2019.
+\newblock Grounding natural language instructions to semantic goal representations for abstraction and generalization.
+\newblock \emph{Auton. Robots}, 43(2):449--468.
+
 \bibitem[{Arumugam et~al.(2017)Arumugam, Karamcheti, Gopalan, Wong, and Tellex}]{arumugam2017accurately}
 Dilip Arumugam, Siddharth Karamcheti, Nakul Gopalan, Lawson~LS Wong, and Stefanie Tellex. 2017.
 \newblock Accurately and efficiently interpreting human-robot instructions of varying granularities.
 \newblock \emph{arXiv preprint arXiv:1704.06616}.
+
+\bibitem[{Bi et~al.(2025)Bi, Tan, Xie, Wang, Huang, Liu, Zhao, Feng, Xiang, Rong, Zhao, Liu, Su, Ma, Su, and Zhu}]{bi2025motusunifiedlatentaction}
+Hongzhe Bi, Hengkai Tan, Shenghao Xie, Zeyuan Wang, Shuhe Huang, Haitian Liu, Ruowen Zhao, Yao Feng, Chendong Xiang, Yinze Rong, Hongyan Zhao, Hanyu Liu, Zhizhong Su, Lei Ma, Hang Su, and Jun Zhu. 2025.
+\newblock \href {https://arxiv.org/abs/2512.13030} {Motus: A unified latent action world model}.
+\newblock \emph{Preprint}, arXiv:2512.13030.
 
 \bibitem[{Bjorck et~al.(2025)Bjorck, Casta{\~n}eda, Cherniadev, Da, Ding, Fan, Fang, Fox, Hu, Huang et~al.}]{bjorck2025gr00t}
 Johan Bjorck, Fernando Casta{\~n}eda, Nikita Cherniadev, Xingye Da, Runyu Ding, Linxi Fan, Yu~Fang, Dieter Fox, Fengyuan Hu, Spencer Huang, and 1 others. 2025.
@@ -36,15 +46,15 @@ Blai Bonet and Hector Geffner. 2024.
 \newblock General policies, subgoal structure, and planning width.
 \newblock \emph{Journal of Artificial Intelligence Research}, 80:475--516.
 
+\bibitem[{Chevalier-Boisvert et~al.(2023)Chevalier-Boisvert, Dai, Towers, Perez-Vicente, Willems, Lahlou, Pal, Castro, and Terry}]{chevalier-boisvert2023minigrid}
+Maxime Chevalier-Boisvert, Bolun Dai, Mark Towers, Rodrigo De~Lazcano Perez-Vicente, Lucas Willems, Salem Lahlou, Suman Pal, Pablo~Samuel Castro, and J~K Terry. 2023.
+\newblock \href {https://openreview.net/forum?id=PFfmfspm28} {Minigrid \& miniworld: Modular \& customizable reinforcement learning environments for goal-oriented tasks}.
+\newblock In \emph{Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track}.
+
 \bibitem[{Dong and Lapata(2018)}]{dong-lapata-2018-coarse}
 Li~Dong and Mirella Lapata. 2018.
 \newblock \href {https://doi.org/10.18653/v1/P18-1068} {Coarse-to-fine decoding for neural semantic parsing}.
 \newblock In \emph{Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 731--742, Melbourne, Australia. Association for Computational Linguistics.
-
-\bibitem[{Drexler et~al.(2022)Drexler, Seipp, and Geffner}]{DBLP:conf/aips/DrexlerSG22}
-Dominik Drexler, Jendrik Seipp, and Hector Geffner. 2022.
-\newblock Learning sketches for decomposing planning problems into subproblems of bounded width.
-\newblock In \emph{{ICAPS}}, pages 62--70. {AAAI} Press.
 
 \bibitem[{Drexler et~al.(2024)Drexler, Seipp, and Geffner}]{DBLP:journals/jair/DrexlerSG24}
 Dominik Drexler, Jendrik Seipp, and Hector Geffner. 2024.
@@ -56,6 +66,11 @@ Senyu Fei, Siyin Wang, Junhao Shi, Zihao Dai, Jikun Cai, Pengfang Qian, Li~Ji, X
 \newblock \href {https://arxiv.org/abs/2510.13626} {Libero-plus: In-depth robustness analysis of vision-language-action models}.
 \newblock \emph{Preprint}, arXiv:2510.13626.
 
+\bibitem[{Gao et~al.(2025)Gao, Liu, Chi, Huang, Fei, Hou, Zhang, Lin, Fang, and Shao}]{gao2025vlaos}
+Chongkai Gao, Zixuan Liu, Zhenghao Chi, Junshan Huang, Xin Fei, Yiwen Hou, Yuxuan Zhang, Yudi Lin, Zhirui Fang, and Lin Shao. 2025.
+\newblock \href {https://openreview.net/forum?id=PQYazNKEYo} {{VLA}-{OS}: Structuring and dissecting planning representations and paradigms in vision-language-action models}.
+\newblock In \emph{The Thirty-ninth Annual Conference on Neural Information Processing Systems}.
+
 \bibitem[{Glossop et~al.(2025)Glossop, Chen, Bhorkar, Shah, and Levine}]{glossop2025castcounterfactuallabelsimprove}
 Catherine Glossop, William Chen, Arjun Bhorkar, Dhruv Shah, and Sergey Levine. 2025.
 \newblock \href {https://arxiv.org/abs/2508.13446} {Cast: Counterfactual labels improve instruction following in vision-language-action models}.
@@ -65,6 +80,11 @@ Catherine Glossop, William Chen, Arjun Bhorkar, Dhruv Shah, and Sergey Levine. 2
 Danijar Hafner. 2021.
 \newblock Benchmarking the spectrum of agent capabilities.
 \newblock \emph{arXiv preprint arXiv:2109.06780}.
+
+\bibitem[{Haslum et~al.(2019)Haslum, Lipovetzky, Magazzeni, Muise, Brachman, Rossi, and Stone}]{haslum2019introduction}
+Patrik Haslum, Nir Lipovetzky, Daniele Magazzeni, Christian Muise, Ronald Brachman, Francesca Rossi, and Peter Stone. 2019.
+\newblock \emph{An introduction to the planning domain definition language}, volume~13.
+\newblock Springer.
 
 \bibitem[{Huang et~al.(2025{\natexlab{a}})Huang, Wu, Chen, Wang, and Yang}]{huang2025thinkactvisionlanguageactionreasoningreinforced}
 Chi-Pin Huang, Yueh-Hua Wu, Min-Hung Chen, Yu-Chiang~Frank Wang, and Fu-En Yang. 2025{\natexlab{a}}.
@@ -156,10 +176,10 @@ Yueen Ma, Zixing Song, Yuzheng Zhuang, Jianye Hao, and Irwin King. 2025.
 \newblock \href {https://arxiv.org/abs/2405.14093} {A survey on vision-language-action models for embodied ai}.
 \newblock \emph{Preprint}, arXiv:2405.14093.
 
-\bibitem[{Myers et~al.(2024)Myers, Zheng, Mees, Fang, and Levine}]{DBLP:conf/corl/MyersZMFL24}
-Vivek Myers, Chunyuan Zheng, Oier Mees, Kuan Fang, and Sergey Levine. 2024.
-\newblock Policy adaptation via language optimization: Decomposing tasks for few-shot imitation.
-\newblock In \emph{CoRL}, volume 270 of \emph{Proceedings of Machine Learning Research}, pages 1402--1426. {PMLR}.
+\bibitem[{NVIDIA et~al.(2025)NVIDIA, :, Bjorck, Castañeda, Cherniadev, Da, Ding, Fan, Fang, Fox, Hu, Huang, Jang, Jiang, Kautz, Kundalia, Lao, Li, Lin, Lin, Liu, Llontop, Magne, Mandlekar, Narayan, Nasiriany, Reed, Tan, Wang, Wang, Wang, Wang, Xiang, Xie, Xu, Xu, Ye, Yu, Zhang, Zhang, Zhao, Zheng, and Zhu}]{nvidia2025gr00tn1openfoundation}
+NVIDIA, :, Johan Bjorck, Fernando Castañeda, Nikita Cherniadev, Xingye Da, Runyu Ding, Linxi~"Jim" Fan, Yu~Fang, Dieter Fox, Fengyuan Hu, Spencer Huang, Joel Jang, Zhenyu Jiang, Jan Kautz, Kaushil Kundalia, Lawrence Lao, Zhiqi Li, Zongyu Lin, and 24 others. 2025.
+\newblock \href {https://arxiv.org/abs/2503.14734} {Gr00t n1: An open foundation model for generalist humanoid robots}.
+\newblock \emph{Preprint}, arXiv:2503.14734.
 
 \bibitem[{O'Neill et~al.(2024)O'Neill, Rehman, Maddukuri, Gupta, Padalkar, Lee, Pooley, Gupta, Mandlekar, Jain, Tung, Bewley, Herzog, Irpan, Khazatsky, Rai, Gupta, Wang, Singh, Garg, Kembhavi, Xie, Brohan, Raffin, Sharma, Yavary, Jain, Balakrishna, Wahid, Burgess{-}Limerick, Kim, Sch{\"{o}}lkopf, Wulfe, Ichter, Lu, Xu, Le, Finn, Wang, Xu, Chi, Huang, Chan, Agia, Pan, Fu, Devin, Xu, Morton, Driess, Chen, Pathak, Shah, B{\"{u}}chler, Jayaraman, Kalashnikov, Sadigh, Johns, Foster, Liu, Ceola, Xia, Zhao, Stulp, Zhou, Sukhatme, Salhotra, Yan, Feng, Schiavi, Berseth, Kahn, Wang, Su, Fang, Shi, Bao, Amor, Christensen, Furuta, Walke, Fang, Ha, Mordatch, Radosavovic, Leal, Liang, Abou{-}Chakra, Kim, Drake, Peters, Schneider, Hsu, Bohg, Bingham, Wu, Gao, Hu, Wu, Wu, Sun, Luo, Gu, Tan, Oh, Wu, Lu, Yang, Malik, Silv{\'{e}}rio, Hejna, Booher, Tompson, Yang, Salvador, Lim, Han, Wang, Rao, Pertsch, Hausman, Go, Gopalakrishnan, Goldberg, Byrne, Oslund, Kawaharazuka, Black, Lin, Zhang, Ehsani, Lekkala, Ellis, Rana, Srinivasan, Fang, Singh, Zeng, Hatch, Hsu, Itti, Chen, Pinto, Fei{-}Fei, Tan, Fan, Ott, Lee, Weihs, Chen, Lepert, Memmel, Tomizuka, Itkina, Castro, Spero, Du, Ahn, Yip, Zhang, Ding, Heo, Srirama, Sharma, Kim, Kanazawa, Hansen, Heess, Joshi, S{\"{u}}nderhauf, Liu, Palo, Shafiullah, Mees, Kroemer, Bastani, Sanketi, Miller, Yin, Wohlhart, Xu, Fagan, Mitrano, Sermanet, Abbeel, Sundaresan, Chen, Vuong, Rafailov, Tian, Doshi, Mart{\'{\i}}n{-}Mart{\'{\i}}n, Baijal, Scalise, Hendrix, Lin, Qian, Zhang, Mendonca, Shah, Hoque, Julian, Bustamante{-}Gomez, Kirmani, Levine, Lin, Moore, Bahl, Dass, Sonawani, Song, Xu, Haldar, Karamcheti, Adebola, Guist, Nasiriany, Schaal, Welker, Tian, Ramamoorthy, Dasari, Belkhale, Park, Nair, Mirchandani, Osa, Gupta, Harada, Matsushima, Xiao, Kollar, Yu, Ding, Davchev, Zhao, Armstrong, Darrell, Chung, Jain, Vanhoucke, Zhan, Zhou, Burgard, Chen, Wang, Zhu, Geng, Liu, Xu, Li, Lu, Ma, Kim, Chebotar, Zhou, Zhu, Wu, Xu, Wang, Bisk, Cho, Lee, Cui, Cao, Wu, Tang, Zhu, Zhang, Jiang, Li, Li, Iwasawa, Matsuo, Ma, Xu, Cui, Zhang, and Lin}]{DBLP:conf/icra/ONeillRMGPLPGMJ24}
 Abby O'Neill, Abdul Rehman, Abhiram Maddukuri, Abhishek Gupta, Abhishek Padalkar, Abraham Lee, Acorn Pooley, Agrim Gupta, Ajay Mandlekar, Ajinkya Jain, Albert Tung, Alex Bewley, Alexander Herzog, Alex Irpan, Alexander Khazatsky, Anant Rai, Anchit Gupta, Andrew~E. Wang, Anikait Singh, and 260 others. 2024.
@@ -175,6 +195,11 @@ Maxime Oquab, Timoth{\'{e}}e Darcet, Th{\'{e}}o Moutakanni, Huy~V. Vo, Marc Szaf
 Shishir~G. Patil, Tianjun Zhang, Xin Wang, and Joseph~E. Gonzalez. 2024.
 \newblock Gorilla: Large language model connected with massive apis.
 \newblock In \emph{NeurIPS}.
+
+\bibitem[{Puig et~al.(2020)Puig, Shu, Li, Wang, Tenenbaum, Fidler, and Torralba}]{puig2020watchandhelp}
+Xavier Puig, Tianmin Shu, Shuang Li, Zilin Wang, Joshua~B. Tenenbaum, Sanja Fidler, and Antonio Torralba. 2020.
+\newblock \href {https://arxiv.org/abs/2010.09890} {Watch-and-help: A challenge for social perception and human-ai collaboration}.
+\newblock \emph{Preprint}, arXiv:2010.09890.
 
 \bibitem[{Qin et~al.(2024)Qin, Liang, Ye, Zhu, Yan, Lu, Lin, Cong, Tang, Qian, Zhao, Hong, Tian, Xie, Zhou, Gerstein, Li, Liu, and Sun}]{DBLP:conf/iclr/QinLYZYLLCTQZHT24}
 Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang, Bill Qian, Sihan Zhao, Lauren Hong, Runchu Tian, Ruobing Xie, Jie Zhou, Mark Gerstein, Dahai Li, Zhiyuan Liu, and Maosong Sun. 2024.
@@ -221,6 +246,11 @@ Jeannette~M. Wing. 2010.
 \newblock \href {www.cs.cmu.edu} {Computational thinking: What and why?}
 \newblock \emph{The Link}.
 
+\bibitem[{Wu et~al.(2026)Wu, Lu, Wang, Yang, Liu, Wang, Zhu, Sun, Wang, Ma, Ren, Zhang, Yu, Zhao, Zhou, Qiu, Xiong, Wang, Wang, Cheng, Li, Huang, Zhu, Shen, and Zheng}]{wu2026pragmaticvlafoundationmodel}
+Wei Wu, Fan Lu, Yunnan Wang, Shuai Yang, Shi Liu, Fangjing Wang, Qian Zhu, He~Sun, Yong Wang, Shuailei Ma, Yiyu Ren, Kejia Zhang, Hui Yu, Jingmei Zhao, Shuai Zhou, Zhenqi Qiu, Houlong Xiong, Ziyu Wang, Zechen Wang, and 6 others. 2026.
+\newblock \href {https://arxiv.org/abs/2601.18692} {A pragmatic vla foundation model}.
+\newblock \emph{Preprint}, arXiv:2601.18692.
+
 \bibitem[{Xiao et~al.(2025)Xiao, Li, Gao, Ye, Jin, Qian, Zhang, Wu, and Yu}]{xiao2025ava}
 Lei Xiao, Jifeng Li, Juntao Gao, Feiyang Ye, Yan Jin, Jingjing Qian, Jing Zhang, Yong Wu, and Xiaoyuan Yu. 2025.
 \newblock Ava-vla: Improving vision-language-action models with active visual attention.
@@ -246,6 +276,11 @@ Shuai Yang, Hao Li, Yilun Chen, Bin Wang, Yang Tian, Tai Wang, Hanqing Wang, Fen
 \newblock \href {https://arxiv.org/abs/2507.17520} {Instructvla: Vision-language-action instruction tuning from understanding to manipulation}.
 \newblock \emph{Preprint}, arXiv:2507.17520.
 
+\bibitem[{Ye et~al.(2025)Ye, Zhang, Wang, Wang, Zhang, and Zhu}]{ye2025vlar1enhancingreasoningvisionlanguageaction}
+Angen Ye, Zeyu Zhang, Boyuan Wang, Xiaofeng Wang, Dapeng Zhang, and Zheng Zhu. 2025.
+\newblock \href {https://arxiv.org/abs/2510.01623} {Vla-r1: Enhancing reasoning in vision-language-action models}.
+\newblock \emph{Preprint}, arXiv:2510.01623.
+
 \bibitem[{Yin et~al.(2025)Yin, Lin, Xu, Tam, Zeng, Liu, and Yin}]{yin2025deepthinkvla}
 Cheng Yin, Yankai Lin, Wang Xu, Sikyuen Tam, Xiangrui Zeng, Zhiyuan Liu, and Zhouping Yin. 2025.
 \newblock Deepthinkvla: Enhancing reasoning capability of vision-language-action models.
@@ -260,6 +295,11 @@ Xiaohua Zhai, Basil Mustafa, Alexander Kolesnikov, and Lucas Beyer. 2023.
 Ninghao Zhang, Bin Zhu, Shijie Zhou, and Jingjing Chen. 2026.
 \newblock \href {https://arxiv.org/abs/2603.06001} {Restoring linguistic grounding in vla models via train-free attention recalibration}.
 \newblock \emph{Preprint}, arXiv:2603.06001.
+
+\bibitem[{Zhao et~al.(2025)Zhao, Lu, Kim, Fu, Zhang, Wu, Li, Ma, Han, Finn, Handa, Lin, Wetzstein, Liu, and Xiang}]{DBLP:conf/cvpr/ZhaoLKFZWLMHFHL25}
+Qingqing Zhao, Yao Lu, Moo~Jin Kim, Zipeng Fu, Zhuoyang Zhang, Yecheng Wu, Zhaoshuo Li, Qianli Ma, Song Han, Chelsea Finn, Ankur Handa, Tsung{-}Yi Lin, Gordon Wetzstein, Ming{-}Yu Liu, and Donglai Xiang. 2025.
+\newblock Cot-vla: Visual chain-of-thought reasoning for vision-language-action models.
+\newblock In \emph{{CVPR}}, pages 1702--1713. Computer Vision Foundation / {IEEE}.
 
 \bibitem[{Zheng et~al.(2024)Zheng, Mishra, Chen, Cheng, Chi, Le, and Zhou}]{DBLP:conf/iclr/ZhengMCCCLZ24}
 Huaixiu~Steven Zheng, Swaroop Mishra, Xinyun Chen, Heng{-}Tze Cheng, Ed~H. Chi, Quoc~V. Le, and Denny Zhou. 2024.
