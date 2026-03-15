@@ -101,6 +101,11 @@ Jiangyong Huang, Silong Yong, Xiaojian Ma, Xiongkun Linghu, Puhao Li, Yan Wang, 
 \newblock An embodied generalist agent in 3d world.
 \newblock In \emph{{ICML}}.
 
+\bibitem[{Huang et~al.(2022)Huang, Xia, Xiao, Chan, Liang, Florence, Zeng, Tompson, Mordatch, Chebotar, Sermanet, Jackson, Brown, Luu, Levine, Hausman, and Ichter}]{DBLP:conf/corl/HuangXXCLFZTMCS22}
+Wenlong Huang, Fei Xia, Ted Xiao, Harris Chan, Jacky Liang, Pete Florence, Andy Zeng, Jonathan Tompson, Igor Mordatch, Yevgen Chebotar, Pierre Sermanet, Tomas Jackson, Noah Brown, Linda Luu, Sergey Levine, Karol Hausman, and Brian Ichter. 2022.
+\newblock \href {https://proceedings.mlr.press/v205/huang23c.html} {Inner monologue: Embodied reasoning through planning with language models}.
+\newblock In \emph{Conference on Robot Learning, CoRL 2022, 14-18 December 2022, Auckland, New Zealand}, volume 205 of \emph{Proceedings of Machine Learning Research}, pages 1769--1782. {PMLR}.
+
 \bibitem[{Jin et~al.(2023)Jin, Hu, Huang, Zhang, Wu, Fei-Fei, and Mart{\'\i}n-Mart{\'\i}n}]{jin2023minibehavior}
 Emily Jin, Jiaheng Hu, Zhuoyi Huang, Ruohan Zhang, Jiajun Wu, Li~Fei-Fei, and Roberto Mart{\'\i}n-Mart{\'\i}n. 2023.
 \newblock \href {https://openreview.net/forum?id=Ghl9pYaVh5} {Mini-{BEHAVIOR}: A procedurally generated benchmark for long-horizon decision-making in embodied {AI}}.
@@ -146,11 +151,6 @@ Wei Li, Renshan Zhang, Rui Shao, Jie He, and Liqiang Nie. 2025.
 \newblock Cogvla: Cognition-aligned vision-language-action model via instruction-driven routing \& sparsification.
 \newblock \emph{Advances in neural information processing systems}.
 
-\bibitem[{Li et~al.(2024)Li, Hsu, Gu, Mees, Pertsch, Walke, Fu, Lunawat, Sieh, Kirmani, Levine, Wu, Finn, Su, Vuong, and Xiao}]{DBLP:conf/corl/LiHGMPWFLSKL0F024}
-Xuanlin Li, Kyle Hsu, Jiayuan Gu, Oier Mees, Karl Pertsch, Homer~Rich Walke, Chuyuan Fu, Ishikaa Lunawat, Isabel Sieh, Sean Kirmani, Sergey Levine, Jiajun Wu, Chelsea Finn, Hao Su, Quan Vuong, and Ted Xiao. 2024.
-\newblock Evaluating real-world robot manipulation policies in simulation.
-\newblock In \emph{CoRL}, volume 270 of \emph{Proceedings of Machine Learning Research}, pages 3705--3728. {PMLR}.
-
 \bibitem[{Li et~al.(2020)Li, Lai, Feng, and Zhao}]{DBLP:conf/ijcai/LiLF020}
 Zechang Li, Yuxuan Lai, Yansong Feng, and Dongyan Zhao. 2020.
 \newblock \href {https://doi.org/10.24963/IJCAI.2020/515} {Domain adaptation for semantic parsing}.
@@ -171,15 +171,15 @@ Nir Lipovetzky and Hector Geffner. 2017.
 \newblock Best-first width search: Exploration and exploitation in classical planning.
 \newblock In \emph{{AAAI}}, pages 3590--3596. {AAAI} Press.
 
+\bibitem[{Lu et~al.(2025)Lu, Wang, Liu, Lu, and Tang}]{lu2025thinkbot}
+Guanxing Lu, Ziwei Wang, Changliu Liu, Jiwen Lu, and Yansong Tang. 2025.
+\newblock \href {https://openreview.net/forum?id=tFDTHA3odg} {Thinkbot: Embodied instruction following with thought chain reasoning}.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}.
+
 \bibitem[{Ma et~al.(2025)Ma, Song, Zhuang, Hao, and King}]{ma2025surveyvisionlanguageactionmodelsembodied}
 Yueen Ma, Zixing Song, Yuzheng Zhuang, Jianye Hao, and Irwin King. 2025.
 \newblock \href {https://arxiv.org/abs/2405.14093} {A survey on vision-language-action models for embodied ai}.
 \newblock \emph{Preprint}, arXiv:2405.14093.
-
-\bibitem[{NVIDIA et~al.(2025)NVIDIA, :, Bjorck, Castañeda, Cherniadev, Da, Ding, Fan, Fang, Fox, Hu, Huang, Jang, Jiang, Kautz, Kundalia, Lao, Li, Lin, Lin, Liu, Llontop, Magne, Mandlekar, Narayan, Nasiriany, Reed, Tan, Wang, Wang, Wang, Wang, Xiang, Xie, Xu, Xu, Ye, Yu, Zhang, Zhang, Zhao, Zheng, and Zhu}]{nvidia2025gr00tn1openfoundation}
-NVIDIA, :, Johan Bjorck, Fernando Castañeda, Nikita Cherniadev, Xingye Da, Runyu Ding, Linxi~"Jim" Fan, Yu~Fang, Dieter Fox, Fengyuan Hu, Spencer Huang, Joel Jang, Zhenyu Jiang, Jan Kautz, Kaushil Kundalia, Lawrence Lao, Zhiqi Li, Zongyu Lin, and 24 others. 2025.
-\newblock \href {https://arxiv.org/abs/2503.14734} {Gr00t n1: An open foundation model for generalist humanoid robots}.
-\newblock \emph{Preprint}, arXiv:2503.14734.
 
 \bibitem[{O'Neill et~al.(2024)O'Neill, Rehman, Maddukuri, Gupta, Padalkar, Lee, Pooley, Gupta, Mandlekar, Jain, Tung, Bewley, Herzog, Irpan, Khazatsky, Rai, Gupta, Wang, Singh, Garg, Kembhavi, Xie, Brohan, Raffin, Sharma, Yavary, Jain, Balakrishna, Wahid, Burgess{-}Limerick, Kim, Sch{\"{o}}lkopf, Wulfe, Ichter, Lu, Xu, Le, Finn, Wang, Xu, Chi, Huang, Chan, Agia, Pan, Fu, Devin, Xu, Morton, Driess, Chen, Pathak, Shah, B{\"{u}}chler, Jayaraman, Kalashnikov, Sadigh, Johns, Foster, Liu, Ceola, Xia, Zhao, Stulp, Zhou, Sukhatme, Salhotra, Yan, Feng, Schiavi, Berseth, Kahn, Wang, Su, Fang, Shi, Bao, Amor, Christensen, Furuta, Walke, Fang, Ha, Mordatch, Radosavovic, Leal, Liang, Abou{-}Chakra, Kim, Drake, Peters, Schneider, Hsu, Bohg, Bingham, Wu, Gao, Hu, Wu, Wu, Sun, Luo, Gu, Tan, Oh, Wu, Lu, Yang, Malik, Silv{\'{e}}rio, Hejna, Booher, Tompson, Yang, Salvador, Lim, Han, Wang, Rao, Pertsch, Hausman, Go, Gopalakrishnan, Goldberg, Byrne, Oslund, Kawaharazuka, Black, Lin, Zhang, Ehsani, Lekkala, Ellis, Rana, Srinivasan, Fang, Singh, Zeng, Hatch, Hsu, Itti, Chen, Pinto, Fei{-}Fei, Tan, Fan, Ott, Lee, Weihs, Chen, Lepert, Memmel, Tomizuka, Itkina, Castro, Spero, Du, Ahn, Yip, Zhang, Ding, Heo, Srirama, Sharma, Kim, Kanazawa, Hansen, Heess, Joshi, S{\"{u}}nderhauf, Liu, Palo, Shafiullah, Mees, Kroemer, Bastani, Sanketi, Miller, Yin, Wohlhart, Xu, Fagan, Mitrano, Sermanet, Abbeel, Sundaresan, Chen, Vuong, Rafailov, Tian, Doshi, Mart{\'{\i}}n{-}Mart{\'{\i}}n, Baijal, Scalise, Hendrix, Lin, Qian, Zhang, Mendonca, Shah, Hoque, Julian, Bustamante{-}Gomez, Kirmani, Levine, Lin, Moore, Bahl, Dass, Sonawani, Song, Xu, Haldar, Karamcheti, Adebola, Guist, Nasiriany, Schaal, Welker, Tian, Ramamoorthy, Dasari, Belkhale, Park, Nair, Mirchandani, Osa, Gupta, Harada, Matsushima, Xiao, Kollar, Yu, Ding, Davchev, Zhao, Armstrong, Darrell, Chung, Jain, Vanhoucke, Zhan, Zhou, Burgard, Chen, Wang, Zhu, Geng, Liu, Xu, Li, Lu, Ma, Kim, Chebotar, Zhou, Zhu, Wu, Xu, Wang, Bisk, Cho, Lee, Cui, Cao, Wu, Tang, Zhu, Zhang, Jiang, Li, Li, Iwasawa, Matsuo, Ma, Xu, Cui, Zhang, and Lin}]{DBLP:conf/icra/ONeillRMGPLPGMJ24}
 Abby O'Neill, Abdul Rehman, Abhiram Maddukuri, Abhishek Gupta, Abhishek Padalkar, Abraham Lee, Acorn Pooley, Agrim Gupta, Ajay Mandlekar, Ajinkya Jain, Albert Tung, Alex Bewley, Alexander Herzog, Alex Irpan, Alexander Khazatsky, Anant Rai, Anchit Gupta, Andrew~E. Wang, Anikait Singh, and 260 others. 2024.

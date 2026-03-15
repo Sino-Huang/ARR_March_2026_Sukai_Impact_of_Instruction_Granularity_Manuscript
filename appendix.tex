@@ -169,7 +169,7 @@ While the original \textsc{Mini-BEHAVIOR} framework provides the high-level skel
 
 % ===== Fused Benchmark Task Spec Table (ID + OOD) with Goal Description =====
 
-\begin{table*}[t]
+\begin{table*}[ht]
 \small
 \vspace{3mm}
 \centering
@@ -211,7 +211,7 @@ Detailed statistics regarding the specific rule sets used for instruction genera
 \section{Rule Set and Natural Language Prompt Examples For Different Tasks}
 \label{app_sec:prompt_examples}
 
-We present the width-0 rule set for 10 over 20 household tasks in the Mini-BEHAVIOR-Gran environment. For $w>0$, please refer to the codebase at \url{mini-behavior-gran/mini_behavior/utils/policy_sketch/}. 
+We present the rank 0 rule set for 10 over 20 household tasks in the Mini-BEHAVIOR-Gran environment. For other levels, please refer to the codebase at \url{mini-behavior-gran/mini_behavior/utils/policy_sketch/}. 
 
 \subsection{Task 1: Laying Wood Floors}
 
@@ -744,6 +744,7 @@ DeepSpeed Strategy & Zero-2 \\
 \end{table}
 
 
+
 \section{Additional Experimental Results}
 \label{app_sec:additional_experimental_results}
 
@@ -761,13 +762,90 @@ Figure \ref{fig:per_task_success_rate} details the success rates across all 20 t
     \label{fig:per_task_success_rate}
 \end{figure*}
 
+\subsection{Detailed Attention Analysis Table}
+\label{app_sec:full_attention_analysis_table}
+
+We quantify the internal information-gathering behavior of Vision-Language-Action (VLA) models by analyzing the \textbf{attention weight distribution of the action tokens}. In these architectures, the action tokens serve as the terminal query point; their attention allocation reveals which input modalities (vision vs. language) the model prioritizes at different stages of its internal processing hierarchy.
+
+\subsubsection{Input Sequence Formalization}
+The input sequence $\mathcal{S}$ is composed of visual patches, linguistic tokens, and action tokens. Given a single sample, the sequence layout is defined as:
+\begin{equation}
+    \mathcal{S} = [ \texttt{BOS}, \underbrace{v_1, \dots, v_P}_{\text{vision}}, \underbrace{t_1, \dots, t_T}_{\text{text}}, \underbrace{a_1, \dots, a_A}_{\text{action}}, \texttt{EOS} ]
+\end{equation}
+where $P$ is the number of visual patch tokens, $T$ is the number of text tokens (comprising both prompt prefix and task instruction), and $A$ is the number of action tokens (where $A = d_{\text{action}} \times \text{chunk size}$). 
+
+For analysis, we exclude the $[\texttt{BOS}]$ and $[\texttt{EOS}]$ boundary tokens. For each layer $\ell \in \{1, \dots, L\}$, we extract the trimmed attention tensor:
+\begin{equation}
+    \mathbf{A}^{(\ell)} \in \mathrm{R}^{H \times (P+T+A) \times (P+T+A)}
+\end{equation}
+
+\subsubsection{Partitioning of Semantic Regions}
+To distinguish between general linguistic context and specific task instructions, we partition the key dimension (columns) of $\mathbf{A}^{(\ell)}$ into four non-overlapping semantic regions:
+
+\textit{Note: For models utilizing compressed instruction patches, the compressed embeddings are mapped to the Dynamic Text category to ensure functional consistency across architectures.}
+
+\subsubsection{Quantitative Measurement}
+For each layer $\ell$ and head $h$, we isolate the \textbf{action-to-key} sub-matrix $\mathbf{A}^{(\ell)}_{h,\text{action} \to \text{key}} \in \mathrm{R}^{A \times (P+T+A)}$. The mean attention mass allocated to a specific region $R = [r_{\text{start}}, r_{\text{end}})$ is computed by summing weights across the region and averaging over the $A$ action tokens:
+\begin{equation}
+    \text{attn}_h(R) = \frac{1}{A} \sum_{i=1}^{A} \sum_{j=r_{\text{start}}}^{r_{\text{end}}-1} \mathbf{A}^{(\ell)}_{h,\text{action} \to \text{key}}[i, j]
+\end{equation}
+
+\subsubsection{Aggregation and Normalization}
+To derive a layer-wise modality reliance score, we perform the following:
+\begin{enumerate}
+    \item \textbf{Head Averaging}: $\text{attn}(R) = \frac{1}{H} \sum_{h=1}^{H} \text{attn}_h(R)$.
+    \item \textbf{Sample Mean}: Values are averaged across all samples within a specific granularity-model pair.
+    \item \textbf{Simplex Normalization}: The final regional shares $\hat{a}_R$ are normalized such that $\sum_{R} \hat{a}_R = 1$.
+\end{enumerate}
+
+\subsubsection{Statistical Trend Hypothesis Testing}
+We define three binary indicators to test the \textbf{Shallow Grounding Hypothesis} layer-wise:
+\begin{itemize}
+    \item \textbf{T1 (Lang $\uparrow$)}: $\hat{a}_{\text{text}}(\text{Medium}) > \hat{a}_{\text{text}}(\text{Fine})$
+    \item \textbf{T2 (Lang $\downarrow$)}: $\hat{a}_{\text{text}}(\text{Medium}) > \hat{a}_{\text{text}}(\text{Coarse})$
+    \item \textbf{T3 (Vis $\uparrow$)}: $\hat{a}_{\text{vis}}(\text{Coarse}) > \hat{a}_{\text{vis}}(\text{Medium})$
+\end{itemize}
+We assess the significance of these trends across $N=32$ layers using a \textbf{one-sided Binomial test} ($H_0: p=0.5$). Significance is reported as $^{*}p < 0.05$ and $^{**}p < 0.01$. Confidence intervals for proportions are calculated using the \textbf{Clopper-Pearson} method. The full statistical breakdown is presented in \Cref{tab:full_stats_appendix}.
+
+\begin{table*}[h]
+\centering
+\small
+\begin{tabular}{ll cccc c}
+\toprule
+\textbf{Model} & \textbf{Trend} & \textbf{k/N} & \textbf{Prop.} & \textbf{95\% CI} & \textbf{$H_0$} & \textbf{$p$-value} \\
+\midrule
+Autoregressive     & T1 & 25/32 & 78.1\% & [0.600, 0.907] & 50.0\% & 0.0011 \\
+                   & T2 & 4/32  & 12.5\% & [0.035, 0.290] & 50.0\% & 1.0000 \\
+                   & T3 & 21/32 & 65.6\% & [0.468, 0.814] & 50.0\% & 0.1102 \\
+\midrule
+Parallel Decoding  & T1 & 5/32  & 15.6\% & [0.053, 0.328] & 50.0\% & 1.0000 \\
+                   & T2 & 9/32  & 28.1\% & [0.137, 0.467] & 50.0\% & 0.9965 \\
+                   & T3 & 5/32  & 15.6\% & [0.053, 0.328] & 50.0\% & 1.0000 \\
+\midrule
+Discrete Diffusion & T1 & 17/32 & 53.1\% & [0.347, 0.709] & 50.0\% & 0.4300 \\
+                   & T2 & 23/32 & 71.9\% & [0.533, 0.863] & 50.0\% & 0.0100 \\
+                   & T3 & 24/32 & 75.0\% & [0.566, 0.885] & 50.0\% & 0.0035 \\
+\bottomrule
+\end{tabular}
+\caption{Detailed statistical analysis of layer-wise attention trends across architectures. P-values are calculated using a one-sided Binomial test against a null hypothesis ($H_0$) of 0.5. Confidence intervals (CI) are calculated at the 95\% level.}
+\label{tab:full_stats_appendix}
+\end{table*}
+
 \subsection{Failure Analysis} 
-Figure \ref{fig:failure_type_dist_by_width} presents the distribution of failure types across varying instruction widths. It confirms that low width encounters regression failures more frequently, while high width predominantly leads to stagnation failures. This aligns with our earlier observations in \textbf{(Q3)} regarding the distinct failure modes associated with different instruction granularities.
+Figure \ref{fig:failure_type_dist_by_width} presents the distribution of failure types across varying instruction widths. It confirms that low width encounters regression failures more frequently, while high width predominantly leads to stagnation failures. This aligns with our earlier observations in \Cref{fig:q4_failure_modes} regarding the distinct failure modes associated with different instruction granularities. Agent failure distributions bifurcate strictly with width. Low-width, long-horizon tasks predominantly suffer from \emph{regression}: the agent violates previously satisfied fluents and cycles back to prior states, reflecting subgoal serialization failures. High-width tasks ($w \ge 3$), by contrast, exhibit \emph{stagnation}: the agent freezes, unable to resolve concurrent feature dependencies ($O(|\Phi|^w)$) required to initiate a valid state transition. This dichotomy mirrors the width-based complexity landscape.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{figures/q4_failure_type_dist_by_width.pdf}
     \caption{Failure type distribution across instruction widths.}
     \label{fig:failure_type_dist_by_width}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth, keepaspectratio]{figures/q4_failure_type_extreme_task_example.pdf}
+    \captionof{figure}{Low-width but long task horizon (e.g., laying woods) tends to cause regression, while high-width stagnates.}
+    \label{fig:q4_failure_modes}
 \end{figure}
 
 \subsection{More Plots for Width vs. Other Linguistic Heuristics as Metric for Language Grounding Complexity}
@@ -790,24 +868,26 @@ Similarly, the consistency analysis in \Cref{fig:consistency_comparison} shows t
     \label{fig:consistency_comparison}
 \end{figure}
 
-\subsection{VLA Transformer Attention Weight Visualization}
+% \subsection{VLA Transformer Attention Weight Visualization}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{figures/q6_compare_baseline_models_attention_dist.pdf}
-    \captionof{figure}{Attention from action tokens. Self-attention dominates, followed by vision; No clear trend across granularity levels.}
-    \label{fig:attention_distribution_baseline_models}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/q6_compare_baseline_models_attention_dist.pdf}
+%     \captionof{figure}{Attention from action tokens. Self-attention dominates, followed by vision; No clear trend across granularity levels.}
+%     \label{fig:attention_distribution_baseline_models}
+% \end{figure}
 
-Attention analysis (\Cref{fig:attention_distribution_baseline_models}) reveals there is no obvious reduction in language-token attention. This suggests that in VLA architectures, maintained attention weights do not necessarily equate to language grounding, highlighting a complex dynamic that requires future investigation. 
+% Attention analysis (\Cref{fig:attention_distribution_baseline_models}) reveals there is no obvious reduction in language-token attention. This suggests that in VLA architectures, maintained attention weights do not necessarily equate to language grounding, highlighting a complex dynamic that requires future investigation. 
 
-Nevertheless, a closer inspection of the attention distributions reveals distinct architectural behaviors and compensatory mechanisms.
+% Nevertheless, a closer inspection of the attention distributions reveals distinct architectural behaviors and compensatory mechanisms.
 
-\paragraph{Autoregressive Models (Compensatory Reading).} Autoregressive generation exhibits a heavy baseline reliance on historical action tokens (accounting for $0.74$ of normalized attention in the Fine setting). Interestingly, when presented with Coarse instructions, attention to the dynamic instruction increases ($\uparrow 0.07$) while action attention decreases ($\downarrow 0.11$). This suggests a compensatory mechanism: as the rule width $w$ increases and immediate subgoals disappear, the model attempts to ground more heavily on the language prompt to search for clues.
+% \paragraph{Autoregressive Models (Compensatory Reading).} Autoregressive generation exhibits a heavy baseline reliance on historical action tokens (accounting for $0.74$ of normalized attention in the Fine setting). Interestingly, when presented with Coarse instructions, attention to the dynamic instruction increases ($\uparrow 0.07$) while action attention decreases ($\downarrow 0.11$). This suggests a compensatory mechanism: as the rule width $w$ increases and immediate subgoals disappear, the model attempts to ground more heavily on the language prompt to search for clues.
 
-\paragraph{Parallel Decoding (Attending more on action modality).} This architecture demonstrates a stark multimodal decoupling under coarse instructions. The attention paid to visual tokens drops significantly ($\downarrow 0.11$) in the Coarse setting, accompanied by an increased reliance on generated action tokens ($\uparrow 0.09$). This could imply that without detailed instruction guidance at each step, parallel decoding intend to trust more on action history to decide the next actions, showing a different strategy from autoregressive models.
+% \paragraph{Parallel Decoding (Attending more on action modality).} This architecture demonstrates a stark multimodal decoupling under coarse instructions. The attention paid to visual tokens drops significantly ($\downarrow 0.11$) in the Coarse setting, accompanied by an increased reliance on generated action tokens ($\uparrow 0.09$). This could imply that without detailed instruction guidance at each step, parallel decoding intend to trust more on action history to decide the next actions, showing a different strategy from autoregressive models.
 
-\paragraph{Discrete Diffusion (Structural Stability).} Diffusion models exhibit the most balanced attention distribution, maintaining the highest baseline attention to both dynamic instructions ($0.20$) and visual features ($0.32$). Notably, this distribution remains remarkably rigid regardless of instruction granularity (with fluctuations bounded within $\pm 0.04$).
+% \paragraph{Discrete Diffusion (Structural Stability).} Diffusion models exhibit the most balanced attention distribution, maintaining the highest baseline attention to both dynamic instructions ($0.20$) and visual features ($0.32$). Notably, this distribution remains remarkably rigid regardless of instruction granularity (with fluctuations bounded within $\pm 0.04$).
+
+
 \subsection{Sample Generated Instructions by Granularity} \label{app_sec:sample_instructions}
 
 To illustrate the qualitative differences between granularity levels, we provide five random samples for each category below. Note how Low (L) granularity explicitly specifies navigation and preconditions (e.g., move toward,'' not yet at''), while High (H) granularity focuses almost exclusively on the final state change (e.g., ``reduce the count of...''), shown in Table~\ref{tab:sample_instructions}.
