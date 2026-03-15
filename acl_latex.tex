@@ -231,7 +231,7 @@ Second, and perhaps more fundamentally, the field lacks a well-accepted and form
 To enable systematic study of how instruction granularity shapes language-guided embodied agents, we introduce \textsc{Mini-BEHAVIOR-Gran}, an extension of \textsc{Mini-BEHAVIOR} \citep{jin2023minibehavior} that provides multiple instruction variants per task, spanning from high-level goal description to step-by-step instructions. Leveraging Minigrid's engine \citep{chevalier-boisvert2023minigrid}, we construct 803 unique problem instances across 20 domains, yielding 10,253 trajectory episodes, each paired with dynamic instructions that evolve as the agent progresses through the task. 
 Within this controlled setting, we compare four metrics for quantifying granularity: token count, entity count, action-verb count, and \emph{width}. Unlike \emph{decomposition depth}, \emph{width} measures the max state features jointly tracked per instruction, thereby enabling cross-task comparability of planning complexity~\citep{DBLP:conf/aaai/BonetFG19,DBLP:journals/jair/DrexlerSG24}.
 
-Our study shows that \emph{width} correlates more consistently with agent performance across task horizons and VLA model variants than the other three metrics, suggesting that it is a stronger quantitative proxy for instruction granularity in language grounding. Organizing training by width reveals a U-shaped relationship between granularity and performance. Probing this effect via instruction predictability ($P(l|v)$) shows that the coarse-granularity rebound is associated with shallow grounding, whereby agents tend to bypass multimodal alignment and rely on vision-dominant policies.
+Our study shows that \emph{width} correlates more consistently with agent performance across task horizons and VLA variants than other metrics, serving as a better quantitative proxy for instruction granularity. Organizing training by width reveals a U-shaped pattern. Probing this effect via instruction predictability ($P(l|v)$) suggests that the rebound at coarse end is associated with shallow grounding, where agents prioritize single-modality cues and shift toward vision-dominant policies.
 
 % contribution bullet point. 
 \paragraph{Contribution.} We make the following contributions: \textbf{(1)} Introduce \textsc{Mini-BEHAVIOR-Gran}, a benchmark for controlled study of instruction granularity. \textbf{(2)} Demonstrate that \emph{width} is the most consistent cross-task proxy among the metrics we evaluate. \textbf{(3)} Unveil a non-monotonic U-shaped relationship between granularity and agent performance; and \textbf{(4)} Provide evidence that the coarse-granularity performance rebound is linked to shallow grounding.
@@ -364,7 +364,7 @@ To this end, we evaluate four candidate metrics, each corresponding to a differe
 \emph{Action-Verb Count} measures \emph{procedural complexity}, as finer-grained instructions tend to specify more individual actions. 
 While these three metrics capture surface-level properties, our fourth metric, \emph{Width}, captures a more structural notion of planning burden.
 
-\subsection{Instantiating Width in \textsc{Mini-BEHAVIOR-Gran}}
+\subsection{Instantiating Width as a Metric}
 
 Among the candidate metrics we consider, \emph{width} is the least surface-oriented. Originating from width-based planning \citep{DBLP:conf/ecai/LipovetzkyG12,DBLP:conf/aaai/LipovetzkyG17}, for a rule $r_i$, its width $w(r_i)$ is the maximum number of features that must be simultaneously tracked along an optimal transition from a state satisfying $C_{r_i}$ to one satisfying $E_{r_i}$. This differs from simply counting the number of features mentioned in the rule's condition or effect, since these features need not all be coordinated concurrently. We instantiate instruction-level width by aggregating over its constituent rules $w(\mathcal{R}) = \max_{r_i \in \mathcal{R}} w(r_i)$. A special case of $w=0$ occurs for situations where the desired state progression can be achieved in zero or one step \citep{bonet2024general}; this will appear in our experimental analysis. 
 
@@ -396,6 +396,13 @@ This stage is used only to compare candidate granularity metrics by how consiste
 In \textbf{Stage II} (\Cref{sec:rq2_u_shape}--\Cref{sec:rq3_u_shape}), after identifying which is the most consistent metric, we use it to partition instruction variants into \emph{Fine}, \emph{Medium}, and \emph{Coarse} groups and study how different granularity mixtures affect learning and generalization. 
 Specifically, we consider seven training settings: \textbf{Pure F/M/C} ($1\!:\!0\!:\!0$), (2) \textbf{Centroid} ($1\!:\!1\!:\!1$): uniformly sample from all three classes; (3) \textbf{Axial F/M/C} ($3\!:\!1\!:\!1$): emphasizes one class with some exposure to the others.
 
+
+\subsection{RQ1: Which metric best captures instruction granularity?}
+\label{sec:rq1_metric}
+We first ask which candidate metric most consistently captures instruction granularity in a way that it reflects embodied language grounding difficulty across tasks. We train all models under a balanced granularity regime and evaluate the Pearson correlation between each candidate metric and agent SR.
+A useful cross-task metric should exhibit a stable relationship with performance across tasks of different sequential burdens.
+
+
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{figures/q8_scatter_by_horizon.pdf}
@@ -403,11 +410,6 @@ Specifically, we consider seven training settings: \textbf{Pure F/M/C} ($1\!:\!0
     \label{fig:q8_scatter_by_horizon}
 \end{figure}
 
-\subsection{RQ1: Which metric best captures instruction granularity?}
-\label{sec:rq1_metric}
-We first ask which candidate metric most consistently captures instruction granularity in a way that it reflects embodied language grounding difficulty across tasks. 
-Following the Stage-I protocol in \Cref{sec:experimental_protocol}, we train all models under a balanced granularity regime and evaluate the Pearson correlation between each candidate metric and agent SR.
-A useful cross-task metric should exhibit a stable relationship with performance across tasks of different sequential burdens, rather than only within a narrow subset of the benchmark.
 
 \paragraph{Why partition by instruction horizon?}
 A critical confound in evaluating instruction granularity is sequential burden. 
@@ -439,7 +441,19 @@ Action-verb count reaches significance in several bins, but its direction flips 
 Since RQ1 identifies width as the most consistent cross-task proxy for instruction granularity, we use it to organize the remaining experiments. To enable tractable analysis while maintaining statistical power, we partition instruction variants into three granularity groups based on width: \emph{Fine} ($w=0$), \emph{Medium} ($w=1$), and \emph{Coarse} ($w \ge 2$). This grouping is necessary because higher widths ($w \ge 3$) have fewer instances and appear in fewer domains, making per-width analysis underpowered for cross-training comparisons. However, to ensure this grouping does not obscure finer-grained trends, we present a per-width breakdown of performance in \Cref{tab:q3_cross_granularity}.
 \Cref{fig:q1_learning_curves} reveals a consistent non-monotonic U-shaped relationship between instruction granularity and agent performance across all three action-decoding archetypes. At the fine extreme ($w=0$), where instructions require minimal latent reasoning, models achieve high success rates. Performance then drops at medium granularity ($w=1$), before rebounding under coarse instructions ($w \ge 2$). This is notable because width tracks latent coordination burden: if granularity affected performance only through increasing planning difficulty, one would expect a monotonic decline rather than a recovery at the coarse end.
 
-While our main analysis groups $w \ge 2$ as \emph{Coarse}, examining per-width performance reveals a graded structure within this regime. \Cref{tab:q3_cross_granularity} shows that SR at $w=2$ and $w=3$ declines progressively, collapsing entirely at $w \ge 4$. Nevertheless, the overall \emph{Coarse} group still outperforms \emph{Medium} ($w=1$) when aggregated across tasks. This aggregation is dominated by $w=2$ (which appears in 19 tasks), while the lower-performing $w=3$ and $w\ge4$ appear in only 10 and 3 tasks respectively, so their inclusion does not reverse the coarse-medium ordering.
+While our main analysis groups $w \ge 2$ as \emph{Coarse}, examining per-width performance reveals a graded structure in this regime. \Cref{tab:q3_cross_granularity} shows that SR at $w=2$ and $w=3$ declines progressively, collapsing entirely at $w \ge 4$. Nevertheless, the overall \emph{Coarse} group still outperforms \emph{Medium} ($w=1$) when aggregated across tasks. This aggregation is dominated by $w=2$ (which appears in 19 tasks), while the lower-performing $w=3$ and $w\ge4$ appear in only 10 and 3 tasks respectively.
+
+
+
+\subsection{RQ3: What drives the U-shaped effect?}
+\label{sec:rq3_u_shape}
+
+The coarse-granularity rebound is initially counterintuitive: if width reflects latent coordination burden, why does performance improve again when instructions become coarser? We hypothesize that this rebound stems from increasing instruction predictability $P(l|v)$, which makes coarse instructions easier to infer from visual context alone. This high predictability incentivizes the policy to exploit single-modality cues, leading to a dominant reliance on visual features rather than complex cross-modal coordination.
+
+This increased predictability has a formal basis: coarse instructions subsume multiple finer-grained variants. Formally, consider a surjective mapping $f$ from fine-grained labels $l_i$ to coarser ones $c_j$. The conditional probability of a coarse label aggregates its fine-grained constituents: $P(c_j | v) = \sum_{l_i \in f^{-1}(c_j)} P(l_i | v)$. This aggregation makes coarse instructions statistically easier to predict from vision alone.
+
+We confirm this empirically by training a VLM-based instructor (Qwen3-VL-4B with LoRA) to predict instructions from visual observations. As \Cref{fig:cross_entropy_loss_comparison} shows, cross-entropy loss decreases monotonically with coarseness (Fine: 0.078, Medium: 0.063, Coarse: 0.047), a relative drop of $40\%$ from fine to coarse, confirming that $P(l|v)$ indeed increases with coarseness.
+
 
 \begin{figure*}[t]
     \centering
@@ -468,13 +482,13 @@ While our main analysis groups $w \ge 2$ as \emph{Coarse}, examining per-width p
     \toprule
     \textbf{Model} & \textbf{T1} & \textbf{T2} & \textbf{T3} \\
     \midrule
-    AR        & 78\% (25/32)$^{**}$ & 13\% (4/32)        & 66\% (21/32)       \\
-    Parallel  & 16\% (5/32)         & 28\% (9/32)        & 16\% (5/32)        \\
-    Diffusion & 53\% (17/32)        & 72\% (23/32)$^{*}$ & 75\% (24/32)$^{**}$ \\
+    AR        & 78.1\% (25/32)$^{**}$ & 12.5\% (4/32)        & 65.6\% (21/32)       \\
+    Parallel  & 15.6\% (5/32)         & 28.1\% (9/32)        & 15.6\% (5/32)        \\
+    Diffusion & 53.1\% (17/32)        & 71.9\% (23/32)$^{*}$ & 75.0\% (24/32)$^{**}$ \\
     \bottomrule
     \end{tabular}%
     }
-    \captionof{table}{Layer-wise (32) attention trends derived from action tokens. Three trends: \textbf{T1} (lang attn $\uparrow$ from $F \to M$), \textbf{T2} (lang attn $\downarrow$ from $M \to C$), and \textbf{T3} (vis attn $\uparrow$ from $M \to C$). Stats significance is denoted by $^{*}p < 0.05$ and $^{**}p < 0.01$ (See \Cref{app_sec:full_attention_analysis_table} for full table). Diffusion and AR models' T1 and T2/T3 trends supports the hypothesis that \emph{C} lang incentivizes shallow grounding.}
+    \captionof{table}{Layer-wise ($N=32$) attention trends from action tokens. \textbf{T1}: lang $\uparrow$ ($F \to M$); \textbf{T2}: lang $\downarrow$ ($M \to C$); \textbf{T3}: vis $\uparrow$ ($M \to C$). $^{*}p < 0.05$, $^{**}p < 0.01$ (Binomial test). Parallel models lack consistent trends, likely due to modality entanglement inherent in bidirectional attention \protect\citep{DBLP:conf/icml/KimSK21}. T2/T3 are not zero-sum as the it includes self-attention. Full table and stats in \Cref{app_sec:full_attention_analysis_table}.}
     \label{tab:attention_trends_main}
 \end{minipage}\hfill
     \begin{minipage}[b]{0.60\textwidth}
@@ -504,18 +518,9 @@ While our main analysis groups $w \ge 2$ as \emph{Coarse}, examining per-width p
     
 \end{figure*}
 
-\subsection{RQ3: What drives the U-shaped effect?}
-\label{sec:rq3_u_shape}
-
-The coarse-granularity rebound is initially counterintuitive: if width reflects latent coordination burden, why does performance improve again when instructions become coarser? We hypothesize that this rebound stems from increasing instruction predictability $P(l|v)$, which incentivizes agents to bypass language in favor of visuo-motor shortcuts.
-
-This increased predictability has a formal basis: coarse instructions subsume multiple finer-grained variants. Formally, consider a surjective mapping $f$ from fine-grained labels $l_i$ to coarser ones $c_j$. The conditional probability of a coarse label aggregates its fine-grained constituents: $P(c_j | v) = \sum_{l_i \in f^{-1}(c_j)} P(l_i | v)$. This aggregation makes coarse instructions statistically easier to predict from vision alone.
-
-We confirm this empirically by training a VLM-based instructor (Qwen3-VL-4B with LoRA) to predict instructions from visual observations. As \Cref{fig:cross_entropy_loss_comparison} shows, cross-entropy loss decreases monotonically with coarseness (Fine: 0.078, Medium: 0.063, Coarse: 0.047), a relative drop of $40\%$ from fine to coarse, confirming that $P(l|v)$ indeed increases with coarseness.
-
 We next ask whether this increased predictability changes how much models actually rely on language. Following prior work \citep{fei2025liberoplus}, we use $\Delta \mathrm{SR}$ when language is weakened or removed as a probe of grounding reliance. When full instructions are removed entirely, fine-trained policies suffer a severe $36.3\%$ drop, whereas coarse-trained policies show a much smaller $20.0\%$ gap (\Cref{fig:sr_diff_by_training_setup}). Notably, under reduced informativeness (\textit{w/ goal lang}), the Pure-C policy exhibits only a negligible $2.8\%$ advantage over having no language at all ($15.6\%$ vs. $12.8\%$). This indicates that policies trained on coarse instructions develop shallow grounding: language is not deeply integrated into decision-making.
 
-Table \ref{tab:attention_trends_main} reveals that action token attention supports the shallow grounding hypothesis. Using a layer-wise Binomial test ($H_0=0.5$), we find Discrete Diffusion models significantly shift toward visual dominance at the coarse end (T2, $p=0.01$; T3, $p<0.01$). AR models mirror this staged behavior, exhibiting a highly significant language grounding phase (T1: $25/32, p \approx 0.001$) and a directional shift toward visual reliance (T3: $21/32$). Conversely, Parallel models show no significant patterns; we attribute this to the early modality entanglement inherent in bidirectional attention \citep{kim2021vilt}, which prevents the emergence of staged, layer-wise modality transitions.
+Table \ref{tab:attention_trends_main} provides a \emph{supplementary diagnostic}, for the shallow-grounding account. Using a layer-wise Binomial test ($H_0=0.5$), we find that Discrete Diffusion models exhibit a shift consistent with greater visual reliance at the coarse end (T2, $p=0.01$; T3, $p<0.01$). AR models show a similar but weaker pattern: a stronger language grounding phase from \emph{F} to \emph{M} granularity (T1: $25/32$, $p \approx 0.001$), followed by a directional shift toward visual reliance at the coarse end (T3: $21/32$). We therefore interpret these results as converging evidence rather than definitive mechanistic explanation. Note that T2 and T3 are not redundant: action tokens can also attend to previous action tokens, so a decrease in language attention does not imply a one-to-one increase in visual attention. 
  
 Together, these results reveal a three-regime account of the U-shaped performance pattern. At \textbf{fine granularity} ($w=0$), Low $P(l|v)$ (high CE loss) means language provides unique information. Combined with low-width grounding burden, this drives genuine multimodal alignment for generating actions, yielding high SR. \textbf{Medium granularity} ($w=1$) introduces a moderate increase in grounding burden. The model attempts to ground language but struggles with the increased complexity, leading to the lowest performance. At \textbf{coarse granularity} ($w \ge 2$), instructions are too complex to ground effectively, and high $P(l|v)$ incentivizes agents to exploit visual cues. This visual-dominant strategy recovers SR but sacrifices language grounding.
 
