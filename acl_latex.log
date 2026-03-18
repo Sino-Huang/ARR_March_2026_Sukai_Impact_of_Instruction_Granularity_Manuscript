@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.3.13)  15 MAR 2026 23:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.3.13)  16 MAR 2026 21:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -856,7 +856,7 @@ LaTeX Font Info:    Trying to load font information for U+lasy on input line 204
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 
-<figures/running_example.png, id=244, 2109.5027pt x 1054.75136pt>
+<figures/running_example.png, id=245, 2109.5027pt x 1054.75136pt>
 File: figures/running_example.png Graphic file (type png)
 <use figures/running_example.png>
 Package pdftex.def Info: figures/running_example.png  used on input line 220.
@@ -880,14 +880,14 @@ Overfull \hbox (15.99911pt too wide) detected at line 277
 []
  []
 
-<figures/running_examples.pdf, id=318, 591.20876pt x 265.99374pt>
+<figures/running_examples.pdf, id=320, 591.20876pt x 265.99374pt>
 File: figures/running_examples.pdf Graphic file (type pdf)
 <use figures/running_examples.pdf>
 Package pdftex.def Info: figures/running_examples.pdf  used on input line 304.
 (pdftex.def)             Requested size: 219.08614pt x 98.57037pt.
 
 
-<figures/experiment_illu.pdf, id=322, 611.28375pt x 250.9375pt>
+<figures/experiment_illu.pdf, id=324, 611.28375pt x 250.9375pt>
 File: figures/experiment_illu.pdf Graphic file (type pdf)
 <use figures/experiment_illu.pdf>
 Package pdftex.def Info: figures/experiment_illu.pdf  used on input line 318.
@@ -899,11 +899,8 @@ Package pdftex.def Info: figures/experiment_illu.pdf  used on input line 318.
 
 
 [4 <./figures/experiment_illu.pdf>] (./tables/admissible_chain_progression.tex)
-Underfull \vbox (badness 1968) has occurred while \output is active []
 
-
-
-<figures/q8_scatter_by_horizon.pdf, id=2098, 555.07375pt x 349.305pt>
+<figures/q8_scatter_by_horizon.pdf, id=2100, 555.07375pt x 349.305pt>
 File: figures/q8_scatter_by_horizon.pdf Graphic file (type pdf)
 <use figures/q8_scatter_by_horizon.pdf>
 Package pdftex.def Info: figures/q8_scatter_by_horizon.pdf  used on input line 408.
@@ -911,11 +908,21 @@ Package pdftex.def Info: figures/q8_scatter_by_horizon.pdf  used on input line 4
 
 
 [5]
-<figures/q1_main.pdf, id=2124, 308.15125pt x 238.8925pt>
+<figures/q1_main.pdf, id=2126, 308.15125pt x 238.8925pt>
 File: figures/q1_main.pdf Graphic file (type pdf)
 <use figures/q1_main.pdf>
 Package pdftex.def Info: figures/q1_main.pdf  used on input line 433.
-(pdftex.def)             Requested size: 153.35962pt x 118.89188pt.
+(pdftex.def)             Requested size: 164.31459pt x 127.3852pt.
+<figures/q7_loss_comparison.pdf, id=2127, 340.27126pt x 221.82875pt>
+File: figures/q7_loss_comparison.pdf Graphic file (type pdf)
+<use figures/q7_loss_comparison.pdf>
+Package pdftex.def Info: figures/q7_loss_comparison.pdf  used on input line 442.
+(pdftex.def)             Requested size: 182.09486pt x 118.70935pt.
+<figures/q5_sr_diff_by_training_setup.pdf, id=2128, 497.86pt x 232.87pt>
+File: figures/q5_sr_diff_by_training_setup.pdf Graphic file (type pdf)
+<use figures/q5_sr_diff_by_training_setup.pdf>
+Package pdftex.def Info: figures/q5_sr_diff_by_training_setup.pdf  used on input line 448.
+(pdftex.def)             Requested size: 254.93558pt x 119.24536pt.
 
 
 
@@ -924,28 +931,17 @@ Package pdftex.def Info: figures/q1_main.pdf  used on input line 433.
 
 pdfTeX warning: pdflatex (file ./figures/q1_main.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >]
-<figures/q7_loss_comparison.pdf, id=2659, 340.27126pt x 221.82875pt>
-File: figures/q7_loss_comparison.pdf Graphic file (type pdf)
-<use figures/q7_loss_comparison.pdf>
-Package pdftex.def Info: figures/q7_loss_comparison.pdf  used on input line 462.
-(pdftex.def)             Requested size: 182.09486pt x 118.70935pt.
-<figures/q5_sr_diff_by_training_setup.pdf, id=2660, 497.86pt x 232.87pt>
-File: figures/q5_sr_diff_by_training_setup.pdf Graphic file (type pdf)
-<use figures/q5_sr_diff_by_training_setup.pdf>
-Package pdftex.def Info: figures/q5_sr_diff_by_training_setup.pdf  used on input line 468.
-(pdftex.def)             Requested size: 254.93558pt x 119.24536pt.
 
 
 
-
-[7]
-
-
-
-[8 <./figures/q7_loss_comparison.pdf> <./figures/q5_sr_diff_by_training_setup.pdf
+[7 <./figures/q7_loss_comparison.pdf> <./figures/q5_sr_diff_by_training_setup.pdf
 
 pdfTeX warning: pdflatex (file ./figures/q5_sr_diff_by_training_setup.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->] (./acl_latex.bbl
+>]
+
+
+
+[8] (./acl_latex.bbl
 
 
 Underfull \hbox (badness 4726) in paragraph at lines 10--13
@@ -1345,18 +1341,18 @@ Package rerunfilecheck Info: File `acl_latex.out' has not changed.
 (rerunfilecheck)             Checksum: E775B52465A5CA5EE88A38066AFA4C4C;12153.
  ) 
 Here is how much of TeX's memory you used:
- 33432 strings out of 473182
- 627438 string characters out of 5722172
+ 33436 strings out of 473182
+ 627473 string characters out of 5722172
  1335728 words of memory out of 5000000
  55284 multiletter control sequences out of 15000+600000
- 675923 words of font info for 546 fonts, out of 8000000 for 9000
+ 676050 words of font info for 548 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,14n,95p,2278b,754s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb></usr/share/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on acl_latex.pdf (23 pages, 4053120 bytes).
+Output written on acl_latex.pdf (23 pages, 4053223 bytes).
 PDF statistics:
  3631 PDF objects out of 4296 (max. 8388607)
  2594 compressed objects within 26 object streams
- 196 named destinations out of 1000 (max. 500000)
+ 197 named destinations out of 1000 (max. 500000)
  102398 words of extra memory for PDF output out of 106986 (max. 10000000)
 
