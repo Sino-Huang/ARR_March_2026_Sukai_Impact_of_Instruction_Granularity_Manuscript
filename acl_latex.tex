@@ -354,7 +354,16 @@ Task-specific feature usage ranges from only 2 features in simple tasks such as 
 Despite their structured origin, the resulting instructions are of moderate linguistic complexity, averaging 40.2 words in length (see \Cref{app_sec:ref_plan_gen} for details).
 
 \section{Quantifying Instruction Granularity}
-While hierarchical rank remains a useful within-task measure, it cannot be used as a consistent cross-task metric to study how instruction granularity impacts agent performance across a diverse task set. The reason is that the number of attainable levels depends on the internal structure of each task: some tasks admit long chains of cleanly mergeable subgoals, whereas others involve interleaved dependencies that prevent further merging. Consequently, the same hierarchical rank across two different tasks may entail vastly different language grounding complexities. We therefore seek a separate cross-task metric for quantifying granularity. 
+As highlighted in \Cref{sec:introduction}, a second key bottleneck for 
+systematic study of instruction granularity is the absence of a 
+well-accepted metric that quantifies it in a way that reflects 
+language grounding difficulty and remains comparable across 
+diverse tasks. A seemingly natural candidate is 
+\emph{decomposition depth}: the level at which an instruction 
+sits within a plan hierarchy. However, decomposition depth 
+cannot serve as a consistent cross-task metric, because the 
+number of attainable levels is determined by each task's 
+internal structure. 
 
 \subsection{Candidate Metrics}
 
